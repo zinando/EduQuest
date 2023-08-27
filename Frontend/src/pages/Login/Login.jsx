@@ -48,7 +48,7 @@ export default function SignUp() {
               <div className="form-check ">
                 <input type="checkbox" className="form-check-input" />
                 <label className="form-check-label">
-                  I accept all terms &amp; conditions
+                  Remember me
                 </label>
               </div>
               <div className="form-group mb-3">

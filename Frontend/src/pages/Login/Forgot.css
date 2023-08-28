@@ -19,7 +19,7 @@ p{
 
 .logo {
   font-size: 32px;
-  font-weight: 500;
+  font-weight: 600;
   color: #339264;
   text-decoration: none;
   white-space: nowrap;
@@ -43,4 +43,27 @@ p{
 a{
   text-decoration: none;
   color: #339264;
+}
+
+p{
+  font-size: 16px;
+}
+
+.error{
+  font-weight: 700;
+  font-size: 50px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  color: #339264;
+}
+
+h3{
+  font-size: 30px;
+  color: rgb(86, 106, 127);
+  text-align: center;
+}
+
+img{
+  width: 100%;
 }

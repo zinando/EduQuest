@@ -4,20 +4,12 @@ import * as Unicons from '@iconscout/react-unicons';
 import { Link } from 'react-router-dom';
 
 
-
-
-
-
-
 export default function SignUp() {
   return (
-    <>
-      
+    <>     
         <div className="container-fluid content">
         <div className='row'>
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container"></div>
-
-            
 
           <div className="col-lg-6 col-md-7 form-container">
             <Link to="/SignUp" className='mb-3 logo'><h2>Edu<span className='quest'>Quest</span><span className='yellow'>.</span></h2></Link>
@@ -80,20 +72,15 @@ export default function SignUp() {
 
                 </div>
 
-
                 <div className="form-check ">
                   <input type="checkbox" className="form-check-input" />
                   <label className="form-check-label">
                     I accept all terms &amp; conditions
                   </label>
                 </div>
-                <div className="form-group mb-3">
-                  <input
-                    type="submit"
-                    className="btn button"
-                    defaultValue="Register Now"
-                  />
-                </div>
+              <div className='mb-4 d-grid'>
+                <Link to="/SideBar" className='btn button'>Register</Link>
+              </div>
               <div className="text">
                 <h3 >
                   Already have an account? <Link to="/Login">Login</Link>
@@ -104,9 +91,6 @@ export default function SignUp() {
             </div>
           </div>
         </div>
-     
-
-
     </>
 
   )

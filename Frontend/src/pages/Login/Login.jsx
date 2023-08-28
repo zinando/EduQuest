@@ -14,7 +14,7 @@ export default function SignUp() {
 
 
           <div className="col-lg-6 col-md-7 form-container">
-            <h2>Log In</h2>
+            <h2>LOG IN</h2>
             <form action="#">
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>
@@ -61,6 +61,9 @@ export default function SignUp() {
               <div className="text">
                 <h3 >
                   Already have an account? <Link to="/SignUp">Sign Up</Link>
+                </h3>
+                <h3 >
+                  <Link to="/Forgot">Forgot your password?</Link>
                 </h3>
               </div>
             </form>

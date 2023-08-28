@@ -20,7 +20,7 @@ export default function SignUp() {
             
 
           <div className="col-lg-6 col-md-7 form-container">
-              <h2>SIGN UP</h2>
+            <Link to="/SignUp" className='mb-3 logo'><h2>Edu<span className='quest'>Quest</span><span className='yellow'>.</span></h2></Link>
               <form action="#">
                 <div className="form-group mb-3 d-flex align-items-center">
                   <label htmlFor="name" className='form2'>

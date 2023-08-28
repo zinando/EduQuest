@@ -1,0 +1,47 @@
+/* styles.css */
+.sidebar {
+  width: 150px;
+  background-color: #5C74F1;
+  color: white;
+  padding: 10px;
+  min-height: 100vh;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 5px;
+}
+
+.sidebar ul li {
+  margin-bottom: 15px;
+}
+
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.dashboard {
+  padding: 10px;
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: 600;
+  color: #339264;
+  text-decoration: none;
+  white-space: nowrap;
+
+}
+
+.quest {
+  color: #E97464;
+}
+
+.yellow {
+  color: #FFCD6E;
+}

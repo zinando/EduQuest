@@ -10,27 +10,27 @@ export default function Forgot() {
             <div className='p-6 card-body'>
               <div className='mb-4'>
                 <Link to="/SignUp" className='mb-3 logo'>Edu<span className='quest'>Quest</span><span className='yellow'>.</span></Link>
-                
+
                 <p className='mb-6'>
                   Dont&apos; t worry, we&apos;ll send you an email to rest your password.
                 </p>
                 <form action="">
                   <div className='mb-4'>
                     <label htmlFor="email" className='form-label'>Email</label>
-                     <input type="email" placeholder='Enter Your Email' className='form-control' id='email'/>
+                    <input type="email" placeholder='Enter Your Email' className='form-control' id='email' />
                   </div>
                   <div className='mb-4 d-grid'>
-                       <button type='submit' className='btn button'>Reset Password</button>
+                    <button type='submit' className='btn button'>Reset Password</button>
                   </div>
                   <span className='note'>
-                    Don&apos;t have an account? 
-                     <Link to="/SignUp">SignUp</Link>
-                  
+                    Don&apos;t have an account?
+                    <Link to="/SignUp">SignUp</Link>
+
                   </span>
                 </form>
-             </div>
+              </div>
             </div>
-         </div>
+          </div>
         </div>
 
       </div>

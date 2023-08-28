@@ -20,7 +20,7 @@ export default function SignUp() {
             
 
           <div className="col-lg-6 col-md-7 form-container">
-              <h2>Sign up</h2>
+              <h2>SIGN UP</h2>
               <form action="#">
                 <div className="form-group mb-3 d-flex align-items-center">
                   <label htmlFor="name" className='form2'>

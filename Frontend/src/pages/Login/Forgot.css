@@ -17,22 +17,6 @@ p{
   line-height: 20px;
 }
 
-.logo {
-  font-size: 32px;
-  font-weight: 600;
-  color: #339264;
-  text-decoration: none;
-  white-space: nowrap;
-  
-}
-
-.quest {
-  color: #E97464;
-}
-
-.yellow{
-  color: #FFCD6E;
-}
 
 .note{
   display: flex;

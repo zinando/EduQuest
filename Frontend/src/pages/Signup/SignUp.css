@@ -106,14 +106,12 @@ form .text h3 a:hover {
   background: #FFCD6E;
 }
 
-/* Style the form controls */
+
 .form-control {
   border: none;
   border-bottom: 1px solid #ccc;
   border-radius: 0;
 }
-
-
 
 .form-control::placeholder {
   opacity: 0.5;

@@ -1,0 +1,19 @@
+.schedule-container {
+  display: flex;
+}
+
+
+button {
+  padding: 10px 20px;
+  margin: 2px;
+  color: #E97464;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+
+button.selected {
+  background-color: #E97464;
+  color:  #fff;
+}

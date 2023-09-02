@@ -13,24 +13,24 @@ export default function SideBar() {
         </div>
         <ul>
           <li>
-            <Link to="/dashboard" className='active'><Unicons.UilCreateDashboard className="icon" />Dashboard</Link>
+            <Link to="/Home" className='active'><Unicons.UilCreateDashboard className="icon" />Dashboard</Link>
           </li>
           <li>
-            <Link to="/analytics"><Unicons.UilSchedule className="icon" />Schedule</Link>
+            <Link to="/schedule"><Unicons.UilSchedule className="icon" />Schedule</Link>
           </li>
           <li>
-            <Link to="/analytics"><Unicons.UilBooks className="icon" />Subjects</Link>
+            <Link to="/subject"><Unicons.UilBooks className="icon" />Subjects</Link>
           </li>
           <li>
-            <Link to="/analytics"><Unicons.UilFile className="icon" />Exam</Link>
+            <Link to="/Exam"><Unicons.UilFile className="icon" />Exam</Link>
           </li>
           <li>
-            <Link to="/analytics"><Unicons.UilCommentsAlt className="icon" />Message</Link>
+            <Link to="/Message"><Unicons.UilCommentsAlt className="icon" />Message</Link>
           </li>
           <li>
-            <Link to="/analytics"><Unicons.UilSetting className="icon" />Settings</Link>
+            <Link to="/Settings"><Unicons.UilSetting className="icon" />Settings</Link>
           </li>
-          {/* Add more sidebar navigation items */}
+
         </ul>
       </div>
     </>

@@ -1,6 +1,8 @@
 /* Home.css */
+.hm-container {
+  display: flex;
+}
 
-/* Styles for the overall container */
 .home-container {
   padding: 20px;
 }
@@ -33,4 +35,3 @@
   margin-bottom: 5px;
 }
 
-/* Additional styles can be added as needed */

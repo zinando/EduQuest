@@ -1,13 +1,12 @@
-/* Home.css */
 .hm-container {
   display: flex;
+  background-color: #f4f4f4
 }
 
 .home-container {
-  padding: 20px;
+  padding: 30px;
 }
 
-/* Styles for the header */
 .home-header {
   font-size: 24px;
   margin-bottom: 20px;
@@ -15,13 +14,14 @@
 
 /* Styles for the data summary section */
 .data-summary {
-  background-color: #f4f4f4;
+  background-color: #ffff;
   padding: 20px;
   border-radius: 5px;
   margin-top: 20px;
 }
 
-.data-summary h2 {
+.data-summary h4 {
+  font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
 }
@@ -34,4 +34,3 @@
 .data-summary li {
   margin-bottom: 5px;
 }
-

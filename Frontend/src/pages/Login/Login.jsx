@@ -12,12 +12,12 @@ function SignUp() {
       <div className="container-fluid content">
         <div className='row'>
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container"></div>
-          <div className="col-lg-6 col-md-7 form-container">
-            <Link to="/error" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span><span className='yellow'>.</span></h2></Link>
+          <div className="col-lg-6 col-md-6 col-sm-12 form-container">
+            <Link to="/error" className='mb-3 logo'><h2 className='logo'>Edu<span>Quest</span></h2></Link>
             <Form>
               <Form.Group className="mb-3 d-flex align-items-center">
                 <Form.Label htmlFor="name" className='form2'>
-                  <Unicons.UilUser color="#e97464" size="20" />
+                  <Unicons.UilUser color="#8FC8DB" size="20" />
                 </Form.Label>
                 <Form.Control
                   type="text"
@@ -28,7 +28,7 @@ function SignUp() {
 
               <Form.Group className="mb-3 d-flex align-items-center">
                 <Form.Label htmlFor="name" className='form2'>
-                  <Unicons.UilLock color="#e97464" size="20" />
+                  <Unicons.UilLock color="#8FC8DB" size="20" />
                 </Form.Label>
                 <Form.Control
                   type="password"
@@ -43,13 +43,8 @@ function SignUp() {
                 </Col>
               </Form.Group>
 
-              <div className="form-group mb-3">
-                <button
-                  type="submit"
-                  className="btn button"
-                >
-                  Register Now
-                </button>
+              <div className='mb-4 d-grid'>
+                <Link to="/Home" className='btn button'>Login</Link>
               </div>
 
               <div className="text">

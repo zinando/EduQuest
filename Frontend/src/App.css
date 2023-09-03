@@ -1,5 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+:root{
+  --main-color: #86c0d4;
+  --secondary-color: #E97464;
+  --button-padding: 15px;
+}
+
+
 
 * {
   margin: 0;
@@ -8,27 +15,32 @@
   font-family: 'Poppins', sans-serif;
 }
 
-container{
-  color: aliceblue;
-}
-
-.logo {
-  font-size: 32px;
-  font-weight: 600;
-  color: #339264;
-  text-decoration: none;
-  white-space: nowrap;
-
-}
-
-.quest {
-  color: #E97464;
-}
-
-.yellow {
-  color: #FFCD6E;
+.logo{
+  color: #86c0d4;
+  font-weight: 700;
+  font-size: 30px;
 }
 
 span{
-  font-size: 19px;
+  color: #E97464;
+  font-weight: 600;
+  font-size: 30px;
+}
+
+
+.button {
+  color: #fff;
+  letter-spacing: 1px;
+  border: none;
+  background: #86c0d4;
+  cursor: pointer;
+  display: flex;
+  margin: 0 auto;
+  padding: var(--button-padding);
+  font-size: 17px;
+}
+
+.button:hover {
+  background: #E97464;
+  color: #fff;
 }

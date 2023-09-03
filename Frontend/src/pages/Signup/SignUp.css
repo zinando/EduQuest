@@ -1,22 +1,11 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-}
-
-
 h2 {
   text-align: center;
   padding: 20px;
 }
 
-
-
 .image-container {
   background: url('../../assets/student.jpeg') center no-repeat;
   background-size: cover;
-  /* Use 'cover' to prevent zooming */
   height: 100vh;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
@@ -67,15 +56,16 @@ form .policy {
 
 form h3 {
   color: #707070;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   margin-left: 10px;
 }
 
 form .text h3 {
-  color: #333;
+  color: #1B1E39;
   width: 100%;
   text-align: center;
+  
 }
 
 form .text h3 a {
@@ -92,19 +82,7 @@ form .text h3 a:hover {
   padding: 20px;
 }
 
-.button {
-  color: #fff;
-  letter-spacing: 1px;
-  border: none;
-  background: #E97464;
-  cursor: pointer;
-  display: flex;
-  margin: 0 auto;
-}
 
-.button:hover {
-  background: #FFCD6E;
-}
 
 
 .form-control {
@@ -123,4 +101,8 @@ form .text h3 a:hover {
   max-width: 600px;
   margin: 0 auto;
   padding: 70px;
+}
+
+.form-check-label{
+  font-size: 15px;
 }

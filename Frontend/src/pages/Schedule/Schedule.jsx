@@ -13,7 +13,7 @@ export default function Schedule() {
     const [selectedButton, setSelectedButton] = useState(null);
 
     // Define an array of button labels
-    const buttonLabels = ['Button 1', 'Button 2', 'Button 3'];
+    const buttonLabels = ['Day', 'Status', 'Subject'];
 
     // Function to handle button click
     const handleButtonClick = (index) => {
@@ -30,7 +30,7 @@ export default function Schedule() {
             <Row>
               <Col md={12}>
                 <h1 className="home-header pt-5">Schedule</h1>
-                <div className='pb-4'>
+                <div className='pb-3 pt-3 group-btn'>
                   {buttonLabels.map((label, index) => (
                     <button
                       key={index}
@@ -47,9 +47,10 @@ export default function Schedule() {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Username</th>
+                  <th>Subject</th>
+                  <th>Teacher</th>
+                  <th>Date</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -58,22 +59,40 @@ export default function Schedule() {
                   <td>Mark</td>
                   <td>Otto</td>
                   <td>@mdo</td>
+                  <td>@mdo</td>
                 </tr>
                 <tr>
                   <td>2</td>
                   <td>Jacob </td>
                   <td>Thornton</td>
                   <td>@fat</td>
+                  <td>@fat</td>
                 </tr>
                 <tr>
                   <td>3</td>
                   <td colSpan={2}>Larry the Bird</td>
                   <td>@twitter</td>
+                  <td>@fat</td>
                 </tr>
                 <tr>
                   <td>4</td>
                   <td>Jacob </td>
                   <td>Thornton</td>
+                  <td>@fat</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Jacob </td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Jacob </td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
                   <td>@fat</td>
                 </tr>
               </tbody>

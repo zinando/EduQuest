@@ -3,6 +3,8 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import './Landing.css'
 import Linkedin from '../images/linkedin.png'
+import colleagues from '../src/assets/colleagues .jpeg'
+import girl from '../src/assets/girl.jpeg'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
@@ -101,8 +103,8 @@ export default function Landing() {
             <div className="col-lg-6">
               <div className="img-wrap" data-aos="fade-left">
                 <img
-                  src="images/prod-2.svg"
-                  style={{ height: 400, weight: 500 }}
+                  src= {colleagues}
+                  
                   alt="Image"
                   className="img-fluid"
                 />
@@ -169,7 +171,7 @@ export default function Landing() {
         <div className="container">
           <div className="row justify-content-between">
             <div className="col-lg-6" data-aos="fade-up">
-              <img src="./images/img2.svg" alt="Image" className="img-fluid" />
+              <img src={girl} alt="Image" className="img-fluid" />
             </div>
             <div className="col-lg-6" data-aos="fade-up" data-aos-delay={100}>
               <h3 className="subheading mb-2">About us</h3>

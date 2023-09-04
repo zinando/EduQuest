@@ -1,71 +1,5 @@
-/* Site Mobile Menu */
 .site-mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -250px;
-  width: 250px;
-  height: 100%;
-  background-color: #fff;
-  z-index: 9999;
-  transition: 0.3s ease-in-out;
-  overflow-y: scroll;
-}
-
-.site-mobile-menu.show {
-  right: 0;
-}
-
-.site-mobile-menu-header {
-  padding: 20px;
-}
-
-.site-mobile-menu-close {
-  float: right;
-  cursor: pointer;
-}
-
-/* Site Navigation */
-.site-nav {
-  background-color: #8FC8DB;
-}
-
-.site-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-}
-
-.site-navigation .logo h5 {
-  color: #fff;
-  font-size: 24px;
-}
-
-.site-navigation ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.site-navigation ul li {
-  display: inline-block;
-  margin-right: 20px;
-  position: relative;
-}
-
-.site-navigation ul li:last-child {
-  margin-right: 0;
-}
-
-.site-navigation ul li a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s ease-in-out;
-}
-
-.site-navigation ul li a:hover {
-  color: #cccccc;
+  position: fixed; 
 }
 
 /* Hero Section */
@@ -132,18 +66,14 @@ footer {
 }
 
 .social-icons {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .social-icons a {
   margin-right: 20px;
-  text-decoration: none;
 }
 
-.social-icons img {
-  height: 20px;
-  width: 20px;
-}
+
 
 /* Buttons */
 .btn {

@@ -1,0 +1,116 @@
+
+
+h2 {
+  text-align: center;
+  padding: 20px;
+}
+
+.image-container {
+  background: url('../../assets/student.jpeg') center no-repeat;
+  background-size: cover;
+  height: 100vh;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.signup {
+  position: relative;
+  max-width: 430px;
+  width: 100%;
+  background: #fff;
+  padding: 34px;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.container h2 {
+  position: relative;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+.container h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 28px;
+  border-radius: 12px;
+  background: #E97464;
+}
+
+.container form {
+  margin-top: 30px;
+}
+
+.wrapper form .button {
+  height: 52px;
+  margin: 18px 0;
+}
+
+form .policy {
+  display: flex;
+  align-items: center;
+}
+
+form h3 {
+  color: #707070;
+  font-size: 14px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+form .text h3 {
+  color: #333;
+  width: 100%;
+  text-align: center;
+}
+
+form .text h3 a {
+  color: #E97464;
+  text-decoration: none;
+}
+
+form .text h3 a:hover {
+  text-decoration: underline;
+}
+
+.form-check {
+  text-align: center;
+  padding: 20px;
+}
+
+.button {
+  color: #fff;
+  letter-spacing: 1px;
+  border: none;
+  background: #E97464;
+  cursor: pointer;
+  display: flex;
+  margin: 0 auto;
+}
+
+.button:hover {
+  background: #E97464;
+}
+
+/* Style the form controls */
+.form-control {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+}
+
+.form-control::placeholder {
+  opacity: 0.5;
+  font-weight: lighter;
+  font-size: small;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 70px;
+}

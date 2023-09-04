@@ -2,6 +2,15 @@
   position: fixed; 
 }
 
+
+a{
+  color: #E97464;
+}
+
+.nav-link{
+  color: #E97464;
+}
+
 /* Hero Section */
 .hero-section {
   background-color: #FFFFFF;

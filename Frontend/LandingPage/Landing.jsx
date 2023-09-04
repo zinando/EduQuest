@@ -7,7 +7,7 @@ import colleagues from '../src/assets/colleagues .jpeg'
 import girl from '../src/assets/girl.jpeg'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-
+import { Link } from 'react-router-dom';
 
 
 
@@ -33,38 +33,34 @@ export default function Landing() {
         </div>
         <div className="site-mobile-menu-body" />
       </div>
-      <Navbar expand="lg" style={{ backgroundColor: "#8FC8DB" }}>
+      <Navbar expand="lg" style={{ backgroundColor: "white" }}>
         <div className="container">
-          <Navbar.Brand href="#">
-            <h5>
-              <b>EduQuest</b>
-            </h5>
-          </Navbar.Brand>
+          <Link to="/SignUp" className='mb-3 logo'><h3 className='logo'>Edu<span>Quest</span></h3></Link>
           <Navbar.Toggle aria-controls="main-navbar" />
           <Navbar.Collapse id="main-navbar">
             <Nav className="ms-auto">
               <Nav.Item>
-                <Nav.Link href="index.html">Home</Nav.Link>
+                <Nav.Link href="#">Home</Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link href="#" id="examsDropdown">About</Nav.Link>
               </Nav.Item>
     
               <Nav.Item>
-                <Nav.Link href="services.html">Latest News</Nav.Link>
+                <Nav.Link href="#">Latest News</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link href="contact.html">Contact Us</Nav.Link>
+                <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
               <Nav.Item className="cta-button">
-                <Nav.Link href="#">
+                <Link to="/signup">
                   <b>Sign Up</b>
-                </Nav.Link>
+                </Link>
               </Nav.Item>
               <Nav.Item className="cta-button">
-                <Nav.Link href="#">
+                <Link to="/login">
                   <b>Log In</b>
-                </Nav.Link>
+                </Link>
               </Nav.Item>
             </Nav>
           </Navbar.Collapse>

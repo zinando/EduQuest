@@ -18,9 +18,10 @@ export default function App() {
   return (
     <>
       <div>
-        <Landing/>
+        
         <Router>
           <Routes>
+            <Route path="/" element={<Landing />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgot" element={<Forgot />} />

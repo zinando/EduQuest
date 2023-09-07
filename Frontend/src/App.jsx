@@ -10,6 +10,7 @@ import Home from './pages/Dashboard/Home'
 import Schedule from './pages/Schedule/Schedule'
 import Subject from './pages/Subject/Subject'
 import Landing from '../LandingPage/Landing'
+import Exam from './pages/Exam/Exam'
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/home" element={< Home />} />
             <Route path="/schedule" element={< Schedule />} />
             <Route path="/subject" element={< Subject />} />
+            <Route path="/exam" element={< Exam />} />
           </Routes>
         </Router>
 

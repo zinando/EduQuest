@@ -1,31 +1,43 @@
-import { Navbar, Nav, NavDropdown, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { useState } from 'react';
+import '../Sidebar/SideBar.css'
+import * as Unicons from '@iconscout/react-unicons';
+import profile from '../../assets/profile.jpg'
+import Dropdown from 'react-bootstrap/Dropdown';
 
-const NavBar = () => {
+
+
+export default function Navbar() {
+  const [sidebarActive, setSidebarActive] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarActive(!sidebarActive);
+  };
+
   return (
-    <Navbar expand="lg" bg="light" variant="light">
-      <Navbar.Brand href="#home">Dashboard</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="ml-auto">
-          <Form inline>
-            <InputGroup>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <InputGroup.Append>
-                <InputGroup.Text>🔍</InputGroup.Text>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
-          <Nav.Link href="#notifications">🔔</Nav.Link>
-          <NavDropdown title="User Profile" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#profile">Profile</NavDropdown.Item>
-            <NavDropdown.Item href="#settings">Settings</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#logout">Logout</NavDropdown.Item>
-          </NavDropdown>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
-  );
-};
+    <nav>
+      <div className={`sidebar-button ${sidebarActive ? 'active' : ''}`}>
+        <Unicons.UilBars className={`sidebarBtn ${sidebarActive ? 'active' : ''}`} onClick={toggleSidebar} />
+        <span className="dashboard">Dashboard</span>
+      </div>
+      <div className="search-box">
+        <input type="text" placeholder="Search..." />
+        <Unicons.UilSearch className="bx-search icon" />
+      </div>
+      <div className="profile-details">
+        <img src={profile} alt="" />
+        <span className="admin_name">Prem Shahi</span>
+        <Dropdown>
+          <Dropdown.Toggle variant="success" id="dropdown-basic">
+            Button
+          </Dropdown.Toggle>
 
-export default NavBar;
+          <Dropdown.Menu>
+            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+    </nav>
+  );
+}

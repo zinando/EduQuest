@@ -83,7 +83,7 @@ export default function Home() {
                 </ul>
               </div>
             </div>
-            <div className="top-sales box">
+            <div className="top box">
               <div className="title">
                 <a href="/">
                   Tasks
@@ -93,7 +93,7 @@ export default function Home() {
                 <li>
                   <a href="/">
                     <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="product">Study Mathematics</span>
+                    <span className="task">Study Mathematics</span>
                   </a>
                   <span className="price"><Unicons.UilTimes /> </span>
 
@@ -101,35 +101,35 @@ export default function Home() {
                 <li>
                   <a href="/">
                     <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="product">Submit chemistry assignment </span>
+                    <span className="task">Submit chemistry assignment </span>
                   </a>
                   <span className="price"><Unicons.UilTimes /> </span>
                 </li>
                 <li>
                   <a href="/">
                     <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="product">Attend dance class</span>
+                    <span className="task">Attend dance class</span>
                   </a>
                   <span className="price"><Unicons.UilTimes /> </span>
                 </li>
                 <li>
                   <a href="/">
                     <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="product">Geograpray map talk</span>
+                    <span className="task">Geograpray map talk</span>
                   </a>
                   <span className="price"><Unicons.UilTimes /> </span>
                 </li>
                 <li>
                   <a href="/">
                     <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="product">Lunch break</span>
+                    <span className="task">Lunch break</span>
                   </a>
                   <span className="price"><Unicons.UilTimes /> </span>
                 </li>
                 <li>
                   <a href="/">
                     <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="product">Rest</span>
+                    <span className="task">Rest</span>
                   </a>
                   <span className="price"><Unicons.UilTimes /> </span>
                 </li>

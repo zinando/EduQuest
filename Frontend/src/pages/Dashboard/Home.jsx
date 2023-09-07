@@ -1,110 +1,144 @@
-import SideBar from '../../layout/Sidebar/SideBar';
-import { Container, Row, Col } from 'react-bootstrap';
-import './Home.css';
+import '../../layout/Sidebar/SideBar.css'
+import * as Unicons from '@iconscout/react-unicons';
+import Navbar from '../../layout/NavBar/NavBar';
+import Sidebar from '../../layout/Sidebar/SideBar';
+import Form from 'react-bootstrap/Form';
 
 
 export default function Home() {
   return (
     <>
-      <div className="hm-container">
-        <SideBar />
-        <Container>
-          <Row>
-            <Col md={12}>
-              <h1 className="home-header">Welcome to the Dashboard Home Page</h1>
-              <p>This is the main overview of your dashboard.</p>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={5}>
-              <div className="data-summary">
-                <h4 className='title'>Schedule</h4>
-                <p>Here&apos;s a quick summary of your data:</p>
-                <ul>
-                  <li>Total Users: 1000</li>
-                  <li>Total Orders: 500</li>
-                  <li>Revenue: $50,000</li>
-                </ul>
-              </div>
-            </Col>
-            <Col md={4}>
-              <div className="data-summary">
-                <h4>Calendar</h4>
-                <p>Here&apos;s a quick summary of your data:</p>
-                <ul>
-                  <li>Total Users: 1000</li>
-                  <li>Total Orders: 500</li>
-                </ul>
-              </div>
-            </Col>
 
-            <Col md={3} >
-              <div className="data-summary" >
-                <h4>Tasks</h4>
-                <p>Here&apos;s a quick summary of your data:</p>
-                <ul>
-                  <li>Total Users: 1000</li>
-                  <li>Total Orders: 500</li>
-                </ul>
-              </div>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={3}>
-              <div className="data-summary">
-                <h4>Examination</h4>
-                <p>Here&apos;s a quick summary of your data:</p>
-                <ul>
-                  <li>Total Users: 1000</li>
-                  <li>Total Orders: 500</li>
-                  <li>Revenue: $50,000</li>
-                </ul>
-              </div>
-            </Col>
-            <Col md={3}>
-              <div className="data-summary">
-                <h4>Data Summary</h4>
-                <p>Here&apos;s a quick summary of your data:</p>
-                <ul>
-                  <li>Total Users: 1000</li>
-                  <li>Total Orders: 500</li>
-                </ul>
-              </div>
-            </Col>
-            <Col md={3}>
-              <div className="data-summary">
-                <h4>Review Results</h4>
-                <p>Here&apos;s a quick summary of your data:</p>
-                <ul>
-                  <li>Total Users: 1000</li>
-                  <li>Total Orders: 500</li>
-                </ul>
-              </div>
-            </Col>
+      <Sidebar />
 
-            <Col md={9}>
-              <div className="data-summary">
-                <h4>Performance</h4>
-                <p>Here&apos;s a quick summary of your data:</p>
-                <ul>
-                  <li>Total Users: 1000</li>
-                  <li>Total Orders: 500</li>
-                </ul>
+      <section className="home-section">
+        <Navbar />
+        <div className="home-content">
+          <div className="overview-boxes">
+            <div className="box">
+              <div className="right-side">
+                <div className="box-topic">Subject</div>
+                <div className="number">8</div>
+                <div className="indicator">
+                  <Unicons.UilArrowUp className="i" />
+                  <span className="text"></span>
+                </div>
               </div>
-            </Col>
-            <Col md={3}>
-              <div className="data-summary">
-                <h4>Game</h4>
-                <p>Here&apos;s a quick summary of your data:</p>
-                <ul>
-                  <li>Total Users: 1000</li>
+              <Unicons.UilBooks className="uicon" />
+            </div>
+            <div className="box">
+              <div className="right-side">
+                <div className="box-topic">Timetable</div>
+                <div className="number"></div>
+                <div className="indicator">
+                  <Unicons.UilArrowUp className="i" />
+                  <span className="text">Up from yesterday</span>
+                </div>
+              </div>
+              <Unicons.UilClock className="uicon two" />
+            </div>
+            <div className="box">
+              <div className="right-side">
+                <div className="box-topic">Teachers</div>
+                <div className="number">6</div>
+                <div className="indicator">
+                  <Unicons.UilArrowUp className="i" />
+                  <span className="text"></span>
+                </div>
+              </div>
+              <Unicons.UilTable className="uicon three" />
+            </div>
+
+          </div>
+          <div className="box-card">
+            <div className="recent box">
+              <div className="title">Stats</div>
+              <div className="sdetails">
+                <ul className="details">
+                  <li className="topic">Date</li>
+                  <li>
+                    <a href="/">02 Jan 2023</a>
+                  </li>
+
+
 
                 </ul>
+                <ul className="details">
+                  <li className="topic">Name</li>
+                  <li>
+                    <a href="/">Alex Doe</a>
+                  </li>
+                </ul>
+                <ul className="details">
+                  <li className="topic">Grade</li>
+                  <li>
+                    <a href="/">Passed</a>
+                  </li>
+                </ul>
+                <ul className="details">
+                  <li className="topic">Teacher</li>
+                  <li>
+                    <a href="/">Peace</a>
+                  </li>
+                </ul>
               </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+            </div>
+            <div className="top-sales box">
+              <div className="title">
+                <a href="/">
+                  Tasks
+                </a>
+              </div>
+              <ul className="top-sdetails">
+                <li>
+                  <a href="/">
+                    <Form.Check aria-label="option 1" className='pe-3' />
+                    <span className="product">Study Mathematics</span>
+                  </a>
+                  <span className="price"><Unicons.UilTimes /> </span>
+
+                </li>
+                <li>
+                  <a href="/">
+                    <Form.Check aria-label="option 1" className='pe-3' />
+                    <span className="product">Submit chemistry assignment </span>
+                  </a>
+                  <span className="price"><Unicons.UilTimes /> </span>
+                </li>
+                <li>
+                  <a href="/">
+                    <Form.Check aria-label="option 1" className='pe-3' />
+                    <span className="product">Attend dance class</span>
+                  </a>
+                  <span className="price"><Unicons.UilTimes /> </span>
+                </li>
+                <li>
+                  <a href="/">
+                    <Form.Check aria-label="option 1" className='pe-3' />
+                    <span className="product">Geograpray map talk</span>
+                  </a>
+                  <span className="price"><Unicons.UilTimes /> </span>
+                </li>
+                <li>
+                  <a href="/">
+                    <Form.Check aria-label="option 1" className='pe-3' />
+                    <span className="product">Lunch break</span>
+                  </a>
+                  <span className="price"><Unicons.UilTimes /> </span>
+                </li>
+                <li>
+                  <a href="/">
+                    <Form.Check aria-label="option 1" className='pe-3' />
+                    <span className="product">Rest</span>
+                  </a>
+                  <span className="price"><Unicons.UilTimes /> </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
-  );
+  )
 }
+

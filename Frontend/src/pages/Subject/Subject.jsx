@@ -13,7 +13,6 @@ export default function Subject() {
         <Navbar />
 
         <div className="home-content">
-          <h3 className='ps-3'>Subject</h3>
           <ButtonGroup className="mb-3 btn-group" size="sm">
             <Button className='btn' >Left</Button>
             <Button className='btn' >Middle</Button>

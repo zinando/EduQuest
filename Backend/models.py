@@ -2,9 +2,10 @@
 from . import db
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.mysql import ENUM
+from flask-login import UserMixin
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     """User class"""
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
@@ -14,6 +15,7 @@ class User(db.Model):
     sname = db.Column(db.String(50), nullable=False)
     oname = db.Column(db.String(225), nullable=True)
     email = db.Column(db.String(50), unique=True)
+    password = db.Column(db.String(225), nullable=False)
     admin_type = db.Column(db.String(45), ENUM("super", "reviewer", "user", "student"), default="user")
     created = db.Column(db.DateTime, default=func.now())
     createdby = db.Column(db.Integer, nullable=False)
@@ -23,8 +25,7 @@ class User(db.Model):
     last_password_reset = db.Column(db.String(50), nullable=True)
     activated = db.Column(db.Integer, default=0)
     activatecode = db.Column(db.String(255), nullable=True)
-    last_activation_code_time = db.Column(db.DateTime())
-    userclass = db.Column(db.Integer, nullable=True)
+    last_activation_code_time = db.Column(db.DateTime(), nullable=True)
     courses = db.relationship("Subjects", secondary="user_subjects", backref="students")
     linkcohort = db.relationship("Cohorts", backref="students")
 
@@ -50,7 +51,6 @@ class Subjects(db.Model):
     subject_class = db.Column(db.Integer, nullable=False)
     subject_expert = db.Column(db.Integer, nullable=True)
     reg_date = db.Column(db.DateTime(), default=func.now())
-
 
 class Questions(db.Model):
     """This is the model for sessional exam questions"""

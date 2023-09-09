@@ -79,7 +79,7 @@ class UserAuth:
         """ validates password strength for new user and check that userid is unique """
         user = db.session.query(User).filter((User.userid == self.userid) | (User.email == self.userid)).first()
         if user:
-            return {'status': 2, 'message': 'userid already exists.'}
+            return {'status': 2, 'message': 'userid already exists.', 'error': ['userid already exists.']}
 
         check_password = myfunc.check_password_strength(self.password)
         if check_password['status'] > 1:

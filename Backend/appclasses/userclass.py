@@ -43,4 +43,4 @@ class USERCLASS:
         db.session.add(new)
         db.session.commit()
 
-        return {'status': 1, 'message': 'user added successfully.'}
+        return {'status': 1, 'message': 'user added successfully.', 'error': []}

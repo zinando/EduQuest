@@ -65,7 +65,7 @@ class UserAuth:
             returns user object
         """
         if not (self.is_not_blocked() and self.is_active() and self.user_exists()):
-            return {'status': 2, 'errors': self.auth_errors, 'user_info': None}
+            return {'status': 2, 'message': 'authentication failed', 'errors': self.auth_errors, 'data': None}
 
         user = db.session.query(User).filter((User.userid == self.userid) | (User.email == self.userid)).first()
         login_user(user)
@@ -73,10 +73,11 @@ class UserAuth:
         user_info = user_class.get_user()
         session.update(user_info)
 
-        return {'status': 1, 'user_info': user_info, 'errors': None}
+        return {'status': 1, 'data': user_info, 'message': 'login was successful',  'errors': None}
 
     def validate_new_user_credentials(self) -> dict:
         """ validates password strength for new user and check that userid is unique """
+        text = ""
         user = db.session.query(User).filter((User.userid == self.userid) | (User.email == self.userid)).first()
         if user:
             return {'status': 2, 'message': 'userid already exists.', 'error': ['userid already exists.']}
@@ -89,6 +90,7 @@ class UserAuth:
         if user_info['admin_type'] != 'super':
             data['userid'] = generate_userid(user_info['surname'])
             data['cohort'] = user_info['cohort']
+            text = " Userid: {}".format(data['userid'])
         else:
             data['userid'] = self.userid
         data['firstname'] = user_info['firstname'].title()
@@ -100,4 +102,5 @@ class UserAuth:
 
         user_class = USERCLASS(0)
         response = user_class.add_user(data)
+        response['message'] += text
         return response

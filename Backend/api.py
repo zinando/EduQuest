@@ -23,7 +23,8 @@ def index():
 
 
 @app.route("/signup", methods=["POST"])
-def signup():
+def signup() -> str:
+    """ receives sign up request and converts the data into python dict then returns a response """
     data = request.get_json()
     auth = UserAuth(data['email'], data['password'], firstname=data['firstname'])
     response = auth.validate_new_user_credentials()
@@ -31,8 +32,12 @@ def signup():
 
 
 @app.route("/login", methods=["POST"])
-def login():
-    return ''
+def login() -> str:
+    """ receives login request and converts the data into python dict then returns a response """
+    data = request.get_json()
+    auth = UserAuth(data['userid'], data['password'])
+    response = auth.authenticate_user()
+    return json.dumps(response)
 
 
 if __name__ == "__main__":

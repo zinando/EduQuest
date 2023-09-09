@@ -50,6 +50,9 @@ export default function Landing() {
                 <Nav.Link href="#">Latest News</Nav.Link>
               </Nav.Item>
               <Nav.Item>
+              <Nav.Item>
+                <Nav.Link href="#">Examination</Nav.Link>
+              </Nav.Item>
                 <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
               <Nav.Item className="cta-button">

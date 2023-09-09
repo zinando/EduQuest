@@ -1,6 +1,6 @@
 """this is the user authentication module"""
 from flask import session
-from . import db
+from extensions import db
 from models import User
 from werkzeug.security import check_password_hash
 from appclasses.userclass import USERCLASS

@@ -1,10 +1,12 @@
 """This is the user class module"""
 from models import User
-from . import db
+from extensions import db
 from werkzeug.security import generate_password_hash
+
 
 class USERCLASS:
     """creates an instance of a user"""
+
     def __init__(self, user_id: int):
         """initializes a user instance"""
         self.user_exists = User.query.filter_by(userid=user_id).first()
@@ -24,7 +26,7 @@ class USERCLASS:
         info['full_name'] = "{} {} {}".format(user.sname, user.fname, user.oname)
         info['admin_type'] = user.admin_type
         info['user_class'] = user.linkcohort
-        #info['subjects'] = [x for x in user.courses]
+        # info['subjects'] = [x for x in user.courses]
 
         return info
 

@@ -3,7 +3,15 @@ h2 {
   padding: 20px;
 }
 
+.completed-task {
+  text-decoration: line-through;
+  color: red;
+}
 
+
+input[type="checkbox"]:checked+label {
+  color: green;
+}
 
 .image-container {
   background: url('../../assets/student.jpeg') center no-repeat;

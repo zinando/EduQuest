@@ -1,11 +1,19 @@
+import { useState } from 'react';
 import '../../layout/Sidebar/SideBar.css'
 import * as Unicons from '@iconscout/react-unicons';
 import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import Form from 'react-bootstrap/Form';
-
+import 'react-calendar/dist/Calendar.css';
+import Calendar from 'react-calendar'; 
 
 export default function Home() {
+  
+  const [date, setDate] = useState(new Date());
+
+  const handleDateChange = (newDate) => {
+    setDate(newDate);
+  };
   return (
     <>
 
@@ -15,17 +23,12 @@ export default function Home() {
         <Navbar />
         <div className="home-content">
           <div className="overview-boxes">
-            <div className="box">
-              <div className="right-side">
-                <div className="box-topic">Subject</div>
-                <div className="number">8</div>
-                <div className="indicator">
-                  <Unicons.UilArrowUp className="i" />
-                  <span className="text"></span>
-                </div>
-              </div>
-              <Unicons.UilBooks className="uicon" />
-            </div>
+            
+              <Calendar
+                onChange={handleDateChange}
+                value={date}
+              />
+            
             <div className="box">
               <div className="right-side">
                 <div className="box-topic">Timetable</div>

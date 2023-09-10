@@ -26,7 +26,7 @@ def index():
 def signup() -> str:
     """ receives sign up request and converts the data into python dict then returns a response """
     data = request.get_json()
-    auth = UserAuth(data['email'], data['password'], first_name=data['first_name'], admin_type=data['admin_type'],
+    auth = UserAuth(data['email'], data['password'], first_name=data['first_name'], admin_type='super',
                     other_names=data['other_names'], email=data['email'], surname=data['surname'])
     response = auth.validate_new_user_credentials()
     return json.dumps(response)

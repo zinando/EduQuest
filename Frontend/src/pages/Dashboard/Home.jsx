@@ -40,6 +40,7 @@ export default function Home() {
     setTasks(updatedTasks);
   };
 
+
   
   return (
     <>
@@ -120,19 +121,27 @@ export default function Home() {
                     value={newTask}
                     onChange={(e) => setNewTask(e.target.value)}
                   />
-                  <button onClick={addTask} className='btn' >Add</button>
+                  <button onClick={addTask}className='btn' >Add</button>
                 </li>
                 {tasks.map((task, index) => (
                   <li key={index}>
-                    <Form.Check
+                    <input
+                      type="checkbox"
                       aria-label={`checkbox-${index}`}
                       className="pe-3"
                       checked={task.completed}
                       onChange={() => toggleTaskCompletion(index)}
+                      id={`checkbox-${index}`} // Add an ID to the checkbox
                     />
-                    <span className={`task ${task.completed ? 'completed' : ''}`}>
-                      {task.text}
-                    </span>
+                    <label
+                      htmlFor={`checkbox-${index}`} // Use the corresponding ID for the label
+                    >
+                      <span
+                        className={`task ${task.completed ? 'completed-task' : ''}`}
+                      >
+                        {task.text}
+                      </span>
+                    </label>
                     <span className="price" onClick={() => removeTask(index)}>
                       <Unicons.UilTimes />
                     </span>

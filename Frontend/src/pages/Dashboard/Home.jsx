@@ -14,10 +14,33 @@ import { Card, Col, Row } from 'react-bootstrap';
 export default function Home() {
   
   const [date, setDate] = useState(new Date());
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState('');
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
   };
+
+  const addTask = () => {
+    if (newTask.trim() !== '') {
+      setTasks([...tasks, { text: newTask, completed: false }]);
+      setNewTask('');
+    }
+  };
+
+  const toggleTaskCompletion = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[index].completed = !updatedTasks[index].completed;
+    setTasks(updatedTasks);
+  };
+
+  const removeTask = (index) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
+  
   return (
     <>
 
@@ -87,54 +110,34 @@ export default function Home() {
             </div>
             <div className="top box">
               <div className="title">
-                <a href="/">
-                  Tasks
-                </a>
+                <a href="/">Tasks</a>
               </div>
               <ul className="top-sdetails">
                 <li>
-                  <a href="/">
-                    <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="task">Study Mathematics</span>
-                  </a>
-                  <span className="price"><Unicons.UilTimes /> </span>
-
+                  <Form.Control
+                    type="text"
+                    placeholder="Add a new task"
+                    value={newTask}
+                    onChange={(e) => setNewTask(e.target.value)}
+                  />
+                  <button onClick={addTask} className='btn' >Add</button>
                 </li>
-                <li>
-                  <a href="/">
-                    <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="task">Submit chemistry assignment </span>
-                  </a>
-                  <span className="price"><Unicons.UilTimes /> </span>
-                </li>
-                <li>
-                  <a href="/">
-                    <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="task">Attend dance class</span>
-                  </a>
-                  <span className="price"><Unicons.UilTimes /> </span>
-                </li>
-                <li>
-                  <a href="/">
-                    <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="task">Geograpray map talk</span>
-                  </a>
-                  <span className="price"><Unicons.UilTimes /> </span>
-                </li>
-                <li>
-                  <a href="/">
-                    <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="task">Lunch break</span>
-                  </a>
-                  <span className="price"><Unicons.UilTimes /> </span>
-                </li>
-                <li>
-                  <a href="/">
-                    <Form.Check aria-label="option 1" className='pe-3' />
-                    <span className="task">Rest</span>
-                  </a>
-                  <span className="price"><Unicons.UilTimes /> </span>
-                </li>
+                {tasks.map((task, index) => (
+                  <li key={index}>
+                    <Form.Check
+                      aria-label={`checkbox-${index}`}
+                      className="pe-3"
+                      checked={task.completed}
+                      onChange={() => toggleTaskCompletion(index)}
+                    />
+                    <span className={`task ${task.completed ? 'completed' : ''}`}>
+                      {task.text}
+                    </span>
+                    <span className="price" onClick={() => removeTask(index)}>
+                      <Unicons.UilTimes />
+                    </span>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

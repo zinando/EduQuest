@@ -20,7 +20,18 @@ export default function SignUp() {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Enter your name"
+                  placeholder="Enter first name"
+                  required=""
+                />
+              </div>
+              <div className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="name" className='form2'>
+                  <Unicons.UilUser color="#0B88B3" size="25" />
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter your surname"
                   required=""
                 />
               </div>

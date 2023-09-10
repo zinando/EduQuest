@@ -9,7 +9,7 @@ export default function SideBar() {
     <>
       <div className="sidebar">
         <div className="logo-details">
-          <Link to="/Signup" className='mb-3 logo'><h2 className='logo'>Edu<span>Quest</span></h2></Link>
+          <Link to="/SignUp" className='mb-3 logo'><h2 className='logo ques'>Edu<span className='quest'>Quest</span></h2></Link>
         </div>
         <ul className="nav-links">
           <li>

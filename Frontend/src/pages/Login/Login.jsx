@@ -13,7 +13,7 @@ function SignUp() {
         <div className='row'>
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container"></div>
           <div className="col-lg-6 col-md-6 col-sm-12 form-container">
-            <Link to="/error" className='mb-3 logo'><h2 className='logo'>Edu<span>Quest</span></h2></Link>
+            <Link to="/error" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
             <Form>
               <Form.Group className="mb-3 d-flex align-items-center">
                 <Form.Label htmlFor="name" className='form2'>

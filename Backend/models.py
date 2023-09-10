@@ -37,7 +37,7 @@ class Cohorts(db.Model):
     """This is the student class model"""
     __tablename__ = "student_class"
     cid = db.Column(db.Integer, primary_key=True)
-    classname = db.Column(db.String(50), nullable=False)
+    classname = db.Column(db.String(50), nullable=False, unique=True)
     reg_date = db.Column(db.DateTime(), default=func.now())
 
 

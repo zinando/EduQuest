@@ -88,8 +88,7 @@ class UserAuth:
         data = {}
         user_info = self.user_data
         if user_info['admin_type'] != 'super':
-            data['cohort'] = user_info['cohort']
-
+            data['cohort_id'] = user_info['user_class']
         data['userid'] = generate_userid(user_info['surname'])
         data['firstname'] = user_info['first_name'].title()
         data['surname'] = user_info['surname'].title()

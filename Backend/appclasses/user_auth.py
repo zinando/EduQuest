@@ -15,7 +15,7 @@ def generate_userid(surname: str) -> str:
 
     def generate_random_code():
         """generates random code of 4-digits numbers"""
-        code = myfunc.rando_numbers(4)
+        code = myfunc.random_numbers(4)
         userid = "{}{}".format(surname, code)
         if User.query.filter_by(userid=userid).count() > 0:
             generate_random_code()
@@ -88,17 +88,16 @@ class UserAuth:
         data = {}
         user_info = self.user_data
         if user_info['admin_type'] != 'super':
-            data['userid'] = generate_userid(user_info['surname'])
             data['cohort'] = user_info['cohort']
-            text = " Userid: {}".format(data['userid'])
-        else:
-            data['userid'] = self.userid
-        data['firstname'] = user_info['firstname'].title()
+
+        data['userid'] = generate_userid(user_info['surname'])
+        data['firstname'] = user_info['first_name'].title()
         data['surname'] = user_info['surname'].title()
-        data['othernames'] = user_info['othernames'].title()
+        data['othernames'] = user_info['other_names'].title()
         data['email'] = user_info['email']
         data['password'] = self.password
         data['admin_type'] = user_info['admin_type']
+        text = " Userid: {}".format(data['userid'])
 
         user_class = USERCLASS(0)
         response = user_class.add_user(data)

@@ -33,7 +33,7 @@ def have_access(admin_type: str, access_point: str) -> dict:
     if access_point not in access[admin_type]:
         message = 'user is not authorized to access this resource'
         error = ['user does not have privilege to access this resource.']
-        return {'status': 404, 'data': None, 'message': message, 'error': error}
+        return {'status': 404, "data": None, 'message': message, 'error': error}
 
     return {'status': 1, 'data': None, 'message': 'Ok', 'error': None}
 

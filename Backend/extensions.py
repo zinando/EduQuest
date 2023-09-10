@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 
 app = Flask(__name__)
-app.config["SECRETE_KEY"] = "xm*ms'hek$woan348n9Dkb%diCnmi3n@ij+3mWhr83nI3ni"
+app.config["SECRET_KEY"] = "xm*ms'hek$woan348n9Dkb%diCnmi3n@ij+3mWhr83nI3ni"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///eduquest.sqlite'
 
 db = SQLAlchemy(app)

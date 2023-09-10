@@ -7,7 +7,7 @@ from flask_login import UserMixin
 
 class User(UserMixin, db.Model):
     """User class"""
-    __tablename__ = "user"
+    __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     userid = db.Column(db.String(45), nullable=False, unique=True)
     cohort_id = db.Column(db.Integer, db.ForeignKey("student_class.cid"))
@@ -33,7 +33,7 @@ class User(UserMixin, db.Model):
         return "{} {} {} class {}".format(self.userid, self.sname, self.fname, self.userclass)
 
 
-class Cohort(db.Model):
+class Cohorts(db.Model):
     """This is the student class model"""
     __tablename__ = "student_class"
     cid = db.Column(db.Integer, primary_key=True)
@@ -64,7 +64,7 @@ class Questions(db.Model):
     approval_status = db.Column(db.String(22), default="pending")
     linkexamina = db.relationship("Examina", backref="questions")
     linksubjects = db.relationship("Subjects", backref="questions")
-    linkcohort = db.relationship("Cohort", backref="questions")
+    linkcohort = db.relationship("Cohorts", backref="questions")
 
 
 class Examina(db.Model):
@@ -102,8 +102,8 @@ class Result(db.Model):
     subject = db.Column(db.Integer, db.ForeignKey("subjects.sid"))
     admin_action = db.Column(db.String(20), ENUM('seized', 'released'), default='released')
     reg_date = db.Column(db.DateTime(), default=func.now())
-    linkuser = db.relationship("Users", backref="user_results")
-    linkcohort = db.relationship("Cohort", backref="cohort_results")
+    linkuser = db.relationship("User", backref="user_results")
+    linkcohort = db.relationship("Cohorts", backref="cohort_results")
     linksubject = db.relationship("Subjects", backref="subject_results")
     linkclassresult = db.relationship("ClassResult", backref="class_results")
 
@@ -112,5 +112,5 @@ class UserSubjects(db.Model):
     """This is an intermediate table that defines many-to-many relationship between Subjects and Users Models"""
     __tablename__ = "user_subjects"
     us_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.sid'), primary_key=True)

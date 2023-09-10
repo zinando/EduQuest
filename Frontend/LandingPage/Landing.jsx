@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import './Landing.css'
-import Linkedin from '../images/linkedin.png'
 import colleagues from '../src/assets/colleagues .jpeg'
 import girl from '../src/assets/girl.jpeg'
 import Nav from 'react-bootstrap/Nav';
@@ -45,14 +44,11 @@ export default function Landing() {
               <Nav.Item>
                 <Nav.Link href="#" >About</Nav.Link>
               </Nav.Item>
-    
+
               <Nav.Item>
                 <Nav.Link href="#">Latest News</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#">Examination</Nav.Link>
-              </Nav.Item>
                 <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
               <Nav.Item className="cta-button">
@@ -231,17 +227,17 @@ export default function Landing() {
             <img
               src="./images/facebook.png"
               alt="Facebook"
-              style={{width:30, height: 30 }}
+              style={{ width: 30, height: 30 }}
             />
           </a>
-         <a href="https://twitter.com/yourpage" target="_blank" rel="noreferrer">
+          <a href="https://twitter.com/yourpage" target="_blank" rel="noreferrer">
             <img src="./images/twiter.png" alt="Twitter" style={{ width: 35, height: 33 }} />
           </a>
           <a href="https://www.instagram.com/yourpage" target="_blank" rel="noreferrer">
-            <img src="./images/instagram.png" alt="Instagram"style={{ width: 35, height: 33 }}/>
+            <img src="./images/instagram.png" alt="Instagram" style={{ width: 35, height: 33 }} />
           </a>
           <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
-            <img src="./images/linkedin.png" alt="Instagram"style={{ width: 35, height: 30 }}/>
+            <img src="./images/linkedin.png" alt="Instagram" style={{ width: 35, height: 30 }} />
           </a>
         </div>
         <p className='pt-'>© 2023 Your Company. All rights reserved.</p>

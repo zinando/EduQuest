@@ -6,6 +6,10 @@ import Sidebar from '../../layout/Sidebar/SideBar';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar'; 
+import book from '../../assets/book.jpeg'
+import { Card, Col, Row } from 'react-bootstrap';
+
+
 
 export default function Home() {
   
@@ -55,34 +59,29 @@ export default function Home() {
           </div>
           <div className="box-card">
             <div className="recent box">
-              <div className="title">Stats</div>
+              <div className="title">Notice board</div>
               <div className="sdetails">
-                <ul className="details">
-                  <li className="topic">Date</li>
-                  <li>
-                    <a href="/">02 Jan 2023</a>
-                  </li>
-
-
-
-                </ul>
-                <ul className="details">
-                  <li className="topic">Name</li>
-                  <li>
-                    <a href="/">Alex Doe</a>
-                  </li>
-                </ul>
-                <ul className="details">
-                  <li className="topic">Grade</li>
-                  <li>
-                    <a href="/">Passed</a>
-                  </li>
-                </ul>
-                <ul className="details">
-                  <li className="topic">Teacher</li>
-                  <li>
-                    <a href="/">Peace</a>
-                  </li>
+                <ul className="details"> 
+                  <div className='card' style={{ marginBottom: '20px' }}>
+                    <Row>
+                      <Col md={3}>
+                        <Card.Img variant="top" src={book} style={{ width: '60%', height: 'auto' }} />
+                      </Col>
+                      <Col md={6}>
+                        This is some text within a card body.
+                      </Col>
+                    </Row>
+                  </div>
+                  <div className='card' style={{ marginBottom: '20px' }}>
+                    <Row>
+                      <Col md={3}>
+                        <Card.Img variant="top" src={book} style={{ width: '60%', height: 'auto' }} />
+                      </Col>
+                      <Col md={6}>
+                        This is some text within a card body.
+                      </Col>
+                    </Row>
+                  </div>
                 </ul>
               </div>
             </div>

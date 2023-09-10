@@ -69,7 +69,7 @@ a{
 
 /* Footer */
 footer {
-  background-color: #8FC8DB;
+  background-color: #0B88B3;
   text-align: center;
   padding: 20px;
 }
@@ -88,7 +88,7 @@ footer {
 .btn {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #8FC8DB;
+  background-color: #0B88B3;
   color: #fff;
   font-weight: bold;
   text-decoration: none;
@@ -108,11 +108,11 @@ footer {
 
 .btn-outline-primary {
   background-color: transparent;
-  border: 2px solid #8FC8DB;
-  color: #8FC8DB;
+  border: 2px solid #0B88B3;
+  color: #0B88B3;
 }
 
 .btn-outline-primary:hover {
-  background-color: #8FC8DB;
+  background-color: #0B88B3;
   color: #fff;
 }

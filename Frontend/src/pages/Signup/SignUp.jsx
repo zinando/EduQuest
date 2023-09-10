@@ -11,7 +11,7 @@ export default function SignUp() {
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container"></div>
 
           <div className="col-lg-6 col-md-6 col-sm-12 form-container">
-            <Link to="/SignUp" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
+            <Link to="/" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
             <form action="#">
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>

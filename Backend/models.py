@@ -1,8 +1,8 @@
 """This is the db models module"""
-from . import db
+from extensions import db
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.mysql import ENUM
-from flask-login import UserMixin
+from flask_login import UserMixin
 
 
 class User(UserMixin, db.Model):
@@ -16,7 +16,7 @@ class User(UserMixin, db.Model):
     oname = db.Column(db.String(225), nullable=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(225), nullable=False)
-    admin_type = db.Column(db.String(45), ENUM("super", "reviewer", "user", "student"), default="user")
+    admin_type = db.Column(db.String(45), ENUM("super", "reviewer", "teacher", "student"), default="user")
     created = db.Column(db.DateTime, default=func.now())
     createdby = db.Column(db.Integer, nullable=False)
     block_stat = db.Column(db.Integer, nullable=False, default=0)

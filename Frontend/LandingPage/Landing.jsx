@@ -43,13 +43,17 @@ export default function Landing() {
                 <Nav.Link href="#">Home</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link href="#" id="examsDropdown">About</Nav.Link>
+                <Nav.Link href="#" >About</Nav.Link>
               </Nav.Item>
+    
               <Nav.Item>
                 <Nav.Link href="#">Latest News</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-              <Nav.Link href="#">Contact Us</Nav.Link>
+              <Nav.Item>
+                <Nav.Link href="#">Examination</Nav.Link>
+              </Nav.Item>
+                <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
               <Nav.Item className="cta-button">
                 <Link to="/signup">
@@ -98,8 +102,8 @@ export default function Landing() {
             <div className="col-lg-6">
               <div className="img-wrap" data-aos="fade-left">
                 <img
-                  src= {colleagues}
-                  
+                  src={colleagues}
+
                   alt="Image"
                   className="img-fluid"
                 />
@@ -223,8 +227,12 @@ export default function Landing() {
         style={{ backgroundColor: "#8FC8DB", textAlign: "center", padding: 5 }}
       >
         <div className="social-icons">
-           <a href="https://www.facebook.com/yourpage"target="_blank" rel="noreferrer">
-            <img src='./images/facebook.png' alt="Facebook" style={{ width: 35, height: 33 }} />
+          <a href="https://www.facebook.com/yourpage">
+            <img
+              src="./images/facebook.png"
+              alt="Facebook"
+              style={{width:30, height: 30 }}
+            />
           </a>
          <a href="https://twitter.com/yourpage" target="_blank" rel="noreferrer">
             <img src="./images/twiter.png" alt="Twitter" style={{ width: 35, height: 33 }} />
@@ -238,7 +246,7 @@ export default function Landing() {
         </div>
         <p className='pt-'>© 2023 Your Company. All rights reserved.</p>
       </footer>
-     
+
     </>
 
   )

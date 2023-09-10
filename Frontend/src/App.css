@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
 :root{
-  --main-color: #86c0d4;
+  --main-color: #0B88B3;
   --secondary-color: #E97464;
   --button-padding: 15px;
 }
@@ -16,23 +16,24 @@
 }
 
 .logo{
-  color: #86c0d4;
+  color: #0B88B3;
   font-weight: 700;
   font-size: 30px;
 }
-
-span{
+.quest{
   color: #E97464;
-  font-weight: 600;
-  font-size: 30px;
+    font-weight: 700;
+    font-size: 30px;
 }
+
+
 
 
 .button {
   color: #fff;
   letter-spacing: 1px;
   border: none;
-  background: #86c0d4;
+  background: #0B88B3;
   cursor: pointer;
   display: flex;
   margin: 0 auto;

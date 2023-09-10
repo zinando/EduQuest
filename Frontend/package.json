@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "private": true,
+  "proxy" : "http://localhost:5000/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -20,9 +21,11 @@
     "cdbreact": "^1.5.18",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
+    "react-calendar": "^4.6.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
     "reactstrap": "^9.2.0",
+    "styled-component": "^2.8.0",
     "styled-components": "^5.3.11"
   },
   "devDependencies": {

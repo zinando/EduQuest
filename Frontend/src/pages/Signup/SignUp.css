@@ -3,6 +3,8 @@ h2 {
   padding: 20px;
 }
 
+
+
 .image-container {
   background: url('../../assets/student.jpeg') center no-repeat;
   background-size: cover;
@@ -81,8 +83,6 @@ form .text h3 a:hover {
   text-align: center;
   padding: 20px;
 }
-
-
 
 
 .form-control {

@@ -4,11 +4,18 @@
 
 
 a{
-  color: #E97464;
+  color: #8FC8DB;
+  padding-left: 10px;
+  border-color: #E97464;
+  border-radius: 20px;
+  text-align: center;
+
 }
 
 .nav-link{
   color: #E97464;
+  width: 150px;
+  padding-top: 0;
 }
 
 /* Hero Section */
@@ -69,7 +76,7 @@ a{
 
 /* Footer */
 footer {
-  background-color: #8FC8DB;
+  background-color: #0B88B3;
   text-align: center;
   padding: 20px;
 }
@@ -88,7 +95,7 @@ footer {
 .btn {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #8FC8DB;
+  background-color: #0B88B3;
   color: #fff;
   font-weight: bold;
   text-decoration: none;
@@ -100,6 +107,7 @@ footer {
 
 .btn-primary {
   background-color: #0a88b3;
+  padding: auto;
 }
 
 .btn-primary:hover {
@@ -108,11 +116,11 @@ footer {
 
 .btn-outline-primary {
   background-color: transparent;
-  border: 2px solid #8FC8DB;
-  color: #8FC8DB;
+  border: 2px solid #0B88B3;
+  color: #0B88B3;
 }
 
 .btn-outline-primary:hover {
-  background-color: #8FC8DB;
+  background-color: #0B88B3;
   color: #fff;
 }

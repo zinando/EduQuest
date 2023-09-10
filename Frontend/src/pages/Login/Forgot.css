@@ -1,5 +1,4 @@
-
-.card-container{
+.card-container {
   border-radius: 30px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
@@ -9,7 +8,7 @@
   color: #212b36;
 }
 
-p{
+p {
   color: rgb(99, 115, 129);
   font-family: Inter;
   font-size: 15px;
@@ -18,22 +17,22 @@ p{
 }
 
 
-.note{
+.note {
   display: flex;
   justify-content: center;
   color: rgb(99, 115, 129);
 }
 
-a{
+a {
   text-decoration: none;
-  color: #86c0d4;
+  color: #0B88B3;
 }
 
-p{
+p {
   font-size: 16px;
 }
 
-.error{
+.error {
   font-weight: 700;
   font-size: 50px;
   text-align: center;
@@ -42,12 +41,12 @@ p{
   color: #339264;
 }
 
-h3{
+h3 {
   font-size: 30px;
   color: rgb(86, 106, 127);
   text-align: center;
 }
 
-img{
+img {
   width: 100%;
 }

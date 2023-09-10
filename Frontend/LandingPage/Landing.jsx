@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import './Landing.css'
-import Linkedin from '../images/linkedin.png'
 import colleagues from '../src/assets/colleagues .jpeg'
 import girl from '../src/assets/girl.jpeg'
 import Nav from 'react-bootstrap/Nav';
@@ -43,16 +42,13 @@ export default function Landing() {
                 <Nav.Link href="#">Home</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link href="#" id="examsDropdown">About</Nav.Link>
+                <Nav.Link href="#" >About</Nav.Link>
               </Nav.Item>
-    
+
               <Nav.Item>
                 <Nav.Link href="#">Latest News</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#">Examination</Nav.Link>
-              </Nav.Item>
                 <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
               <Nav.Item className="cta-button">
@@ -102,8 +98,8 @@ export default function Landing() {
             <div className="col-lg-6">
               <div className="img-wrap" data-aos="fade-left">
                 <img
-                  src= {colleagues}
-                  
+                  src={colleagues}
+
                   alt="Image"
                   className="img-fluid"
                 />
@@ -173,8 +169,8 @@ export default function Landing() {
               <img src={girl} alt="Image" className="img-fluid" />
             </div>
             <div className="col-lg-6" data-aos="fade-up" data-aos-delay={100}>
-              <h3 className="subheading mb-2">About us</h3>
-              <h2 className="heading mb-4">why choose our application?</h2>
+              <h3 className="subheading mb-1">About us</h3>
+              <h2 className="heading mb-3">why choose our application?</h2>
               <p style={{ color: "black" }}>
                 Choose our educational app for an exceptional experience. With a
                 variety of captivating teachers and exams, a user-friendly
@@ -231,23 +227,22 @@ export default function Landing() {
             <img
               src="./images/facebook.png"
               alt="Facebook"
-              style={{width:30, height: 30 }}
+              style={{ width: 30, height: 30 }}
             />
           </a>
           <a href="https://twitter.com/yourpage" target="_blank" rel="noreferrer">
-            <img src="./images/twiter.png" alt="Twitter" style={{ width: 30, height: 30 }} />
+            <img src="./images/twiter.png" alt="Twitter" style={{ width: 35, height: 33 }} />
           </a>
           <a href="https://www.instagram.com/yourpage" target="_blank" rel="noreferrer">
-            <img
-              src={Linkedin}
-              alt="Instagram"
-              style={{ width: 30, height: 30 }}
-            />
+            <img src="./images/instagram.png" alt="Instagram" style={{ width: 35, height: 33 }} />
+          </a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+            <img src="./images/linkedin.png" alt="Instagram" style={{ width: 35, height: 30 }} />
           </a>
         </div>
         <p className='pt-'>© 2023 Your Company. All rights reserved.</p>
       </footer>
-     
+
     </>
 
   )

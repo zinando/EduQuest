@@ -11,23 +11,34 @@ export default function SignUp() {
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container"></div>
 
           <div className="col-lg-6 col-md-6 col-sm-12 form-container">
-            <Link to="/SignUp" className='mb-3 logo'><h2 className='logo'>Edu<span>Quest</span></h2></Link>
+            <Link to="/SignUp" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
             <form action="#">
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>
-                  <Unicons.UilUser color="#8FC8DB" size="25" />
+                  <Unicons.UilUser color="#0B88B3" size="25" />
                 </label>
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Enter your name"
+                  placeholder="Enter first name"
+                  required=""
+                />
+              </div>
+              <div className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="name" className='form2'>
+                  <Unicons.UilUser color="#0B88B3" size="25" />
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter your surname"
                   required=""
                 />
               </div>
 
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>
-                  <Unicons.UilEnvelope color="#8FC8DB" size="25" />
+                  <Unicons.UilEnvelope color="#0B88B3" size="25" />
                 </label>
                 <input
                   type="email"
@@ -38,7 +49,7 @@ export default function SignUp() {
               </div>
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>
-                  <Unicons.UilBookReader color="#8FC8DB" size="25" />
+                  <Unicons.UilBookReader color="#0B88B3" size="25" />
                 </label>
                 <input
                   type="password"
@@ -49,7 +60,7 @@ export default function SignUp() {
               </div>
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>
-                  <Unicons.UilBookReader color="#8FC8DB" size="25" />
+                  <Unicons.UilBookReader color="#0B88B3" size="25" />
                 </label>
                 <select id="class" name="class" className="form-control" required="">
                   <option value="">Select a class</option>
@@ -60,13 +71,9 @@ export default function SignUp() {
 
               </div>
 
-
-
-
-
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>
-                  <Unicons.UilLock color="#8FC8DB" size="25" />
+                  <Unicons.UilLock color="#0B88B3" size="25" />
                 </label>
                 <input
                   type="password"
@@ -77,7 +84,7 @@ export default function SignUp() {
               </div>
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>
-                  <Unicons.UilLock color="#8FC8DB" size="25" />
+                  <Unicons.UilLock color="#0B88B3" size="25" />
                 </label>
                 <input
                   type="password"

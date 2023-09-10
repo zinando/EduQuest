@@ -2,7 +2,8 @@ import { useState } from 'react';
 import '../Sidebar/SideBar.css'
 import * as Unicons from '@iconscout/react-unicons';
 import profile from '../../assets/profile.jpg'
-import Dropdown from 'react-bootstrap/Dropdown';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
 
 
 
@@ -26,17 +27,13 @@ export default function Navbar() {
       <div className="profile-details">
         <img src={profile} alt="" />
         <span className="admin_name">Prem Shahi</span>
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            Button
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <NavDropdown  id="nav-dropdown">
+          <NavDropdown.Item eventKey="4.1">Action</NavDropdown.Item>
+          <NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
+          <NavDropdown.Item eventKey="4.3">Something else here</NavDropdown.Item>
+          <NavDropdown.Divider />
+          <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
+        </NavDropdown>
       </div>
     </nav>
   );

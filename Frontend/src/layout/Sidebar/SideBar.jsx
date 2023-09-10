@@ -1,7 +1,7 @@
 import './SideBar.css'
 import * as Unicons from '@iconscout/react-unicons';
 import { Link } from 'react-router-dom';
-
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
 
 export default function SideBar() {
@@ -20,24 +20,33 @@ export default function SideBar() {
             </Link>
           </li>
           <li>
-
+            <Link to="/Exam">
+              <Unicons.UilUsersAlt className='icon' />
+              <span className="links_name">Admin</span>
+              <NavDropdown id="nav-dropdown">
+                <NavDropdown.Item eventKey="4.1">Action</NavDropdown.Item>
+                <NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
+                <NavDropdown.Item eventKey="4.3">Something else here</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
+              </NavDropdown>
+            </Link>
+          </li>
+          <li>
             <Link to="/Schedule">
               <Unicons.UilSchedule className='icon' />
               <span className="links_name">Schedule</span>
             </Link>
           </li>
+          
           <li>
             <Link to="/Subject">
               <Unicons.UilBookOpen className='icon' />
-              <span className="links_name">Subject</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/Exam">
-              <Unicons.UilFile className='icon' />
               <span className="links_name">Exam</span>
             </Link>
           </li>
+
+
 
           <li>
             <Link to="/Subject">

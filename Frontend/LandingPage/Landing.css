@@ -4,11 +4,18 @@
 
 
 a{
-  color: #E97464;
+  color: #8FC8DB;
+  padding-left: 10px;
+  border-color: #E97464;
+  border-radius: 20px;
+  text-align: center;
+
 }
 
 .nav-link{
   color: #E97464;
+  width: 150px;
+  padding-top: 0;
 }
 
 /* Hero Section */
@@ -100,6 +107,7 @@ footer {
 
 .btn-primary {
   background-color: #0a88b3;
+  padding: auto;
 }
 
 .btn-primary:hover {

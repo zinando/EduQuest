@@ -22,7 +22,7 @@ export default function SideBar() {
           <li>
 
             <Link to="/Schedule">
-              <Unicons.UilBookOpen className='icon' />
+              <Unicons.UilSchedule className='icon' />
               <span className="links_name">Schedule</span>
             </Link>
           </li>
@@ -34,20 +34,20 @@ export default function SideBar() {
           </li>
           <li>
             <Link to="/Exam">
-              <Unicons.UilBookOpen className='icon' />
+              <Unicons.UilFile className='icon' />
               <span className="links_name">Exam</span>
             </Link>
           </li>
 
           <li>
             <Link to="/Subject">
-              <Unicons.UilBookOpen className='icon' />
+              <Unicons.UilCommentQuestion className='icon' />
               <span className="links_name">Support</span>
             </Link>
           </li>
           <li>
             <Link to="/Subject">
-              <Unicons.UilBookOpen className='icon' />
+              <Unicons.UilSetting className='icon' />
               <span className="links_name">Settings</span>
             </Link>
           </li>

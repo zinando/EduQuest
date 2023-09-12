@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './SignUp.css';
 import * as Unicons from '@iconscout/react-unicons'
@@ -5,23 +6,32 @@ import { Link } from 'react-router-dom'
 import queryBackEnd from '../queryBackEnd'
 
 
+
+
 export default function SignUp() {
+  // Define state variables to store form input values
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [otherNames, setOtherNames] = useState('');
+
   // Function to handle form submission
   const signUp = async (event) => {
     event.preventDefault();
 
-    // Get form data
-    const formData = {
-      first_name: document.getElementById('first_name').value,
-      surname: document.getElementById('surname').value,
-      email: document.getElementById('email').value,
-      other_names: document.getElementById('other_names').value,
-      password: document.getElementById('password').value,
+    // Construct the data object with the variable names used in the backend
+    const data = {
+      email: email,
+      password: password,
+      first_name: firstName,
+      surname: surname,
+      other_names: otherNames,
     };
 
-    // Make a request to the backend
+    // Make a request to the backend using the queryBackEnd function
     try {
-      const response = await queryBackEnd('http://localhost:5000', 'register', formData);
+      const response = await queryBackEnd('/signup', data);
       if (response.status === 1) {
         alert('Registration successful!');
       } else {
@@ -54,6 +64,8 @@ export default function SignUp() {
                   placeholder="Enter first name"
                   required=""
                   id="first_name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
               <div className="form-group mb-3 d-flex align-items-center">
@@ -66,6 +78,8 @@ export default function SignUp() {
                   placeholder="Enter your surname"
                   required=""
                   id="surname"
+                  value={surname}
+                  onChange={(e) => setSurname(e.target.value)}
                 />
               </div>
 
@@ -79,6 +93,8 @@ export default function SignUp() {
                   placeholder="Other names"
                   required=""
                   id="other_names"
+                  value={otherNames}
+                  onChange={(e) => setOtherNames(e.target.value)}
                 />
               </div>
 
@@ -92,6 +108,8 @@ export default function SignUp() {
                   placeholder="Enter your email"
                   required=""
                   id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
@@ -107,6 +125,8 @@ export default function SignUp() {
                   placeholder="Create password"
                   required=""
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 

@@ -1,4 +1,4 @@
-# EduQuest - Virtual Examination Porta
+# EduQuest - Virtual Examination Portal
 
 EduQuest is a web application designed for schools to efficiently conduct and manage examination results for their students. This platform simplifies the entire examination process, from question creation to result publication.
 

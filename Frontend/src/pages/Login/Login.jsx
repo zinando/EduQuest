@@ -1,12 +1,20 @@
-
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as Unicons from '@iconscout/react-unicons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-function SignUp() {
+export default function Login() {
+  let navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+
+
+
   return (
     <>
       <div className="container-fluid content">
@@ -52,7 +60,7 @@ function SignUp() {
                   Already have an account? <Link to="/SignUp">Sign Up</Link>
                 </h3>
                 <h3>
-                  <Link to="/Forgot">Forgot your password?</Link>
+                  <Link to="/Home" onClick={handleBack} >Forgot your password?</Link>
                 </h3>
               </div>
             </Form>
@@ -63,4 +71,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+ 

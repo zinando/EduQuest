@@ -1,11 +1,11 @@
-export default function queryBackEnd(url, action = '', req_data = {}, method = "POST") {
+export default function queryBackEnd(url, req_data = {}, action = '', method = "POST") {
   const options = {
     method: method,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(req_data),
   };
 
-  return fetch(`${url}?action=${action}`, options)
+  return fetch(`http://localhost:5000${url}?action=${action}`, options)
     .then((res) => {
       return res.json();
     })

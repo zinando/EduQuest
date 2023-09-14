@@ -33,12 +33,14 @@ export default function SignUp() {
     try {
       const response = await queryBackEnd('/signup', data);
       if (response.status === 1) {
-        alert('Registration successful!');
+        alert('Registration successful! '+ response.message);
+        location.href = 'Login';
       } else {
-        alert('Registration failed. Please try again.');
+        alert('Registration failed. Please try again. '+ response.message);
       }
     } catch (error) {
       alert('An error occurred. Please try again later.');
+      console.log(error);
     }
   };
 

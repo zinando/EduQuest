@@ -9,6 +9,7 @@ from extensions import app, db, login_manager
 from models import User, Subjects, Cohorts
 from functions import resources as resource
 from functions import myfunctions as myfunc
+from flask_cors import cross_origin
 
 
 @login_manager.user_loader
@@ -16,10 +17,11 @@ def loader_user(user_id):
     return User.query.get(user_id)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
+@cross_origin()
 def index():
     # db.create_all()
-    return json.dumps({"message": "Hello World"})
+    return json.dumps({"status": 1, "data": None, "message": "Hello World", "error": None})
 
 
 @app.route("/signup", methods=["POST"])

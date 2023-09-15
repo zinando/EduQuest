@@ -61,24 +61,19 @@ class UserAuth:
 
     def authenticate_user(self) -> dict:
         """ verifies that user satisfies all authentication protocols
-            generates authentication token for user
-            returns user object and the token
+            creates a session for the user
+            returns user object
         """
         if not (self.is_not_blocked() and self.is_active() and self.user_exists()):
             return {'status': 2, 'message': 'authentication failed', 'errors': self.auth_errors, 'data': None}
 
         user = db.session.query(User).filter((User.userid == self.userid) | (User.email == self.userid)).first()
-        
-        user_token = user.encode_auth_token(user)
-        if user_token['status'] > 1:
-            self.auth_errors.extend(user_token['error'])
-            return {'status': 2, 'message': 'authentication failed', 'errors': self.auth_errors, 'data': None}
-        
+        login_user(user)
         user_class = USERCLASS(user.id)
         user_info = user_class.get_user()
-        
-        return {'status': 1, 'data': user_info, 'message': 'login was successful', 'user_perm':self.user_access_view()[user.admin_type],  'errors': None, 'auth_token': user_token['token']}
+        session.update(user_info)
 
+        return {'status': 1, 'data': user_info, 'message': 'login was successful',  'errors': None}
 
     def validate_new_user_credentials(self) -> dict:
         """ validates password strength for new user and check that userid is unique """
@@ -107,16 +102,3 @@ class UserAuth:
         response = user_class.add_user(data)
         response['message'] += text
         return response
-
-    def user_access_view(self) -> dict:
-        """ defines various access resources for different users """
-        resource = {
-            "super": ["SUPER_DASHBOARD", "SET_EXAMS", "TAKE_EXAMS", "PUBLISH_RESULTS", "REVIEW_QUESTIONS",
-                      "SET_QUESTIONS", "MANAGE_USERS",
-                      "MANAGE_CLASSES", "MANAGE_SUBJECTS", "REVIEW_RESULTS", "VIEW_RESULTS"],
-            "student": ["STUDENT_DASHBOARD", "TAKE_EXAMS", "VIEW_RESULTS"],
-            "teacher": ["SET_QUESTIONS", "REVIEW_QUESTIONS", "REVIEW_RESULTS", "VIEW_RESULTS"],
-            "reviewer": ["REVIEW_QUESTIONS", "REVIEW_RESULTS", "PUBLISH_RESULTS", "VIEW_RESULTS"]
-        }
-
-        return resource

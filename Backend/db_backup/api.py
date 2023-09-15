@@ -1,40 +1,27 @@
 """This is the main api module"""
 
-from flask import request
+from flask import request, session
 from appclasses.user_auth import UserAuth
 from appclasses.userclass import USERCLASS
+from functions import accesscontrol as access_func
 import json
-from extensions import app, db, jwt
-from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
+from extensions import app, db, login_manager
 from models import User, Subjects, Cohorts
 from functions import resources as resource
 from functions import myfunctions as myfunc
 from flask_cors import cross_origin
 
 
-@jwt.user_identity_loader
-def user_identity_lookup(user):
-    return user.userid
-
-
-@jwt.user_lookup_loader
-def user_lookup_callback(_jwt_header, jwt_data):
-    identity = jwt_data["sub"]
-    return User.query.filter_by(userid=identity).one_or_none()
-
-
-@jwt.expired_token_loader
-def my_expired_token_callback(jwt_header, jwt_payload):
-    err = 'authentication token has expired.'
-    message = 'User could not be authenticated. Pleas login again!'
-    return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [err]}), 401
+@login_manager.user_loader
+def loader_user(user_id):
+    return User.query.get(user_id)
 
 
 @app.route("/", methods=["GET", "POST"])
 @cross_origin()
 def index():
     # db.create_all()
-    return json.dumps({"status": 1, "message": "Hello World"})
+    return json.dumps({"status": 1, "data": None, "message": "Hello World", "error": None})
 
 
 @app.route("/signup", methods=["POST"])
@@ -57,21 +44,11 @@ def login() -> str:
 
 
 @app.route("/dashboard/<user>", methods=["GET", "POST"])
-@jwt_required()
 def dashboard(user: str):
     """ Implements the user dashboard requests"""
-    if 'Authorization' not in request.headers:
-        message = 'Authorization header not in request headers'
-        return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
-
-    userid = get_jwt_identity()
-    user_view = UserAuth(userid, 'xgdjbehj').user_access_view()[current_user.admin_type]
-
-    if current_user is None or "SUPER_DASHBOARD" not in user_view:
-        message = 'User does not have access privilege'
-        return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
-
-    # return json.dumps({'status': 1, 'data': str(current_user), 'message': 'success', 'error': None})
+    # data = request.get_json()
+    if access_func.authentication()['status'] > 1:
+        return json.dumps(access_func.authentication())
 
     if user == "SUPER":
         if request.args.get("action") == "FETCH-EXAM-INSTANCES":
@@ -90,11 +67,12 @@ def dashboard(user: str):
 @app.route("/admin_actions/<action>", methods=["GET", "POST"])
 def admin_actions(action: str):
     """ this serves all resources associated with admin action menu """
-    # db.create_all()
-    usr = User()
-    if usr.decode_auth_token(data['auth_token'])['status'] > 1:
-        return json.dumps(usr.decode_auth_token(data['auth_token']))
+    db.create_all()
+    if access_func.authentication()['status'] > 1:
+        return json.dumps(access_func.authentication())
     if action == "manage_users":
+        if access_func.have_access(session['admin_type'], 'MANAGE_USERS')['status'] > 1:
+            return access_func.have_access(session['admin_type'], 'MANAGE_USERS')
         if request.args.get("action") == "FETCH-USERS":
             worker = USERCLASS()
             user_info = worker.fetch_users()
@@ -108,6 +86,8 @@ def admin_actions(action: str):
             return json.dumps(response)
 
     elif action == "manage_subjects":
+        if access_func.have_access(session['admin_type'], 'MANAGE_SUBJECTS')['status'] > 1:
+            return access_func.have_access(session['admin_type'], 'MANAGE_SUBJECTS')
         if request.args.get('action') == 'FETCH-SUBJECTS':
             worker = resource.fetch_subjects()
             return json.dumps({'status': 1, 'data': worker, 'message': 'ok', 'error': None})
@@ -130,6 +110,8 @@ def admin_actions(action: str):
             return json.dumps(response)
 
     elif action == "manage_classes":
+        if access_func.have_access(session['admin_type'], 'MANAGE_CLASSES')['status'] > 1:
+            return access_func.have_access(session['admin_type'], 'MANAGE_CLASSES')
         if request.args.get('action') == 'FETCH-CLASSES':
             worker = resource.fetch_classes()
             return json.dumps({'status': 1, 'data': worker, 'message': 'ok', 'error': None})

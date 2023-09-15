@@ -1,10 +1,8 @@
 """This is the db models module"""
-from extensions import db, app
+from extensions import db
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.mysql import ENUM
 from flask_login import UserMixin
-from flask_jwt_extended import create_access_token
-import datetime
 
 
 class User(UserMixin, db.Model):
@@ -32,19 +30,8 @@ class User(UserMixin, db.Model):
     linkcohort = db.relationship("Cohorts", backref="students")
 
     def __str__(self):
-        return "{} {} {} class {}".format(self.userid, self.sname, self.fname, self.cohort_id)
+        return "{} {} {} class {}".format(self.userid, self.sname, self.fname, self.userclass)
 
-    def encode_auth_token(self, user):
-        """
-        Generates the Auth Token
-        :return: dictionary
-        """
-        try:
-            access_token = create_access_token(identity=user)
-            return {'status': 1, 'token': access_token, 'error': None}
-        except Exception as e:
-            return {'status': 2, 'token': None, 'error': [e]}
-    
 
 class Cohorts(db.Model):
     """This is the student class model"""

@@ -34,32 +34,3 @@
 .data-summary li {
   margin-bottom: 5px;
 }
-
-
-.card .icon {
-  font-size: 5px;
-  color: lightseagreen;
-}
-
-.card-text {
-  color: gray;
-}
-
-.card {
-  transition: all 0.5s;
-}
-
-.card:hover {
-  background-color: #E97463;
-  color: #fff;
-}
-
-.card:hover .icon,
-.card:hover .card-text {
-  color: #fff;
-}
-
-.home{
-  padding-top: 120px;
-}
-

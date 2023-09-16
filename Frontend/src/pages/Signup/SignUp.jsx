@@ -1,50 +1,80 @@
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import * as Unicons from '@iconscout/react-unicons';
-import { Link } from 'react-router-dom';
-import queryBackEnd from '../queryBackEnd';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './SignUp.css';
+import * as Unicons from '@iconscout/react-unicons'
+import { Link } from 'react-router-dom'
+import queryBackEnd, { validate } from '../queryBackEnd'
+
+
+
 
 export default function SignUp() {
-  const [validated, setValidated] = useState(false);
+  // Define state variables to store form input values
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [firstName, setFirstName] = useState('');
   const [surname, setSurname] = useState('');
   const [otherNames, setOtherNames] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage2, setErrorMessage2] = useState('');
+  const [fontColor, setFontColor] = useState('');
+  const [resp, setResp] = useState('');
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-
-    if (form.checkValidity() === false) {
-      event.stopPropagation();
+  // function to handle password validation
+  const checkPassword = async (value, from) => {  
+    if (from == 'p1'){      
+      setPassword(value);
+      const passwordCheck = await validate(value);            
+      setErrorMessage(passwordCheck.message);
+      if (passwordCheck.status == 1)
+      {
+        setFontColor('#0B88B3'); 
+      } else {setFontColor('#E97464');}
     } else {
-      const data = {
-        email: email,
-        password: password,
-        first_name: firstName,
-        surname: surname,
-        other_names: otherNames,
-      };
-
-      try {
-        const response = await queryBackEnd('/signup', data);
-        if (response.status === 1) {
-          alert('Registration successful! ' + response.message);
-          window.location.href = 'Login'; // Use 'window.location.href' to redirect
-        } else {
-          alert('Registration failed. Please try again. ' + response.message);
-        }
-      } catch (error) {
-        alert('An error occurred. Please try again later.');
-        console.error(error);
+      setPassword2(value);
+      if (value != password){
+        setErrorMessage2('Passwords DO NOT match!');
+      } else {
+        setErrorMessage2('');
       }
     }
+  }
+    
 
-    setValidated(true);
+  // Function to handle form submission
+  const signUp = async (event) => {
+    event.preventDefault();
+
+    // Prevent submission if passwords do not match
+    if (password2 != password){
+      setResp('Passwords do not match. Please re-check your passwords');
+      return false;
+    }
+
+
+    // Construct the data object with the variable names used in the backend
+    const data = {
+      email: email,
+      password: password,
+      first_name: firstName,
+      surname: surname,
+      other_names: otherNames,
+    };
+
+    // Make a request to the backend using the queryBackEnd function
+    try {
+      const response = await queryBackEnd('/signup', data);
+      if (response.status === 1) {
+        // setResp(response.message);
+        location.href = 'Login';
+      } else {
+        setResp(response.message);
+      }
+    } catch (error) {
+      setResp('An error occurred. Please try again later.');
+      console.log(error);
+    }
   };
 
   return (
@@ -54,103 +84,141 @@ export default function SignUp() {
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container"></div>
 
           <div className="col-lg-6 col-md-6 col-sm-12 form-container">
+            <div className='row'>
+              <div 
+                  className="col-12 text-center"
+                  style={{
+                      color:'#E97464',
+                      marginBottom:'12px'
+                  }}>{resp}
+              </div> 
+            </div>
             <Link to="/" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-              <Form.Group as={Col} md="6" controlId="validationCustom01" className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="first_name" className='form2'>
+            <form onSubmit={signUp}>
+              <div className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="name" className='form2'>
                   <Unicons.UilUser color="#0B88B3" size="25" />
                 </label>
-                <Form.Control
+                <input
                   type="text"
+                  className="form-control"
                   placeholder="Enter first name"
-                  required
+                  required={true}
+                  id="first_name"
+                  style={{marginLeft: '12px'}}
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
-                <Form.Control.Feedback type="invalid">
-                  First name is required.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group as={Col} md="6" controlId="validationCustom02" className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="surname" className='form2'>
+              </div>
+              <div className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="name" className='form2'>
                   <Unicons.UilUser color="#0B88B3" size="25" />
                 </label>
-                <Form.Control
+                <input
                   type="text"
+                  className="form-control"
                   placeholder="Enter your surname"
-                  required
+                  required={true}
+                  id="surname"
+                  style={{marginLeft: '12px'}}
                   value={surname}
                   onChange={(e) => setSurname(e.target.value)}
                 />
-                <Form.Control.Feedback type="invalid">
-                  Last name is required.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group as={Col} md="6" controlId="validationCustom03" className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="other_names" className='form2'>
-                  <Unicons.UilBookReader color="#0B88B3" size="25" />
+              </div>
+
+              <div className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="name" className='form2'>
+                  <Unicons.UilUser color="#0B88B3" size="25" />
                 </label>
-                <Form.Control
+                <input
                   type="text"
+                  className="form-control"
                   placeholder="Other names"
-                  required
+                  required=""
+                  id="other_names"
+                  style={{marginLeft: '12px'}}
                   value={otherNames}
                   onChange={(e) => setOtherNames(e.target.value)}
                 />
-                <Form.Control.Feedback type="invalid">
-                  Other names are required.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group as={Col} md="6" controlId="validationCustom04" className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="email" className='form2'>
+              </div>
+
+              <div className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="name" className='form2'>
                   <Unicons.UilEnvelope color="#0B88B3" size="25" />
                 </label>
-                <InputGroup hasValidation>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter your email"
-                    aria-describedby="inputGroupPrepend"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please choose a valid email.
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-              <Form.Group as={Col} md="6" controlId="validationCustom05" className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="password" className='form2'>
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Enter your email"
+                  required={true}
+                  id="email"
+                  style={{marginLeft: '12px'}}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="name" className='form2'>
                   <Unicons.UilLock color="#0B88B3" size="25" />
                 </label>
-                <Form.Control
+                <input
                   type="password"
+                  className="form-control"
                   placeholder="Create password"
-                  required
+                  required={true}
+                  id="password"
+                  style={{marginLeft: '12px'}}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => checkPassword(e.target.value, 'p1')}
                 />
-                <Form.Control.Feedback type="invalid">
-                  Password is required.
-                </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Check
-                  required
-                  label="I accept all terms & conditions"
-                  feedback="You must accept the terms & conditions."
-                  feedbackType="invalid"
+
+                {errorMessage === '' ? null :
+                    <span style={{
+                        marginLeft: '10px',
+                        fontSize: '11px',
+                        color: fontColor,
+                    }}>{errorMessage}</span>}
+              </div>
+
+              <div className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="name" className='form2'>
+                  <Unicons.UilLock color="#0B88B3" size="25" />
+                </label>
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Re-type password"
+                  required={true}
+                  id="password2"
+                  style={{marginLeft: '12px'}}
+                  value={password2}
+                  onChange={(e) => checkPassword(e.target.value, 'p2')}
                 />
-              </Form.Group>
+
+                {errorMessage2 === '' ? null :
+                    <span style={{
+                        marginLeft: '10px',
+                        fontSize: '11px',
+                        color: '#E97464',
+                    }}>{errorMessage2}</span>}
+              </div>
+
+              <div className="form-check">
+                <input type="checkbox" required={true} className="form-check-input" />
+                <label className="form-check-label">
+                  I accept all terms &amp; conditions
+                </label>
+              </div>
               <div className='mb-4 d-grid'>
-                <Button type="submit" className='btn button'>Register</Button>
+                <button type="submit" className='btn button'>Register</button>
               </div>
               <div className="text">
                 <h3>
                   Already have an account? <Link to="/Login">Login</Link>
                 </h3>
               </div>
-            </Form>
+            </form>
           </div>
         </div>
       </div>

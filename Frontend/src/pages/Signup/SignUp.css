@@ -75,7 +75,7 @@ form .text h3 {
   color: #1B1E39;
   width: 100%;
   text-align: center;
-  
+
 }
 
 form .text h3 a {
@@ -111,6 +111,13 @@ form .text h3 a:hover {
   padding: 70px;
 }
 
-.form-check-label{
+.form-check-label {
   font-size: 15px;
+}
+
+
+.form-control {
+  height: 40px;
+  padding: 8px;
+
 }

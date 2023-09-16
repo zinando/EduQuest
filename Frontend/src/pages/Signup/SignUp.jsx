@@ -1,47 +1,50 @@
 import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './SignUp.css';
-import * as Unicons from '@iconscout/react-unicons'
-import { Link } from 'react-router-dom'
-import queryBackEnd from '../queryBackEnd'
-
-
-
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import * as Unicons from '@iconscout/react-unicons';
+import { Link } from 'react-router-dom';
+import queryBackEnd from '../queryBackEnd';
 
 export default function SignUp() {
-  // Define state variables to store form input values
+  const [validated, setValidated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [surname, setSurname] = useState('');
   const [otherNames, setOtherNames] = useState('');
 
-  // Function to handle form submission
-  const signUp = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const form = event.currentTarget;
 
-    // Construct the data object with the variable names used in the backend
-    const data = {
-      email: email,
-      password: password,
-      first_name: firstName,
-      surname: surname,
-      other_names: otherNames,
-    };
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
+    } else {
+      const data = {
+        email: email,
+        password: password,
+        first_name: firstName,
+        surname: surname,
+        other_names: otherNames,
+      };
 
-    // Make a request to the backend using the queryBackEnd function
-    try {
-      const response = await queryBackEnd('/signup', data);
-      if (response.status === 1) {
-        alert('Registration successful! '+ response.message);
-        location.href = 'Login';
-      } else {
-        alert('Registration failed. Please try again. '+ response.message);
+      try {
+        const response = await queryBackEnd('/signup', data);
+        if (response.status === 1) {
+          alert('Registration successful! ' + response.message);
+          window.location.href = 'Login'; // Use 'window.location.href' to redirect
+        } else {
+          alert('Registration failed. Please try again. ' + response.message);
+        }
+      } catch (error) {
+        alert('An error occurred. Please try again later.');
+        console.error(error);
       }
-    } catch (error) {
-      alert('An error occurred. Please try again later.');
-      console.log(error);
     }
+
+    setValidated(true);
   };
 
   return (
@@ -52,98 +55,102 @@ export default function SignUp() {
 
           <div className="col-lg-6 col-md-6 col-sm-12 form-container">
             <Link to="/" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
-            <form onSubmit={signUp}>
-              <div className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="name" className='form2'>
+            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+              <Form.Group as={Col} md="6" controlId="validationCustom01" className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="first_name" className='form2'>
                   <Unicons.UilUser color="#0B88B3" size="25" />
                 </label>
-                <input
+                <Form.Control
                   type="text"
-                  className="form-control"
                   placeholder="Enter first name"
-                  required=""
-                  id="first_name"
+                  required
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
-              </div>
-              <div className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="name" className='form2'>
+                <Form.Control.Feedback type="invalid">
+                  First name is required.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group as={Col} md="6" controlId="validationCustom02" className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="surname" className='form2'>
                   <Unicons.UilUser color="#0B88B3" size="25" />
                 </label>
-                <input
+                <Form.Control
                   type="text"
-                  className="form-control"
                   placeholder="Enter your surname"
-                  required=""
-                  id="surname"
+                  required
                   value={surname}
                   onChange={(e) => setSurname(e.target.value)}
                 />
-              </div>
-
-              <div className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="name" className='form2'>
+                <Form.Control.Feedback type="invalid">
+                  Last name is required.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group as={Col} md="6" controlId="validationCustom03" className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="other_names" className='form2'>
                   <Unicons.UilBookReader color="#0B88B3" size="25" />
                 </label>
-                <input
-                  type="password"
-                  className="form-control"
+                <Form.Control
+                  type="text"
                   placeholder="Other names"
-                  required=""
-                  id="other_names"
+                  required
                   value={otherNames}
                   onChange={(e) => setOtherNames(e.target.value)}
                 />
-              </div>
-
-              <div className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="name" className='form2'>
+                <Form.Control.Feedback type="invalid">
+                  Other names are required.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group as={Col} md="6" controlId="validationCustom04" className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="email" className='form2'>
                   <Unicons.UilEnvelope color="#0B88B3" size="25" />
                 </label>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Enter your email"
-                  required=""
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-
-
-              <div className="form-group mb-3 d-flex align-items-center">
-                <label htmlFor="name" className='form2'>
+                <InputGroup hasValidation>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter your email"
+                    aria-describedby="inputGroupPrepend"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please choose a valid email.
+                  </Form.Control.Feedback>
+                </InputGroup>
+              </Form.Group>
+              <Form.Group as={Col} md="6" controlId="validationCustom05" className="form-group mb-3 d-flex align-items-center">
+                <label htmlFor="password" className='form2'>
                   <Unicons.UilLock color="#0B88B3" size="25" />
                 </label>
-                <input
+                <Form.Control
                   type="password"
-                  className="form-control"
                   placeholder="Create password"
-                  required=""
-                  id="password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </div>
-
-              <div className="form-check">
-                <input type="checkbox" className="form-check-input" />
-                <label className="form-check-label">
-                  I accept all terms &amp; conditions
-                </label>
-              </div>
+                <Form.Control.Feedback type="invalid">
+                  Password is required.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Check
+                  required
+                  label="I accept all terms & conditions"
+                  feedback="You must accept the terms & conditions."
+                  feedbackType="invalid"
+                />
+              </Form.Group>
               <div className='mb-4 d-grid'>
-                <button type="submit" className='btn button'>Register</button>
+                <Button type="submit" className='btn button'>Register</Button>
               </div>
               <div className="text">
                 <h3>
                   Already have an account? <Link to="/Login">Login</Link>
                 </h3>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>

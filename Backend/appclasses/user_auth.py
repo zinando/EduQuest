@@ -16,7 +16,7 @@ def generate_userid(surname: str) -> str:
     def generate_random_code():
         """generates random code of 4-digits numbers"""
         code = myfunc.random_numbers(4)
-        userid = "{}{}".format(surname, code)
+        userid = "{}{}".format(surname.lower(), code)
         if User.query.filter_by(userid=userid).count() > 0:
             generate_random_code()
         return userid
@@ -64,20 +64,27 @@ class UserAuth:
             generates authentication token for user
             returns user object and the token
         """
-        if not (self.is_not_blocked() and self.is_active() and self.user_exists()):
-            return {'status': 2, 'message': 'authentication failed', 'errors': self.auth_errors, 'data': None}
+        if not self.user_exists():
+            return {'status': 2, 'message': 'authentication failed', 'error': self.auth_errors, 'data': None}
+
+        else:
+            if not self.is_active():
+                return {'status': 2, 'message': 'authentication failed', 'error': self.auth_errors, 'data': None}
+            else:
+                if not self.is_not_blocked():
+                    return {'status': 2, 'message': 'authentication failed', 'error': self.auth_errors, 'data': None}
 
         user = db.session.query(User).filter((User.userid == self.userid) | (User.email == self.userid)).first()
         
         user_token = user.encode_auth_token(user)
         if user_token['status'] > 1:
             self.auth_errors.extend(user_token['error'])
-            return {'status': 2, 'message': 'authentication failed', 'errors': self.auth_errors, 'data': None}
+            return {'status': 2, 'message': 'authentication failed', 'error': self.auth_errors, 'data': None}
         
         user_class = USERCLASS(user.id)
         user_info = user_class.get_user()
         
-        return {'status': 1, 'data': user_info, 'message': 'login was successful', 'user_perm':self.user_access_view()[user.admin_type],  'errors': None, 'auth_token': user_token['token']}
+        return {'status': 1, 'data': user_info, 'message': 'login was successful', 'user_perm':self.user_access_view()[user.admin_type],  'error': None, 'auth_token': user_token['token']}
 
 
     def validate_new_user_credentials(self) -> dict:

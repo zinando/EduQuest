@@ -2,6 +2,7 @@ import './SideBar.css'
 import * as Unicons from '@iconscout/react-unicons';
 import { Link } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { logOutUser, checkUserPermission } from '../../pages/queryBackEnd'
 
 
 export default function SideBar() {
@@ -61,10 +62,10 @@ export default function SideBar() {
             </Link>
           </li>
           <li className="log_out">
-            <Link to="/Login">
+            <div className="btn" onClick={logOutUser} style={{color: '#ffffff', cursor: 'pointer'}}>
               <Unicons.UilSignout className='icon' />
               <span className="links_name">Log out</span>
-            </Link>
+            </div>
           </li>
         </ul>
       </div>

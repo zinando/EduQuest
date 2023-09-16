@@ -8,10 +8,16 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar'; 
 import book from '../../assets/book.jpeg'
 import { Card, Col, Row } from 'react-bootstrap';
+import Login from '../../pages/Login/Login'
+import queryBackEnd, { userInfo, checkUserPermission, logOutUser } from '../queryBackEnd'
+import useIdle from '../../pages/useIdleTimer'
 
 
 
 export default function Home() {
+
+  // check for token and user permission 
+  checkUserPermission('SUPER_DASHBOARD');
   
   const [date, setDate] = useState(new Date());
   const [tasks, setTasks] = useState([]);
@@ -40,7 +46,8 @@ export default function Home() {
     setTasks(updatedTasks);
   };
 
-
+  // check if user is idle and logout user
+  const {isIdle} = useIdle({onIdle: logOutUser, idleTime: 1});
   
   return (
     <>

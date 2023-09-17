@@ -120,6 +120,12 @@ export default function Home() {
                         <td>Geography</td>
                         <td>JSS 1</td>
                       </tr>
+                      <tr>
+                        <td>19.10.23</td>
+                        <td>8:00am</td>
+                        <td>French</td>
+                        <td>JSS 1</td>
+                      </tr>
                     </tbody>
                   </Table>
 

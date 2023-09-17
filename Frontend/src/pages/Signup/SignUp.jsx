@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './SignUp.css';
+import './SignUp.css'
 import * as Unicons from '@iconscout/react-unicons'
 import { Link } from 'react-router-dom'
 import queryBackEnd, { validate } from '../queryBackEnd'
@@ -81,7 +81,7 @@ export default function SignUp() {
     <>
       <div className="container-fluid content">
         <div className='row'>
-          <div className="col-lg-6 col-md-6 d-none d-md-block image-container"></div>
+          <div className="col-lg-6 col-md-6 d-none d-md-block image-container image-fluid"></div>
 
           <div className="col-lg-6 col-md-6 col-sm-12 form-container">
             <div className='row'>

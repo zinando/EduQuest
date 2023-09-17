@@ -51,12 +51,12 @@ export default function Landing() {
               <Nav.Item>
                 <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
-              <Nav.Item className="cta-button">
+              <Nav.Item className="cta-button1">
                 <Link to="/signup">
                   <b>Sign Up</b>
                 </Link>
               </Nav.Item>
-              <Nav.Item className="cta-button">
+              <Nav.Item className="cta-button2">
                 <Link to="/login">
                   <b>Log In</b>
                 </Link>
@@ -113,8 +113,8 @@ export default function Landing() {
           <div className="row mb-6">
             <div className="col-lg-5 mx-auto text-center" data-aos="fade-up">
               <br />
-              <span className="subheading mb-2">Features</span>
-              <h1 className="heading mb-3">Our Features</h1>
+              <span className="subheading">Features</span>
+              <h2 className="heading mb-3">Our Features</h2>
               <p style={{ color: "black" }}>
                 {" "}
                 EduQuest offers a set of features for complete management of your

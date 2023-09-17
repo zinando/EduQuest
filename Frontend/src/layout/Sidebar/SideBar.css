@@ -110,6 +110,10 @@
   left: 60px;
 }
 
+.nav-dropdown-title {
+  color: #FFF;
+}
+
 .home-section nav {
   display: flex;
   justify-content: space-between;
@@ -268,36 +272,6 @@ nav .profile-details i {
   margin-right: 5px;
 }
 
-.box .indicator i.down {
-  background: #e87d88;
-}
-
-.home-content .box .indicator .text {
-  font-size: 12px;
-}
-
-.home-content .box .uicon {
-  display: inline-block;
-  font-size: 32px;
-  height: 50px;
-  width: 50px;
-  background: #cce5ff;
-  line-height: 50px;
-  text-align: center;
-  color: #66b0ff;
-  border-radius: 12px;
-  margin: -15px 0 0 6px;
-}
-
-.home-content .box .uicon.two {
-  color: #2BD47D;
-  background: #C0F2D8;
-}
-
-.home-content .box .uicon.three {
-  color: #ffc233;
-  background: #ffe8b3;
-}
 
 .home-content .box .uicon.four {
   color: #e05260;
@@ -309,71 +283,9 @@ nav .profile-details i {
   font-weight: 500;
 }
 
-.home-content .box-card {
-  display: flex;
-  justify-content: space-between;
-  /* padding: 0 20px; */
-}
 
-/* left box */
-.home-content .box-card .recent {
-  width: 65%;
-  background: #fff;
-  padding: 20px 30px;
-  margin: 0 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
 
-.home-content .box-card .sdetails {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
-.box-card .box .title {
-  font-size: 24px;
-  font-weight: 500;
-  /* margin-bottom: 10px; */
-}
-
-.box-card .sdetails li.topic {
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.box-card .sdetails li {
-  list-style: none;
-  margin: 8px 0;
-}
-
-.box-card .sdetails li a {
-  font-size: 18px;
-  color: #333;
-  font-size: 400;
-  text-decoration: none;
-}
-
-.box-card .box .button {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.box-card .box .button a {
-  color: #fff;
-  background: #0A2558;
-  padding: 4px 12px;
-  font-size: 15px;
-  font-weight: 400;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.box-card .box .button a:hover {
-  background: #0d3073;
-}
 
 /* Right box */
 .home-content .box-card .top {
@@ -535,3 +447,5 @@ nav .profile-details i {
 .btn:hover {
   color: pink;
 }
+
+

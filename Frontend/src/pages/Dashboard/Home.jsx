@@ -5,20 +5,22 @@ import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
-import Calendar from 'react-calendar'; 
+import Calendar from 'react-calendar';
 import book from '../../assets/book.jpeg'
 import { Card, Col, Row } from 'react-bootstrap';
 import Login from '../../pages/Login/Login'
 import queryBackEnd, { userInfo, checkUserPermission, logOutUser } from '../queryBackEnd'
 import useIdle from '../../pages/useIdleTimer'
-
-
+import Container from 'react-bootstrap/Container';
+import Table from 'react-bootstrap/Table';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 
 export default function Home() {
 
   // check for token and user permission 
   checkUserPermission('SUPER_DASHBOARD');
-  
+
   const [date, setDate] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
@@ -47,8 +49,8 @@ export default function Home() {
   };
 
   // check if user is idle and logout user
-  const {isIdle} = useIdle({onIdle: logOutUser, idleTime: 1});
-  
+  const { isIdle } = useIdle({ onIdle: logOutUser, idleTime: 1 });
+
   return (
     <>
 
@@ -57,106 +59,167 @@ export default function Home() {
       <section className="home-section">
         <Navbar />
         <div className="home-content">
-          <div className="overview-boxes">
-            
-              <Calendar
-                onChange={handleDateChange}
-                value={date}
-              />
-            
-            <div className="box">
-              <div className="right-side">
-                <div className="box-topic">Timetable</div>
-                <div className="number"></div>
-                <div className="indicator">
-                  <Unicons.UilArrowUp className="i" />
-                  <span className="text">Up from yesterday</span>
-                </div>
-              </div>
-              <Unicons.UilClock className="uicon two" />
-            </div>
-            <div className="box">
-              <div className="right-side">
-                <div className="box-topic">Teachers</div>
-                <div className="number">6</div>
-                <div className="indicator">
-                  <Unicons.UilArrowUp className="i" />
-                  <span className="text"></span>
-                </div>
-              </div>
-              <Unicons.UilTable className="uicon three" />
-            </div>
+          <Container>
+            <Row>
+              <Col>
+                <Calendar
+                  onChange={handleDateChange}
+                  value={date}
+                  className='border-0 shadow rounded-0 p-4'
+                />
+              </Col>
+              <Col xs={5}>
+                <div className='border-0 shadow rounded-0 p-4'>
+                  <h4 className="card-title fw-bold">Schedule</h4>
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Subject</th>
+                        <th>Class</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>16.10.23</td>
+                        <td>8:00am</td>
+                        <td>English Language</td>
+                        <td>JSS 1</td>
+                      </tr>
+                      <tr>
+                        <td>18.10.23</td>
+                        <td>10:30am</td>
+                        <td>Mathematics</td>
+                        <td>JSS 1</td>
+                      </tr>
+                      <tr>
+                        <td>19.10.23</td>
+                        <td>8:00am</td>
+                        <td>French</td>
+                        <td>JSS 1</td>
+                      </tr>
+                      <tr>
+                        <td>20.10.23</td>
+                        <td>8:00am</td>
+                        <td>Geography</td>
+                        <td>JSS 1</td>
+                      </tr>
+                    </tbody>
+                  </Table>
 
-          </div>
-          <div className="box-card">
-            <div className="recent box">
-              <div className="title">Notice board</div>
-              <div className="sdetails">
-                <ul className="details"> 
-                  <div className='card' style={{ marginBottom: '20px' }}>
-                    <Row>
-                      <Col md={3}>
-                        <Card.Img variant="top" src={book} style={{ width: '60%', height: 'auto' }} />
+                </div>
+              </Col>
+              <Col>
+                <div className="card-body card text-center border-0 shadow rounded-0 p-4">
+                  <h4 className="card-title fw-bold">User Stats</h4>
+                  <ul className="card-text">
+                    <li>
+                      12 <span>Teachers</span>
+                    </li>
+                    <li>
+                      403 <span>Students</span>
+                    </li>
+                    <li>
+                      6 <span>Reviewers</span>
+                    </li>
+                  </ul>
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={7}>
+                <div className='pt-4'>
+                  <ListGroup horizontal>
+                    <ListGroup.Item>This</ListGroup.Item>
+                    <ListGroup.Item>ListGroup</ListGroup.Item>
+                    <ListGroup.Item>renders</ListGroup.Item>
+                    <ListGroup.Item>horizontally!</ListGroup.Item>
+                    <ListGroup.Item>horizontally!</ListGroup.Item>
+                  </ListGroup>
+                </div>
+              </Col>
+              <Col sm={5}>
+                <div className=" border-0 shadow rounded-0 p-4">
+                  <h4 className="card-title fw-bold">Add Exam form</h4>
+                  <Form>
+                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+                      <Form.Label column sm={2}>
+                        Exam title
+                      </Form.Label>
+                      <Col sm={10}>
+                        <Form.Control type="text" />
                       </Col>
-                      <Col md={6}>
-                        This is some text within a card body.
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                      <Form.Label column sm={2}>
+                        Exam type
+                        <Form.Select aria-label="Default select example">
+                          <option>select menu</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </Form.Select>
+                      </Form.Label>
+                      <Col sm={10}>
+                        <Form.Control type="select" />
                       </Col>
-                    </Row>
-                  </div>
-                  <div className='card' style={{ marginBottom: '20px' }}>
-                    <Row>
-                      <Col md={3}>
-                        <Card.Img variant="top" src={book} style={{ width: '60%', height: 'auto' }} />
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                      <Form.Label column sm={2}>
+                        Exam type
+                        <Form.Select aria-label="Default select example">
+                          <option>select menu</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </Form.Select>
+                      </Form.Label>
+                      <Col sm={10}>
+                        <Form.Control type="select" />
                       </Col>
-                      <Col md={6}>
-                        This is some text within a card body.
+                    </Form.Group>
+
+                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                      <Form.Label column sm={2}>
+                        From
+                        <Form.Select aria-label="Default select example">
+                          <option>select menu</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </Form.Select>
+                      </Form.Label>
+                      <Col sm={10}>
+                        <Form.Control type="select" />
                       </Col>
-                    </Row>
-                  </div>
-                </ul>
-              </div>
-            </div>
-            <div className="top box">
-              <div className="title">
-                <a href="/">Tasks</a>
-              </div>
-              <ul className="top-sdetails">
-                <li>
-                  <Form.Control
-                    type="text"
-                    placeholder="Add a new task"
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                  />
-                  <button onClick={addTask}className='btn' >Add</button>
-                </li>
-                {tasks.map((task, index) => (
-                  <li key={index}>
-                    <input
-                      type="checkbox"
-                      aria-label={`checkbox-${index}`}
-                      className="pe-3"
-                      checked={task.completed}
-                      onChange={() => toggleTaskCompletion(index)}
-                      id={`checkbox-${index}`} // Add an ID to the checkbox
-                    />
-                    <label
-                      htmlFor={`checkbox-${index}`} // Use the corresponding ID for the label
-                    >
-                      <span
-                        className={`task ${task.completed ? 'completed-task' : ''}`}
-                      >
-                        {task.text}
-                      </span>
-                    </label>
-                    <span className="price" onClick={() => removeTask(index)}>
-                      <Unicons.UilTimes />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+                    </Form.Group>
+                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                      <Form.Label column sm={2}>
+                        To
+                        <Form.Select aria-label="Default select example">
+                          <option>select menu</option>
+                          <option value="1">One</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </Form.Select>
+                      </Form.Label>
+                      <Col sm={10}>
+                        <Form.Control type="select" />
+                      </Col>
+                    </Form.Group>
+                    <Form.Group as={Row} className="mb-3">
+                      <Col sm={{ span: 10, offset: 2 }}>
+                        <Button type="submit">Sign in</Button>
+                      </Col>
+                    </Form.Group>
+                  </Form>
+                </div>
+              </Col>
+            </Row>
+          </Container>
         </div>
       </section>
     </>

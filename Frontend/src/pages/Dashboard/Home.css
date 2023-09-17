@@ -12,25 +12,6 @@
   margin-bottom: 20px;
 }
 
-/* Styles for the data summary section */
-.data-summary {
-  background-color: #ffff;
-  padding: 20px;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
-.data-summary h4 {
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.data-summary ul {
-  list-style: none;
-  padding: 0;
-}
-
-.data-summary li {
-  margin-bottom: 5px;
+.card-text span{
+  padding: 2px;
 }

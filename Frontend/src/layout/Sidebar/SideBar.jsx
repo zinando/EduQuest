@@ -23,8 +23,8 @@ export default function SideBar() {
           <li>
             <Link to="/Exam">
               <Unicons.UilUsersAlt className='icon' />
-              <span className="links_name">Admin</span>
-              <NavDropdown id="nav-dropdown">
+              <NavDropdown id="nav-dropdown" title={<span className="nav-dropdown-title">Admin</span>}>
+
                 <NavDropdown.Item eventKey="4.1">Manage users</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.2">Manage classes</NavDropdown.Item>
                 <NavDropdown.Item eventKey="4.3">Manage subjects</NavDropdown.Item>

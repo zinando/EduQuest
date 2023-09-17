@@ -147,11 +147,13 @@ export default function Home() {
               <Col sm={7}>
                 <div className='pt-4'>
                   <ListGroup horizontal>
-                    <ListGroup.Item>This</ListGroup.Item>
-                    <ListGroup.Item>ListGroup</ListGroup.Item>
-                    <ListGroup.Item>renders</ListGroup.Item>
-                    <ListGroup.Item>horizontally!</ListGroup.Item>
-                    <ListGroup.Item>horizontally!</ListGroup.Item>
+                    <ListGroup.Item>I</ListGroup.Item>
+                    <ListGroup.Item>will</ListGroup.Item>
+                    <ListGroup.Item>work</ListGroup.Item>
+                    <ListGroup.Item>on </ListGroup.Item>
+                    <ListGroup.Item>this</ListGroup.Item>
+                    <ListGroup.Item>session</ListGroup.Item>
+                    <ListGroup.Item>tomorrow</ListGroup.Item>
                   </ListGroup>
                 </div>
               </Col>

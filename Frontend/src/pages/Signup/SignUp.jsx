@@ -172,13 +172,15 @@ export default function SignUp() {
                   value={password}
                   onChange={(e) => checkPassword(e.target.value, 'p1')}
                 />
+                
 
                 {errorMessage === '' ? null :
                     <span style={{
                         marginLeft: '10px',
                         fontSize: '11px',
                         color: fontColor,
-                    }}>{errorMessage}</span>}
+                  }}>{errorMessage}</span>}
+                
               </div>
 
               <div className="form-group mb-3 d-flex align-items-center">

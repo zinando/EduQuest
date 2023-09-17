@@ -144,7 +144,7 @@ export default function Home() {
                   <h4 className="card-title fw-bold">Add Exam form</h4>
                   <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-                      <Form.Label column sm={3}>
+                      <Form.Label >
                         Exam title
                       </Form.Label>
                       <Col sm={10}>
@@ -163,12 +163,11 @@ export default function Home() {
                           <option value="2">Two</option>
                           <option value="3">Three</option>
                         </Form.Select>
-                      </Form.Label>
-                      
+                      </Form.Label>               
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                      <Form.Label column sm={4}>
+                      <Form.Label >
                         From
                         <Form.Select aria-label="Default select example">
                           <option>select menu</option>
@@ -179,7 +178,7 @@ export default function Home() {
                       </Form.Label>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                      <Form.Label column sm={4}>
+                      <Form.Label >
                         To
                         <Form.Select aria-label="Default select example">
                           <option>Exam type</option>
@@ -191,7 +190,7 @@ export default function Home() {
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3">
                       <Col sm={{ span: 10, offset: 2 }}>
-                        <Button type="submit">Sign in</Button>
+                        <Button type="submit" className='btn button'>Submit</Button>
                       </Col>
                     </Form.Group>
                   </Form>

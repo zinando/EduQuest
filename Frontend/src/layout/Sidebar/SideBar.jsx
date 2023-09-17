@@ -25,11 +25,10 @@ export default function SideBar() {
               <Unicons.UilUsersAlt className='icon' />
               <span className="links_name">Admin</span>
               <NavDropdown id="nav-dropdown">
-                <NavDropdown.Item eventKey="4.1">Action</NavDropdown.Item>
-                <NavDropdown.Item eventKey="4.2">Another action</NavDropdown.Item>
-                <NavDropdown.Item eventKey="4.3">Something else here</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item eventKey="4.4">Separated link</NavDropdown.Item>
+                <NavDropdown.Item eventKey="4.1">Manage users</NavDropdown.Item>
+                <NavDropdown.Item eventKey="4.2">Manage classes</NavDropdown.Item>
+                <NavDropdown.Item eventKey="4.3">Manage subjects</NavDropdown.Item>
+                
               </NavDropdown>
             </Link>
           </li>
@@ -46,9 +45,6 @@ export default function SideBar() {
               <span className="links_name">Exam</span>
             </Link>
           </li>
-
-
-
           <li>
             <Link to="/Subject">
               <Unicons.UilCommentQuestion className='icon' />

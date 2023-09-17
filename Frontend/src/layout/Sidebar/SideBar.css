@@ -284,11 +284,8 @@ nav .profile-details i {
 }
 
 
-
-
-
 /* Right box */
-.home-content .box-card .top {
+.home-content .box-card  {
   width: 35%;
   background: #fff;
   padding: 20px 30px;
@@ -297,7 +294,7 @@ nav .profile-details i {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.box-card .top li {
+.box-card {
   display: flex;
   align-items: center;
   justify-content: space-between;

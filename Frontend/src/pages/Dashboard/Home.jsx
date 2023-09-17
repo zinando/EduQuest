@@ -72,7 +72,7 @@ export default function Home() {
                 />
               </Col>
               <Col xs={5}>
-                <div className='border-0 shadow rounded-0 p-4'>
+                <div className='border-0 shadow rounded-0 p-4' style={{ height: '300px', overflowY: 'scroll' }}>
                   <h4 className="card-title fw-bold">Schedule</h4>
                   <Table striped bordered hover>
                     <thead>
@@ -100,6 +100,18 @@ export default function Home() {
                         <td>19.10.23</td>
                         <td>8:00am</td>
                         <td>French</td>
+                        <td>JSS 1</td>
+                      </tr>
+                      <tr>
+                        <td>20.10.23</td>
+                        <td>8:00am</td>
+                        <td>Geography</td>
+                        <td>JSS 1</td>
+                      </tr>
+                      <tr>
+                        <td>20.10.23</td>
+                        <td>8:00am</td>
+                        <td>Geography</td>
                         <td>JSS 1</td>
                       </tr>
                       <tr>

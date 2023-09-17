@@ -61,7 +61,10 @@ export default function Login() {
         <div className='row'>
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container image-fluid"></div>
 
-          <div className="col-lg-6 col-md-6 col-sm-12 form-container">
+          <div className="col-lg-6 col-md-6 col-sm-12 form-container" style={{
+        
+            paddingBottom: '200px'
+          }}>
             <div className='row'>
               <div
                 className="col-12 text-center"
@@ -88,7 +91,7 @@ export default function Login() {
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </div>
 
-              <div className="form-group mb-3 d-flex align-items-center">
+              <div className="form-group mb-3 pt-3 d-flex align-items-center">
                 <label htmlFor="name" className='form2'>
                   <Unicons.UilUser color="#0B88B3" size="25" />
                 </label>

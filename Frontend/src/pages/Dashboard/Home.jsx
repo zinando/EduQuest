@@ -144,7 +144,7 @@ export default function Home() {
                   <h4 className="card-title fw-bold">Add Exam form</h4>
                   <Form>
                     <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-                      <Form.Label column sm={2}>
+                      <Form.Label column sm={3}>
                         Exam title
                       </Form.Label>
                       <Col sm={10}>
@@ -152,8 +152,10 @@ export default function Home() {
                       </Col>
                     </Form.Group>
 
+                    
+
                     <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                      <Form.Label column sm={2}>
+                      <Form.Label >
                         Exam type
                         <Form.Select aria-label="Default select example">
                           <option>select menu</option>
@@ -162,28 +164,11 @@ export default function Home() {
                           <option value="3">Three</option>
                         </Form.Select>
                       </Form.Label>
-                      <Col sm={10}>
-                        <Form.Control type="select" />
-                      </Col>
+                      
                     </Form.Group>
 
                     <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                      <Form.Label column sm={2}>
-                        Exam type
-                        <Form.Select aria-label="Default select example">
-                          <option>select menu</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </Form.Select>
-                      </Form.Label>
-                      <Col sm={10}>
-                        <Form.Control type="select" />
-                      </Col>
-                    </Form.Group>
-
-                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                      <Form.Label column sm={2}>
+                      <Form.Label column sm={4}>
                         From
                         <Form.Select aria-label="Default select example">
                           <option>select menu</option>
@@ -192,23 +177,17 @@ export default function Home() {
                           <option value="3">Three</option>
                         </Form.Select>
                       </Form.Label>
-                      <Col sm={10}>
-                        <Form.Control type="select" />
-                      </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                      <Form.Label column sm={2}>
+                      <Form.Label column sm={4}>
                         To
                         <Form.Select aria-label="Default select example">
-                          <option>select menu</option>
+                          <option>Exam type</option>
                           <option value="1">One</option>
                           <option value="2">Two</option>
                           <option value="3">Three</option>
                         </Form.Select>
                       </Form.Label>
-                      <Col sm={10}>
-                        <Form.Control type="select" />
-                      </Col>
                     </Form.Group>
                     <Form.Group as={Row} className="mb-3">
                       <Col sm={{ span: 10, offset: 2 }}>

@@ -8,8 +8,8 @@
   font-family: 'Poppins', sans-serif;
 }
 
-.ques{
-  color:  #fff;
+.ques {
+  color: #fff;
 }
 
 .sidebar {
@@ -407,7 +407,7 @@ nav .profile-details i {
 }
 
 .box-card .top li .task,
-.price {
+.task {
   font-size: 17px;
   font-weight: 400;
   color: #333;

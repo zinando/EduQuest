@@ -6,8 +6,7 @@ import Sidebar from '../../layout/Sidebar/SideBar';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
-import book from '../../assets/book.jpeg'
-import { Card, Col, Row } from 'react-bootstrap';
+import {Col, Row } from 'react-bootstrap';
 import Login from '../../pages/Login/Login'
 import queryBackEnd, { userInfo, checkUserPermission, logOutUser } from '../queryBackEnd'
 import useIdle from '../../pages/useIdleTimer'
@@ -15,6 +14,10 @@ import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
+
+
+
+
 
 export default function Home() {
 
@@ -113,18 +116,19 @@ export default function Home() {
               <Col>
                 <div className="card-body card text-center border-0 shadow rounded-0 p-4">
                   <h4 className="card-title fw-bold">User Stats</h4>
-                  <ul className="card-text">
-                    <li>
-                      12 <span>Teachers</span>
+                  <ul className="card-text" style={{ listStyle: 'none', padding: 10 }}>
+                    <li style={{ marginBottom: '10px' }}>
+                      <span style={{ marginRight: '15px' }}><Unicons.UilUsersAlt color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '15px' }}>12 Teachers</span>
                     </li>
-                    <li>
-                      403 <span>Students</span>
+                    <li style={{ marginBottom: '10px' }}>
+                      <span style={{ marginRight: '15px' }} ><Unicons.UilGraduationCap color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '15px' }}>403 Students</span>
                     </li>
-                    <li>
-                      6 <span>Reviewers</span>
+                    <li style={{ marginBottom: '10px' }}>
+                      <span style={{ marginRight: '15px' }}><Unicons.UilFilesLandscapes color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '15px' }}>6 Reviewers</span>
                     </li>
                   </ul>
                 </div>
+
               </Col>
             </Row>
             <Row>
@@ -151,9 +155,6 @@ export default function Home() {
                         <Form.Control type="text" />
                       </Col>
                     </Form.Group>
-
-                    
-
                     <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
                       <Form.Label >
                         Exam type

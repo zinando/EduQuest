@@ -18,7 +18,7 @@
   width: 240px;
   background: #0B88B3;
   transition: all 0.5s ease;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 .sidebar.active {
@@ -126,7 +126,7 @@
   z-index: 100;
   padding: 0 20px;
   background-color: #FFF;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   transition: all 0.5s ease;
 }
 
@@ -213,7 +213,7 @@ nav .profile-details .admin_name {
   white-space: nowrap;
 }
 
-nav .profile-details i {
+nav .profile-details {
   font-size: 25px;
   color: #333;
 }
@@ -232,35 +232,19 @@ nav .profile-details i {
   margin-bottom: 26px;
 }
 
-.overview-boxes .box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: calc(100% / 4 - 15px);
-  background: #fff;
-  padding: 15px 14px;
-  border-radius: 12px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-.overview-boxes .box-topic {
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.home-content .box .number {
+.home-content .box {
   display: inline-block;
   font-size: 35px;
   margin-top: -6px;
   font-weight: 500;
 }
 
-.home-content .box .indicator {
+.home-content .box  {
   display: flex;
   align-items: center;
 }
 
-.home-content .box .indicator .i {
+.home-content .box  {
   height: 20px;
   width: 20px;
   background: #8FDACB;

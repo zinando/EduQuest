@@ -46,7 +46,7 @@ export default function SideBar() {
             </Link>
           </li>
           <li>
-            <Link to="/Subject">
+            <Link to="/Support">
               <Unicons.UilCommentQuestion className='icon' />
               <span className="links_name">Support</span>
             </Link>

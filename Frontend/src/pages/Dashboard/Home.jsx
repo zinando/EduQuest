@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../../layout/Sidebar/SideBar.css'
 import * as Unicons from '@iconscout/react-unicons';
 import Navbar from '../../layout/NavBar/NavBar';

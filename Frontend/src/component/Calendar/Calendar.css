@@ -1,0 +1,48 @@
+.full-calendar-container {
+  max-width: 500px;
+  margin: 0 auto;
+
+}
+
+.fc-header-toolbar {
+  color: #0B88B3;
+}
+
+.fc-header-button {
+  background-color: #0B88B3;
+  border: none;
+  color: #fff;
+}
+
+
+.fc-event-title {
+  font-weight: bold;
+  color: #333;
+}
+
+
+.fc-event-bg {
+  background-color: #c0392b;
+  border-color: #c0392b;
+  color: #fff;
+}
+
+
+
+
+.fc-event .fc-event-time,
+.fc-event .fc-event-title {
+  color: #333;
+}
+
+
+.fc-popover {
+  background-color: #fff;
+  border: 1px solid #0B88B3;
+  color: #333;
+}
+
+/* Styling for calendar event popover close button */
+.fc-popover .fc-close {
+  color: #E97463;
+}

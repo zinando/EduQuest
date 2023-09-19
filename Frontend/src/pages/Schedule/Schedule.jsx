@@ -1,6 +1,5 @@
-import { useState } from 'react';
+
 import 'react-calendar/dist/Calendar.css';
-import Calendar from 'react-calendar'; 
 import './Schedule.css'
 import '../../layout/Sidebar/SideBar.css';
 import Navbar from '../../layout/NavBar/NavBar';
@@ -11,11 +10,7 @@ import { Col, Row } from 'react-bootstrap';
 
 
 export default function Subject() {
-  const [date, setDate] = useState(new Date());
-
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
-  };
+ 
 
   return (
     <>

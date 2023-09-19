@@ -20,7 +20,6 @@ export default function Navbar() {
     <nav>
       <div className={`sidebar-button ${sidebarActive ? 'active' : ''}`}>
         <Unicons.UilBars className={`sidebarBtn ${sidebarActive ? 'active' : ''}`} onClick={toggleSidebar} />
-        <span className="dashboard">Dashboard</span>
       </div>
       <div className="search-box">
         <input type="text" placeholder="Search..." />

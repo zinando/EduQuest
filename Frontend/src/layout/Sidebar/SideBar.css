@@ -18,7 +18,7 @@
   background: #FAFBFB;
   transition: all 0.5s ease;
   overflow-x: auto;
-box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
 .sidebar.active {
@@ -49,6 +49,9 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
 
 .sidebar .nav-links {
   margin-top: 20px;
+  list-style: none;
+  padding: 0px;
+
 }
 
 .sidebar .nav-links li {
@@ -72,23 +75,16 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
 .active-link {
   background: #0B88B3 !important;
   color: #FFFFFF !important;
+  padding: 8px 16px;
 }
 
 .sidebar .nav-links li a:hover {
-  background: #E97464;
-  color: #E97464;
-  border-radius: 15px;
+  background: #bfe1ec;
+  color: #0B88B3;
+  border-radius: 20px;
+  padding: 8px 16px;
 }
 
-.sidebar .nav-links li i {
-  min-width: 60px;
-  text-align: center;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  font-style: normal;
-  color: #E97464;
-}
 
 .sidebar .nav-links li a .links_name {
   color: #000000;
@@ -98,6 +94,7 @@ box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
   font-style: normal;
   white-space: nowrap;
 }
+
 
 .sidebar .nav-links .log_out {
   position: absolute;
@@ -228,13 +225,13 @@ nav .profile-details {
 
 .home-section .home-content {
   display: flex;
-    -webkit-box-flex: 1;
-    flex-grow: 1;
-    padding-top: 120px;
-    flex-direction: column;
-    z-index: 1;
-    background-color: transparent;
-    flex-wrap: wrap;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  padding-top: 120px;
+  flex-direction: column;
+  z-index: 1;
+  background-color: transparent;
+  flex-wrap: wrap;
 }
 
 .home-content .uicon.four {
@@ -243,7 +240,7 @@ nav .profile-details {
 }
 
 
-.nav-dropdown-title{
+.nav-dropdown-title {
   color: #000000;
 }
 
@@ -280,7 +277,7 @@ nav .profile-details {
 }
 
 @media (max-width: 1150px) {
-  .home-content{
+  .home-content {
     flex-direction: column;
   }
 
@@ -290,7 +287,7 @@ nav .profile-details {
     margin-bottom: 30px;
   }
 
-  .home-content  {
+  .home-content {
     margin: 0;
   }
 }
@@ -349,4 +346,3 @@ nav .profile-details {
     width: calc(100% - 60px);
   }
 }
-

@@ -14,8 +14,8 @@ const Timetable = () => {
   const filteredData = selectedDay === 'All' ? timetableData : timetableData.filter(item => item.day === selectedDay);
 
   return (
-    <div className="timetable-container">
-      <h4 className="card-title fw-bold">Schedule</h4>
+    <div>
+      <h4 className="custom-heading">Schedule</h4>
       <div className="filter-container">
         <label>Filter by Day:</label>
         <select value={selectedDay} onChange={(e) => setSelectedDay(e.target.value)}>

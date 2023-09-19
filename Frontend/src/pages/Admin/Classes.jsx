@@ -1,7 +1,7 @@
 import '../../layout/Sidebar/SideBar.css'
 import Sidebar from '../../layout/Sidebar/SideBar'
 import Navbar from '../../layout/Navbar/NavBar'
-import Calendar from '../../component/Calendar/Calendar'
+import Timetable from '../../component/Timetable/Timetable'
 
 
 
@@ -14,7 +14,8 @@ export default function Classes() {
       <section className="home-section">
         <Navbar />
         <div className="home-content">
-          <Calendar />
+          
+          <Timetable/>
         </div>
       </section>
     </>

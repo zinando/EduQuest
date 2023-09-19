@@ -18,7 +18,6 @@ import Button from 'react-bootstrap/Button';
 
 
 
-
 export default function Home() {
 
   // check for token and user permission 
@@ -29,6 +28,8 @@ export default function Home() {
   const handleDateChange = (newDate) => {
     setDate(newDate);
   };
+
+  
 
   // check if user is idle and logout user
   const { isIdle } = useIdle({ onIdle: logOutUser, idleTime: 1 });

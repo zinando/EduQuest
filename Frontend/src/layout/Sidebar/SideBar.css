@@ -234,6 +234,7 @@ nav .profile-details {
     flex-direction: column;
     z-index: 1;
     background-color: transparent;
+    flex-wrap: wrap;
 }
 
 .home-content .uicon.four {
@@ -279,27 +280,21 @@ nav .profile-details {
 }
 
 @media (max-width: 1150px) {
-  .home-content .box-card {
+  .home-content{
     flex-direction: column;
   }
 
-  .home-content .box-card .box {
+  .home-content {
     width: 100%;
     overflow-x: scroll;
     margin-bottom: 30px;
   }
 
-  .home-content .box-card .top {
+  .home-content  {
     margin: 0;
   }
 }
 
-@media (max-width: 1000px) {
-  .overview-boxes .box {
-    width: calc(100% / 2 - 15px);
-    margin-bottom: 15px;
-  }
-}
 
 @media (max-width: 700px) {
 
@@ -314,17 +309,12 @@ nav .profile-details {
     min-width: 40px;
   }
 
-  .home-content .box-card .sdetails {
+  .home-content .sdetails {
     width: 560px;
   }
 }
 
 @media (max-width: 550px) {
-  .overview-boxes .box {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-
   .sidebar.active~.home-section nav .profile-details {
     display: none;
   }
@@ -360,10 +350,3 @@ nav .profile-details {
   }
 }
 
-.btn-group {
-  padding-left: 20px;
-}
-
-.btn:hover {
-  color: pink;
-}

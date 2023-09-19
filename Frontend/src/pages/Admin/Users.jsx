@@ -8,14 +8,33 @@ import { Button, Table, Modal, Form } from 'react-bootstrap';
 
 export default function Subject() {
   const [users, setUsers] = useState([
-    { id: 1, name: 'User 1', email: 'user1@example.com' },
-    { id: 2, name: 'User 2', email: 'user2@example.com' },
-    { id: 3, name: 'User 3', email: 'user3@example.com' },
+    {
+      id: 1,
+      firstName: 'John',
+      lastName: 'Doe',
+      gender: 'Male',
+      email: 'johndoe@example.com',
+      class: 'Class A',
+    },
+    {
+      id: 2,
+      firstName: 'Jane',
+      lastName: 'Smith',
+      gender: 'Female',
+      email: 'janesmith@example.com',
+      class: 'Class B',
+    },
   ]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [newUser, setNewUser] = useState({ name: '', email: '' });
+  const [newUser, setNewUser] = useState({
+    firstName: '',
+    lastName: '',
+    gender: 'Male',
+    email: '',
+    class: 'Class A',
+  });
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -46,13 +65,19 @@ export default function Subject() {
 
   const handleCloseAddModal = () => {
     setShowAddModal(false);
-    setNewUser({ name: '', email: '' });
+    setNewUser({
+      firstName: '',
+      lastName: '',
+      gender: 'Male',
+      email: '',
+      class: 'Class A',
+    });
   };
 
   const handleAddUser = () => {
     const newUserWithId = {
       ...newUser,
-      id: users.length + 1, // Generate a new ID remember ohhh
+      id: users.length + 1, // Generate a new ID (replace with your logic)
     };
     setUsers([...users, newUserWithId]);
     handleCloseAddModal();
@@ -72,16 +97,22 @@ export default function Subject() {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Gender</th>
                   <th>Email</th>
+                  <th>Class</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
-                    <td>{user.name}</td>
+                    <td>{user.firstName}</td>
+                    <td>{user.lastName}</td>
+                    <td>{user.gender}</td>
                     <td>{user.email}</td>
+                    <td>{user.class}</td>
                     <td>
                       <Button variant="primary" onClick={() => handleEditUser(user)}>
                         Edit
@@ -102,27 +133,65 @@ export default function Subject() {
               </Modal.Header>
               <Modal.Body>
                 <Form>
-                  <Form.Group controlId="formBasicName">
-                    <Form.Label>Name</Form.Label>
+                  <Form.Group controlId="formBasicFirstName">
+                    <Form.Label>First Name</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter name"
-                      value={selectedUser?.name || ''}
+                      placeholder="Enter First Name"
+                      value={selectedUser?.firstName || ''}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, name: e.target.value })
+                        setSelectedUser({ ...selectedUser, firstName: e.target.value })
                       }
                     />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicLastName">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Last Name"
+                      value={selectedUser?.lastName || ''}
+                      onChange={(e) =>
+                        setSelectedUser({ ...selectedUser, lastName: e.target.value })
+                      }
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicGender">
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={selectedUser?.gender || 'Male'}
+                      onChange={(e) =>
+                        setSelectedUser({ ...selectedUser, gender: e.target.value })
+                      }
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </Form.Control>
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                       type="email"
-                      placeholder="Enter email"
+                      placeholder="Enter Email"
                       value={selectedUser?.email || ''}
                       onChange={(e) =>
                         setSelectedUser({ ...selectedUser, email: e.target.value })
                       }
                     />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicClass">
+                    <Form.Label>Class</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={selectedUser?.class || 'Class A'}
+                      onChange={(e) =>
+                        setSelectedUser({ ...selectedUser, class: e.target.value })
+                      }
+                    >
+                      <option value="Class A">Class A</option>
+                      <option value="Class B">Class B</option>
+                      <option value="Class C">Class C</option>
+                    </Form.Control>
                   </Form.Group>
                 </Form>
               </Modal.Body>
@@ -143,23 +212,68 @@ export default function Subject() {
               </Modal.Header>
               <Modal.Body>
                 <Form>
-                  <Form.Group controlId="formBasicName">
-                    <Form.Label>Name</Form.Label>
+                  <Form.Group controlId="formBasicFirstName">
+                    <Form.Label>First Name</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter name"
-                      value={newUser.name}
-                      onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                      placeholder="Enter First Name"
+                      value={newUser.firstName}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, firstName: e.target.value })
+                      }
                     />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicLastName">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Last Name"
+                      value={newUser.lastName}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, lastName: e.target.value })
+                      }
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicGender">
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={newUser.gender}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, gender: e.target.value })
+                      }
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </Form.Control>
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
                       type="email"
-                      placeholder="Enter email"
+                      placeholder="Enter Email"
                       value={newUser.email}
-                      onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, email: e.target.value })
+                      }
                     />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicClass">
+                    <Form.Label>Class</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={newUser.class}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, class: e.target.value })
+                      }
+                    >
+                      <option value="Class A">JS 1</option>
+                      <option value="Class B">JS 2</option>
+                      <option value="Class C">JS 3</option>
+                      <option value="Class C">SS 1</option>
+                      <option value="Class C">SS 2</option>
+                      <option value="Class C">SS 3</option>
+                    </Form.Control>
                   </Form.Group>
                 </Form>
               </Modal.Body>

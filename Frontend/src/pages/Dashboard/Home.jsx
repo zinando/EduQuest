@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import '../../layout/Sidebar/SideBar.css'
 import * as Unicons from '@iconscout/react-unicons';
 import Navbar from '../../layout/NavBar/NavBar';
@@ -25,30 +25,9 @@ export default function Home() {
   checkUserPermission('SUPER_DASHBOARD');
 
   const [date, setDate] = useState(new Date());
-  const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState('');
-
+ 
   const handleDateChange = (newDate) => {
     setDate(newDate);
-  };
-
-  const addTask = () => {
-    if (newTask.trim() !== '') {
-      setTasks([...tasks, { text: newTask, completed: false }]);
-      setNewTask('');
-    }
-  };
-
-  const toggleTaskCompletion = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].completed = !updatedTasks[index].completed;
-    setTasks(updatedTasks);
-  };
-
-  const removeTask = (index) => {
-    const updatedTasks = [...tasks];
-    updatedTasks.splice(index, 1);
-    setTasks(updatedTasks);
   };
 
   // check if user is idle and logout user
@@ -56,9 +35,7 @@ export default function Home() {
 
   return (
     <>
-
       <Sidebar />
-
       <section className="home-section">
         <Navbar />
         <div className="home-content">
@@ -128,7 +105,6 @@ export default function Home() {
                       </tr>
                     </tbody>
                   </Table>
-
                 </div>
               </Col>
               <Col>

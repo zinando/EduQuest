@@ -15,7 +15,7 @@ import Timetable from '../../component/Timetable/Timetable'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Item from '../../component/Item/Item'
-
+import './Home.css'
 
 
 export default function Home() {
@@ -39,21 +39,26 @@ export default function Home() {
         <Navbar />
         <div className="home-content">
           <Container>
+            
             <Row>
+              
               <Col xs={4}>
+                <div className='calendar-container'>
                 <Calendar
                   onChange={handleDateChange}
                   value={date}
                   className='border-0 shadow rounded-0 p-4'
-                />
-              </Col>
+                  />
+                </div>
+                </Col>
+            
               <Col xs={4} >
-                <div className='border-0 shadow rounded-0 p-4' style={{ height: '300px', overflowY: 'scroll' }}>
+                <div className='border-0 shadow rounded-0 p-4 ' style={{ height: '300px', overflowY: 'scroll' }}>
                   <Timetable/>
                 </div>
               </Col>
               <Col xs={4}>
-                <div className="card-body card text-center border-0 shadow rounded-0 p-4">
+                <div className=" border-0 shadow rounded-0 p-4 time">
                   <h4 className="custom-heading">User Stats</h4>
                   <ul className="card-text" style={{ listStyle: 'none', padding: 10 }}>
                     <li style={{ marginBottom: '10px' }}>

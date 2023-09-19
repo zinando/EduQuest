@@ -25,7 +25,7 @@ const Scheduler = () => {
   };
 
   return (
-    <div>
+    <div className="container"> {/* Apply the "container" class */}
       <h1>Scheduler</h1>
       <div>
         <Calendar onChange={handleDateChange} value={date} />

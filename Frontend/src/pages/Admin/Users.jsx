@@ -90,11 +90,11 @@ export default function Subject() {
         <Navbar />
         <div className="home-content">
           <div>
-            <h1>Manage Users</h1>
+            <h1 className='custom-heading'>Manage Users</h1>
             <Button variant="primary" onClick={handleShowAddModal}>
               Add User
             </Button>
-            <Table striped bordered hover>
+            <Table >
               <thead>
                 <tr>
                   <th>First Name</th>

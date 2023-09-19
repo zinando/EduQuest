@@ -77,7 +77,7 @@ export default function Subject() {
   const handleAddUser = () => {
     const newUserWithId = {
       ...newUser,
-      id: users.length + 1, // Generate a new ID (replace with your logic)
+      id: users.length + 1, // Generate a new ID (replace)
     };
     setUsers([...users, newUserWithId]);
     handleCloseAddModal();

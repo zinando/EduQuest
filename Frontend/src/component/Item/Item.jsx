@@ -59,7 +59,7 @@ const ItemTable = () => {
   };
 
   const handleEdit = (id) => {
-    // Implement your edit logic here
+    // Implement logic here 
     console.log(`Edit product with ID ${id}`);
   };
 

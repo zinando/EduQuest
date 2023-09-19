@@ -1,0 +1,28 @@
+/* Timetable.css */
+
+.timetable-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.timetable {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+.timetable th,
+.timetable td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.timetable th {
+  background-color: #f2f2f2;
+}

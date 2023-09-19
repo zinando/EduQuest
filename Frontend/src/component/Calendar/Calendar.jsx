@@ -48,7 +48,9 @@ const FullCalendarComponent = () => {
     };
   }, []);
 
-  return <div ref={calendarRef}></div>;
+  <div className="calendar-container">
+    <div ref={calendarRef}></div>
+  </div>
 };
 
 export default FullCalendarComponent;

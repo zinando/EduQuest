@@ -14,7 +14,7 @@ import Container from 'react-bootstrap/Container';
 import Timetable from '../../component/Timetable/Timetable'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
-
+import Item from '../../component/Item/Item'
 
 
 
@@ -29,8 +29,6 @@ export default function Home() {
     setDate(newDate);
   };
 
-  
-
   // check if user is idle and logout user
   const { isIdle } = useIdle({ onIdle: logOutUser, idleTime: 1 });
 
@@ -42,19 +40,19 @@ export default function Home() {
         <div className="home-content">
           <Container>
             <Row>
-              <Col>
+              <Col xs={4}>
                 <Calendar
                   onChange={handleDateChange}
                   value={date}
                   className='border-0 shadow rounded-0 p-4'
                 />
               </Col>
-              <Col xs={5}>
+              <Col xs={4} >
                 <div className='border-0 shadow rounded-0 p-4' style={{ height: '300px', overflowY: 'scroll' }}>
                   <Timetable/>
                 </div>
               </Col>
-              <Col>
+              <Col xs={4}>
                 <div className="card-body card text-center border-0 shadow rounded-0 p-4">
                   <h4 className="card-title fw-bold">User Stats</h4>
                   <ul className="card-text" style={{ listStyle: 'none', padding: 10 }}>
@@ -74,16 +72,8 @@ export default function Home() {
             </Row>
             <Row>
               <Col sm={7}>
-                <div className='pt-4'>
-                  <ListGroup horizontal>
-                    <ListGroup.Item>I</ListGroup.Item>
-                    <ListGroup.Item>will</ListGroup.Item>
-                    <ListGroup.Item>work</ListGroup.Item>
-                    <ListGroup.Item>on </ListGroup.Item>
-                    <ListGroup.Item>this</ListGroup.Item>
-                    <ListGroup.Item>session</ListGroup.Item>
-                    <ListGroup.Item>tomorrow</ListGroup.Item>
-                  </ListGroup>
+                <div className='pt-4' style={{ height: '300px', overflowY: 'scroll' }}>
+                 <Item/>
                 </div>
               </Col>
               <Col sm={5}>

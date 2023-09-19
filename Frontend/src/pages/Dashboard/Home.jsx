@@ -54,7 +54,7 @@ export default function Home() {
               </Col>
               <Col xs={4}>
                 <div className="card-body card text-center border-0 shadow rounded-0 p-4">
-                  <h4 className="card-title fw-bold">User Stats</h4>
+                  <h4 className="custom-heading">User Stats</h4>
                   <ul className="card-text" style={{ listStyle: 'none', padding: 10 }}>
                     <li style={{ marginBottom: '10px' }}>
                       <span style={{ marginRight: '15px' }}><Unicons.UilUsersAlt color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '15px' }}>12 Teachers</span>

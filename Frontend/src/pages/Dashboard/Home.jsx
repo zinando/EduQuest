@@ -11,7 +11,7 @@ import Login from '../../pages/Login/Login'
 import queryBackEnd, { userInfo, checkUserPermission, logOutUser } from '../queryBackEnd'
 import useIdle from '../../pages/useIdleTimer'
 import Container from 'react-bootstrap/Container';
-import Table from 'react-bootstrap/Table';
+import Timetable from '../../component/Timetable/Timetable'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 
@@ -50,61 +50,7 @@ export default function Home() {
               </Col>
               <Col xs={5}>
                 <div className='border-0 shadow rounded-0 p-4' style={{ height: '300px', overflowY: 'scroll' }}>
-                  <h4 className="card-title fw-bold">Schedule</h4>
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Subject</th>
-                        <th>Class</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>16.10.23</td>
-                        <td>8:00am</td>
-                        <td>English Language</td>
-                        <td>JSS 1</td>
-                      </tr>
-                      <tr>
-                        <td>18.10.23</td>
-                        <td>10:30am</td>
-                        <td>Mathematics</td>
-                        <td>JSS 1</td>
-                      </tr>
-                      <tr>
-                        <td>19.10.23</td>
-                        <td>8:00am</td>
-                        <td>French</td>
-                        <td>JSS 1</td>
-                      </tr>
-                      <tr>
-                        <td>20.10.23</td>
-                        <td>8:00am</td>
-                        <td>Geography</td>
-                        <td>JSS 1</td>
-                      </tr>
-                      <tr>
-                        <td>20.10.23</td>
-                        <td>8:00am</td>
-                        <td>Geography</td>
-                        <td>JSS 1</td>
-                      </tr>
-                      <tr>
-                        <td>20.10.23</td>
-                        <td>8:00am</td>
-                        <td>Geography</td>
-                        <td>JSS 1</td>
-                      </tr>
-                      <tr>
-                        <td>19.10.23</td>
-                        <td>8:00am</td>
-                        <td>French</td>
-                        <td>JSS 1</td>
-                      </tr>
-                    </tbody>
-                  </Table>
+                  <Timetable/>
                 </div>
               </Col>
               <Col>

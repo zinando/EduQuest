@@ -32,31 +32,38 @@ export default function Landing() {
         </div>
         <div className="site-mobile-menu-body" />
       </div>
-      <Navbar expand="lg" style={{ backgroundColor: "white" }}>
+      <Navbar expand="lg" style={{ backgroundColor: "white",marginTop: '10px' }}>
         <div className="container">
           <Link to="/SignUp" className='mb-3 logo'><h3 className='logo'>Edu<span>Quest</span></h3></Link>
           <Navbar.Toggle aria-controls="main-navbar" />
           <Navbar.Collapse id="main-navbar">
             <Nav className="ms-auto">
-              <Nav.Item>
+              <Nav.Item
+              style={{ marginTop: '10px' }}
+              >
                 <Nav.Link href="#">Home</Nav.Link>
               </Nav.Item>
-              <Nav.Item>
+              <Nav.Item
+              style={{ marginTop: '10px' }}
+              >
                 <Nav.Link href="#" >About</Nav.Link>
               </Nav.Item>
-
-              <Nav.Item>
+              <Nav.Item style={{ marginTop: '10px' }}>
                 <Nav.Link href="#">Latest News</Nav.Link>
               </Nav.Item>
-              <Nav.Item>
+              <Nav.Item
+              style={{ marginTop: '10px' }}
+              >
                 <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
-              <Nav.Item className="cta-button1">
+              <Nav.Item className="btn btn-primary">
                 <Link to="/signup">
                   <b>Sign Up</b>
                 </Link>
-              </Nav.Item>
-              <Nav.Item className="cta-button2">
+              </Nav.Item> 
+              <Nav.Item className="cta-button2" 
+              style={{ marginTop: '10px' }}
+              >
                 <Link to="/login">
                   <b>Log In</b>
                 </Link>
@@ -220,7 +227,7 @@ export default function Landing() {
         </div>
       </div>
       <footer
-        style={{ backgroundColor: "#8FC8DB", textAlign: "center", padding: 5 }}
+        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 5 }}
       >
         <div className="social-icons">
           <a href="https://www.facebook.com/yourpage">

@@ -11,6 +11,9 @@ import Schedule from './pages/Schedule/Schedule'
 import Subject from './pages/Subject/Subject'
 import Landing from '../LandingPage/Landing'
 import Exam from './pages/Exam/Exam'
+import Users from './pages/Admin/Users'
+import Classes from './pages/Admin/classes';
+
 
 
 
@@ -20,7 +23,6 @@ export default function App() {
   return (
     <>
       <div>
-        
         <Router>
           <Routes>
             <Route path="/" element={<Landing />} />
@@ -33,14 +35,11 @@ export default function App() {
             <Route path="/schedule" element={< Schedule />} />
             <Route path="/subject" element={< Subject />} />
             <Route path="/exam" element={< Exam />} />
-            
+            <Route path="/Users" element={< Users />} />
+            <Route path="/classes" element={< Classes />} />
+            <Route path="/subject" element={< Subject />} />
           </Routes>
         </Router>
-
-
-
-
-
       </div>
     </>
   )

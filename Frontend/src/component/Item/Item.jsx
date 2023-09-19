@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import * as Unicons from '@iconscout/react-unicons';
 
 
 const ItemTable = () => {
@@ -85,19 +84,21 @@ const ItemTable = () => {
             <td>{product.class}</td>
 
             <td>
-              <Button
-                variant="danger"
-                onClick={() => handleDelete(product.id)}
-              >
-                <Unicons.UilTrashAlt className='icon' size="25" color="#61DAFB" />
-              </Button>
-              {' '}
-              <Button
-                variant="warning"
-                onClick={() => handleEdit(product.id)}
-              >
-                <Unicons.UilEdit className='icon' size="25" color="#61DAFB" />
-              </Button>
+              <div className="d-inline">
+                <Button
+                  variant="danger"
+                  onClick={() => handleDelete(product.id)}
+                >
+                  Delete
+                </Button>
+                {' '}
+                <Button
+                  variant="warning"
+                  onClick={() => handleEdit(product.id)}
+                >
+                  Edit
+                </Button>
+              </div>
             </td>
           </tr>
         ))}

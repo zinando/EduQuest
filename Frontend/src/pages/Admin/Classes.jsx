@@ -10,11 +10,9 @@ export default function Classes() {
   return (
     <>
       <Sidebar />
-
       <section className="home-section">
         <Navbar />
         <div className="home-content">
-          
           <Timetable/>
         </div>
       </section>

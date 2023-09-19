@@ -1,63 +1,34 @@
-import '../../layout/Sidebar/Sidebar.css'
-import Navbar from '../../layout/NavBar/NavBar'
-import Sidebar from '../../layout/Sidebar/SideBar'
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import '../Schedule/Schedule.css'
+import '../../layout/Sidebar/SideBar.css';
+import Navbar from '../../layout/NavBar/NavBar';
+import Sidebar from '../../layout/Sidebar/SideBar';
+import Container from 'react-bootstrap/Container';
+import { Col, Row } from 'react-bootstrap';
+import Scheduler from '../../component/Scheduler/Scheduler';
 
 
 export default function Subject() {
+
+
   return (
     <>
       <Sidebar />
       <section className="home-section">
         <Navbar />
-
         <div className="home-content">
-          <ButtonGroup className="mb-3 btn-group" size="sm">
-            <Button className='btn' >Left</Button>
-            <Button className='btn' >Middle</Button>
-            <Button className='btn' >Right</Button>
-          </ButtonGroup>
-          <div className="box-card">
-            <div className="recent box">
-              <div className="title">Stats</div>
-              <div className="sdetails">
-                <ul className="details">
-                  <li className="topic">Date</li>
-                  <li>
-                    <a href="/">02 Jan 2023</a>
-                  </li>
+
+          <Container>
+            <Row>
+              <Col xs={8}>
+
+                <Scheduler />
 
 
-
-                </ul>
-                <ul className="details">
-                  <li className="topic">Name</li>
-                  <li>
-                    <a href="/">Alex Doe</a>
-                  </li>
-                </ul>
-                <ul className="details">
-                  <li className="topic">Grade</li>
-                  <li>
-                    <a href="/">Passed</a>
-                  </li>
-                </ul>
-                <ul className="details">
-                  <li className="topic">Teacher</li>
-                  <li>
-                    <a href="/">Peace</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+              </Col>
+            </Row>
+          </Container>
         </div>
-
-
       </section>
-
     </>
-  )
+  );
 }
-

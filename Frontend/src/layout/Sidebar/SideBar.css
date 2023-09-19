@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,400;9..40,500;9..40,700&family=Montserrat:wght@300;400;500;600;700;800&display=swap');
 
 * {
   margin: 0;
@@ -15,9 +15,10 @@
   position: fixed;
   height: 100%;
   width: 240px;
-  background: #0B88B3;
+  background: #FAFBFB;
   transition: all 0.5s ease;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  overflow-x: auto;
+box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
 }
 
 .sidebar.active {
@@ -28,6 +29,8 @@
   height: 80px;
   display: flex;
   align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .sidebar .logo-details i {
@@ -45,13 +48,14 @@
 }
 
 .sidebar .nav-links {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .sidebar .nav-links li {
+  margin: 0px;
+  padding: 0px 0px 15px;
   position: relative;
   list-style: none;
-  height: 50px;
 }
 
 .sidebar .nav-links li a {
@@ -61,12 +65,13 @@
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
+  padding: 8px 16px;
+  border-radius: 9px;
 }
 
-.sidebar .nav-links li a.active {
-  background: #E97464;
-  color: #E97464;
-  border-radius: 15px;
+.active-link {
+  background: #0B88B3 !important;
+  color: #FFFFFF !important;
 }
 
 .sidebar .nav-links li a:hover {
@@ -78,14 +83,19 @@
 .sidebar .nav-links li i {
   min-width: 60px;
   text-align: center;
-  font-size: 18px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  font-style: normal;
   color: #E97464;
 }
 
 .sidebar .nav-links li a .links_name {
-  color: #fff;
-  font-size: 15px;
+  color: #000000;
   font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  font-style: normal;
   white-space: nowrap;
 }
 
@@ -97,7 +107,7 @@
 
 .home-section {
   position: relative;
-  background: #F6F9FF;
+  background: #F9FAFA;
   min-height: 100vh;
   width: calc(100% - 240px);
   left: 240px;
@@ -117,21 +127,20 @@
   display: flex;
   justify-content: space-between;
   height: 80px;
-  display: flex;
   align-items: center;
   position: fixed;
   width: calc(100% - 240px);
   left: 240px;
   z-index: 100;
   padding: 0 20px;
-  background-color: #FFF;
+  background: rgb(250, 251, 251);
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   transition: all 0.5s ease;
 }
 
 .sidebar.active~.home-section nav {
   left: 60px;
-  width: calc(100% - 60px);
+  width: calc(100% - 50px);
 }
 
 .home-section nav .sidebar-button {
@@ -148,7 +157,11 @@ nav .sidebar-button,
 }
 
 .icon {
-  color: white;
+  color: #000000;
+  flex-shrink: 0;
+  display: inline-flex;
+  min-width: 36px;
+  padding: 3px 0px;
 }
 
 .home-section nav .search-box {
@@ -163,10 +176,9 @@ nav .search-box input {
   height: 100%;
   width: 100%;
   outline: none;
-  background: #F5F6FA;
-  border: 2px solid #EFEEF1;
+  border: 1px solid #EFEEF1;
   border-radius: 20px;
-  font-size: 18px;
+  font-size: 16px;
   padding: 0 15px;
 }
 
@@ -189,26 +201,23 @@ nav .search-box .bx-search {
 .home-section nav .profile-details {
   display: flex;
   align-items: center;
-  background: #F5F6FA;
-  border: 2px solid #EFEEF1;
-  border-radius: 6px;
   height: 50px;
-  min-width: 190px;
-  padding: 0 15px 0 2px;
+  min-width: 90px;
+  padding: 0 20px 0 2px;
 }
 
 nav .profile-details img {
   height: 40px;
   width: 40px;
-  border-radius: 6px;
+  border-radius: 50px;
   object-fit: cover;
 }
 
 nav .profile-details .admin_name {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
   color: #333;
-  margin: 0 10px;
+  margin: 0 5px;
   white-space: nowrap;
 }
 
@@ -238,12 +247,12 @@ nav .profile-details {
   font-weight: 500;
 }
 
-.home-content .box  {
+.home-content .box {
   display: flex;
   align-items: center;
 }
 
-.home-content .box  {
+.home-content .box {
   height: 20px;
   width: 20px;
   background: #8FDACB;
@@ -266,9 +275,13 @@ nav .profile-details {
   font-weight: 500;
 }
 
+.nav-dropdown-title{
+  color: #000000;
+}
+
 
 /* Right box */
-.home-content .box-card  {
+.home-content .box-card {
   width: 35%;
   background: #fff;
   padding: 20px 30px;
@@ -427,5 +440,3 @@ nav .profile-details {
 .btn:hover {
   color: pink;
 }
-
-

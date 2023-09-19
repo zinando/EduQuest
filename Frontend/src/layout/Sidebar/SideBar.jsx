@@ -15,7 +15,6 @@ export default function SideBar() {
         </div>
         <ul className="nav-links">
           <li>
-
             <NavLink to="/Home" className="active-link">
               <Unicons.UilWindowGrid className='icon' />
               <span className="links_name">Dashboard</span>

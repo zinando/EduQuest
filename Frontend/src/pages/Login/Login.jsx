@@ -62,7 +62,7 @@ export default function Login() {
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container image-fluid"></div>
 
           <div className="col-lg-6 col-md-6 col-sm-12 form-container" style={{
-        
+
             paddingBottom: '200px'
           }}>
             <div className='row'>
@@ -105,7 +105,7 @@ export default function Login() {
                 />
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </div>
-    
+
               <div className="form-check">
                 <input type="checkbox" required={true} className="form-check-input" />
                 <label className="form-check-label">
@@ -113,7 +113,7 @@ export default function Login() {
                 </label>
               </div>
 
-          
+
               <div className='mb-4 d-grid'>
                 <button type="submit" className='btn button'>Login</button>
               </div>

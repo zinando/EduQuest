@@ -12,7 +12,7 @@ import Landing from '../LandingPage/Landing'
 import Exam from './pages/Exam/Exam'
 import Users from './pages/Admin/Users'
 import Classes from './pages/Admin/classes';
-import Subjects from './pages/Subject/Exam'
+import Subjects from './pages/Admin/Subjects'
 
 
 

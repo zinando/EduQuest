@@ -23,6 +23,7 @@
     "@mui/material": "^5.14.7",
     "@mui/styled-engine-sc": "^5.14.7",
     "aos": "^2.3.4",
+    "axios": "^1.5.0",
     "bootstrap": "^5.3.1",
     "cdbreact": "^1.5.18",
     "chart.js": "^4.4.0",

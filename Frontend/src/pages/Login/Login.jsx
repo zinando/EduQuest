@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom'
 import Form from 'react-bootstrap/Form';
 import * as Unicons from '@iconscout/react-unicons'
-import '../../pages/Signup/SignUp.css'
+import '../Signup/SignUp.css'
 import queryBackEnd, { setSession, userInfo } from '../queryBackEnd'
+
 
 export default function Login() {
   const [validated, setValidated] = useState(false);

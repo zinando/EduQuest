@@ -44,7 +44,7 @@ export default function SideBar() {
           </li>
 
           <li>
-            <NavLink to="/Subject">
+            <NavLink to="/Exam">
               <Unicons.UilBookOpen className='icon' />
               <span className="links_name">Exam</span>
             </NavLink>

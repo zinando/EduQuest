@@ -1,17 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
-
 import Form from 'react-bootstrap/Form';
 import * as Unicons from '@iconscout/react-unicons'
 import '../../pages/Signup/SignUp.css'
 import queryBackEnd, { setSession, userInfo } from '../queryBackEnd'
 
-
-
-
 export default function Login() {
   const [validated, setValidated] = useState(false);
   const [resp, setResp] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -43,17 +40,17 @@ export default function Login() {
           // redirect to super admin dashboard
           location.href = '/home';
         }
-
       } else {
         // Login failed, display error to user and log on console
         var msg = "";
-        for (var i = 0; i < response.error.length; i++) { msg += response.error[i] + '\n'; }
+        for (var i = 0; i < response.error.length; i++) {
+          msg += response.error[i] + '\n';
+        }
         setResp(msg);
         console.error('Login failed:', response.message, '\n' + msg);
       }
     }
   };
-
 
   return (
     <>
@@ -62,7 +59,6 @@ export default function Login() {
           <div className="col-lg-6 col-md-6 d-none d-md-block image-container image-fluid"></div>
 
           <div className="col-lg-6 col-md-6 col-sm-12 form-container" style={{
-
             paddingBottom: '200px'
           }}>
             <div className='row'>
@@ -99,10 +95,13 @@ export default function Login() {
                   className="form-control"
                   required={true}
                   name='password'
-                  type="password"
+                  type={passwordVisible ? "text" : "password"}
                   placeholder="Enter password"
                   style={{ marginLeft: '12px' }}
                 />
+                <div className="password-toggle" onClick={() => setPasswordVisible(!passwordVisible)}>
+                  {passwordVisible ? <Unicons.UilEyeSlash size="25" /> : <Unicons.UilEye size="25" />}
+                </div>
                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </div>
 
@@ -112,7 +111,6 @@ export default function Login() {
                   Remember me
                 </label>
               </div>
-
 
               <div className='mb-4 d-grid'>
                 <button type="submit" className='btn button'>Login</button>
@@ -131,4 +129,3 @@ export default function Login() {
     </>
   );
 }
-

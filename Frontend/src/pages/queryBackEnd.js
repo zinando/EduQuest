@@ -88,3 +88,12 @@ export function logOutUser () {
   sessionStorage.clear();
   location.href= '/login';
 }
+
+// Function for adding a class
+export function addClass(className) {
+  const url = "/admin_actions/manage_classes";
+  const action = "ADD-CLASS";
+  const req_data = { class_name: className };
+
+  return queryBackEnd(url, req_data, action);
+}

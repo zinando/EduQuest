@@ -173,7 +173,7 @@ export default function Subject() {
                   Close
                 </Button>
                 <Button variant="primary" onClick={handleAddUser}>
-                  Add User
+                  Add Class
                 </Button>
               </Modal.Footer>
             </Modal>

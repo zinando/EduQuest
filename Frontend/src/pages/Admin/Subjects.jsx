@@ -6,19 +6,20 @@ import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
 
-export default function Subjects() {
+export default function Subject() {
   const [users, setUsers] = useState([
     {
       id: 1,
       title: 'Mathematics JS 1',
       subject: 'Mathematics',
-      teacher: 'Mr Tunde',
+      teacher: 'Male',
+      
     },
     {
       id: 2,
-      title: 'English Language JS 3',
+      title: 'English language JS 3',
       subject: 'English',
-      teacher: 'Ms Anna',
+      teacher: 'Female',
     },
   ]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -27,9 +28,8 @@ export default function Subjects() {
   const [newUser, setNewUser] = useState({
     title: '',
     subject: '',
-    teacher: 'Male',
-    email: '',
-    class: 'Class A',
+    teacher: '',
+   
   });
 
   const handleEditUser = (user) => {
@@ -64,14 +64,15 @@ export default function Subjects() {
     setNewUser({
       title: '',
       subject: '',
-      teacher: 'Male',
+      teacher: '',
+      
     });
   };
 
   const handleAddUser = () => {
     const newUserWithId = {
       ...newUser,
-      id: users.length + 1,
+      id: users.length + 1, // Generate a new ID (replace)
     };
     setUsers([...users, newUserWithId]);
     handleCloseAddModal();
@@ -84,7 +85,7 @@ export default function Subjects() {
         <Navbar />
         <div className="home-content">
           <div>
-            <h1 className='custom-heading'>Manage Subjects</h1>
+            <h1 className='custom-heading'>Manage Subject</h1>
             <Button variant="primary" onClick={handleShowAddModal}>
               Add Subject
             </Button>
@@ -94,6 +95,7 @@ export default function Subjects() {
                   <th>Title</th>
                   <th>Subject</th>
                   <th>Teacher</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -102,8 +104,6 @@ export default function Subjects() {
                     <td>{user.title}</td>
                     <td>{user.subject}</td>
                     <td>{user.teacher}</td>
-                    <td>{user.email}</td>
-                    <td>{user.class}</td>
                     <td>
                       <Button variant="primary" onClick={() => handleEditUser(user)}>
                         Edit
@@ -125,18 +125,40 @@ export default function Subjects() {
               <Modal.Body>
                 <Form>
                   <Form.Group controlId="formBasicFirstName">
+                    <Form.Label>Title</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Title"
+                      value={selectedUser?.title || ''}
+                      onChange={(e) =>
+                        setSelectedUser({ ...selectedUser, title: e.target.value })
+                      }
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formBasicLastName">
                     <Form.Label>Subject</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter Subject"
-                      value={selectedUser?.firstName || ''}
+                      value={selectedUser?.subject || ''}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, firstName: e.target.value })
+                        setSelectedUser({ ...selectedUser, subject: e.target.value })
                       }
                     />
                   </Form.Group>
-
-                
+                  
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Teacher</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter Teacher"
+                      value={selectedUser?.teacher || ''}
+                      onChange={(e) =>
+                        setSelectedUser({ ...selectedUser, teacher: e.target.value })
+                      }
+                    />
+                  </Form.Group>
+                  
                 </Form>
               </Modal.Body>
               <Modal.Footer>
@@ -157,18 +179,40 @@ export default function Subjects() {
               <Modal.Body>
                 <Form>
                   <Form.Group controlId="formBasicFirstName">
-                    <Form.Label>Subject</Form.Label>
+                    <Form.Label>Title</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter Suject"
-                      value={newUser.firstName}
+                      placeholder="Enter Title"
+                      value={newUser.title}
                       onChange={(e) =>
-                        setNewUser({ ...newUser, firstName: e.target.value })
+                        setNewUser({ ...newUser, title: e.target.value })
                       }
                     />
                   </Form.Group>
-                 
-             
+                  <Form.Group controlId="formBasicLastName">
+                    <Form.Label>Subject</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter Subject"
+                      value={newUser.subject}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, subject: e.target.value })
+                      }
+                    />
+                  </Form.Group>
+                
+                  <Form.Group controlId="formBasicTeacher">
+                    <Form.Label>Teacher</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter Teacher"
+                      value={newUser.teacher}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, teacher: e.target.value })
+                      }
+                    />
+                  </Form.Group>
+                
                 </Form>
               </Modal.Body>
               <Modal.Footer>
@@ -176,7 +220,7 @@ export default function Subjects() {
                   Close
                 </Button>
                 <Button variant="primary" onClick={handleAddUser}>
-                  Add Subject
+                  Add User
                 </Button>
               </Modal.Footer>
             </Modal>

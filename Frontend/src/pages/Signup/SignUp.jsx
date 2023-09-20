@@ -20,38 +20,48 @@ export default function SignUp() {
   const [errorMessage2, setErrorMessage2] = useState('');
   const [fontColor, setFontColor] = useState('');
   const [resp, setResp] = useState('');
+  const [passwordVisible1, setPasswordVisible1] = useState(false);
+  const [passwordVisible2, setPasswordVisible2] = useState(false);
 
-  // function to handle password validation
-  const checkPassword = async (value, from) => {  
-    if (from == 'p1'){      
+  // Function to handle password validation
+  const checkPassword = async (value, from) => {
+    if (from === 'p1') {
       setPassword(value);
-      const passwordCheck = await validate(value);            
+      const passwordCheck = await validate(value);
       setErrorMessage(passwordCheck.message);
-      if (passwordCheck.status == 1)
-      {
-        setFontColor('#0B88B3'); 
-      } else {setFontColor('#E97464');}
+      if (passwordCheck.status === 1) {
+        setFontColor('#0B88B3');
+      } else {
+        setFontColor('#E97464');
+      }
     } else {
       setPassword2(value);
-      if (value != password){
+      if (value !== password) {
         setErrorMessage2('Passwords DO NOT match!');
       } else {
         setErrorMessage2('');
       }
     }
   }
-    
+
+  // Function to toggle password visibility
+  const togglePasswordVisibility = (field) => {
+    if (field === 'p1') {
+      setPasswordVisible1(!passwordVisible1);
+    } else {
+      setPasswordVisible2(!passwordVisible2);
+    }
+  }
 
   // Function to handle form submission
   const signUp = async (event) => {
     event.preventDefault();
 
     // Prevent submission if passwords do not match
-    if (password2 != password){
+    if (password2 !== password) {
       setResp('Passwords do not match. Please re-check your passwords');
       return false;
     }
-
 
     // Construct the data object with the variable names used in the backend
     const data = {
@@ -163,24 +173,24 @@ export default function SignUp() {
                   <Unicons.UilLock color="#0B88B3" size="25" />
                 </label>
                 <input
-                  type="password"
+                  type={passwordVisible1 ? "text" : "password"}
                   className="form-control"
                   placeholder="Create password"
                   required={true}
                   id="password"
-                  style={{marginLeft: '12px'}}
+                  style={{ marginLeft: '12px' }}
                   value={password}
                   onChange={(e) => checkPassword(e.target.value, 'p1')}
                 />
-                
-
+                <div className="password-toggle" onClick={() => togglePasswordVisibility('p1')}>
+                  {passwordVisible1 ? <Unicons.UilEyeSlash size="20" style={{ color: 'red' }} /> : <Unicons.UilEye size="20" style={{ color: 'red' }} />}
+                </div>
                 {errorMessage === '' ? null :
-                    <span style={{
-                        marginLeft: '10px',
-                        fontSize: '11px',
-                        color: fontColor,
+                  <span style={{
+                    marginLeft: '10px',
+                    fontSize: '11px',
+                    color: fontColor,
                   }}>{errorMessage}</span>}
-                
               </div>
 
               <div className="form-group mb-3 d-flex align-items-center">
@@ -188,22 +198,24 @@ export default function SignUp() {
                   <Unicons.UilLock color="#0B88B3" size="25" />
                 </label>
                 <input
-                  type="password"
+                  type={passwordVisible2 ? "text" : "password"}
                   className="form-control"
                   placeholder="Re-type password"
                   required={true}
                   id="password2"
-                  style={{marginLeft: '12px'}}
+                  style={{ marginLeft: '12px' }}
                   value={password2}
                   onChange={(e) => checkPassword(e.target.value, 'p2')}
                 />
-
+                <div className="password-toggle" onClick={() => togglePasswordVisibility('p2')}>
+                  {passwordVisible2 ? <Unicons.UilEyeSlash size="20" style={{ color: 'red' }} /> : <Unicons.UilEye size="20" style={{ color: 'red' }} />}
+                </div>
                 {errorMessage2 === '' ? null :
-                    <span style={{
-                        marginLeft: '10px',
-                        fontSize: '11px',
-                        color: '#E97464',
-                    }}>{errorMessage2}</span>}
+                  <span style={{
+                    marginLeft: '10px',
+                    fontSize: '11px',
+                    color: '#E97464',
+                  }}>{errorMessage2}</span>}
               </div>
 
               <div className="form-check">

@@ -20,10 +20,7 @@ export default function Exam() {
           <Container>
             <Row>
               <Col xs={8}>
-
                 <Scheduler />
-
-
               </Col>
             </Row>
           </Container>

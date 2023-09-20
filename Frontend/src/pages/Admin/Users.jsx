@@ -1,30 +1,14 @@
-import { useState } from 'react';
-import 'react-calendar/dist/Calendar.css';
+import { useState, useEffect } from 'react'
+import 'react-calendar/dist/Calendar.css'
 import '../Schedule/Schedule.css'
-import '../../layout/Sidebar/SideBar.css';
-import Navbar from '../../layout/NavBar/NavBar';
-import Sidebar from '../../layout/Sidebar/SideBar';
-import { Button, Table, Modal, Form } from 'react-bootstrap';
+import '../../layout/Sidebar/SideBar.css'
+import Navbar from '../../layout/NavBar/NavBar'
+import Sidebar from '../../layout/Sidebar/SideBar'
+import { Button, Table, Modal, Form } from 'react-bootstrap'
+import { addUser } from '../queryBackEnd'
 
 export default function User() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      firstName: 'John',
-      lastName: 'Doe',
-      gender: 'Male',
-      email: 'johndoe@example.com',
-      class: 'Class A',
-    },
-    {
-      id: 2,
-      firstName: 'Jane',
-      lastName: 'Smith',
-      gender: 'Female',
-      email: 'janesmith@example.com',
-      class: 'Class B',
-    },
-  ]);
+  const [users, setUsers] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -35,6 +19,12 @@ export default function User() {
     email: '',
     class: 'Class A',
   });
+
+  useEffect(() => {
+    // Fetch user data from the backend and set it in the users state
+    // Replace this with actual code to fetch user data
+    // fetchUserDataFromBackend().then((data) => setUsers(data));
+  }, []);
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -75,12 +65,23 @@ export default function User() {
   };
 
   const handleAddUser = () => {
-    const newUserWithId = {
-      ...newUser,
-      id: users.length + 1, // Generate a new ID (replace)
-    };
-    setUsers([...users, newUserWithId]);
-    handleCloseAddModal();
+    addUser(newUser)
+      .then((response) => {
+        if (response.status === 1) {
+          const newUserWithId = {
+            ...newUser,
+            id: response.data.id,
+          };
+          setUsers([...users, newUserWithId]);
+          handleCloseAddModal();
+        } else {
+          alert('Failed to add user. Please try again.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error adding user:', error);
+        alert('An error occurred while adding the user. Please try again.');
+      });
   };
 
   return (
@@ -90,11 +91,11 @@ export default function User() {
         <Navbar />
         <div className="home-content">
           <div>
-            <h1 className='custom-heading'>Manage Users</h1>
+            <h1 className="custom-heading">Manage Users</h1>
             <Button variant="primary" onClick={handleShowAddModal}>
               Add User
             </Button>
-            <Table >
+            <Table>
               <thead>
                 <tr>
                   <th>First Name</th>
@@ -114,10 +115,16 @@ export default function User() {
                     <td>{user.email}</td>
                     <td>{user.class}</td>
                     <td>
-                      <Button variant="primary" onClick={() => handleEditUser(user)}>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleEditUser(user)}
+                      >
                         Edit
                       </Button>{' '}
-                      <Button variant="danger" onClick={() => handleDeleteUser(user.id)}>
+                      <Button
+                        variant="danger"
+                        onClick={() => handleDeleteUser(user.id)}
+                      >
                         Delete
                       </Button>
                     </td>
@@ -126,7 +133,6 @@ export default function User() {
               </tbody>
             </Table>
 
-            {/* Edit User Modal */}
             <Modal show={showEditModal} onHide={handleCloseEditModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit User</Modal.Title>
@@ -140,7 +146,10 @@ export default function User() {
                       placeholder="Enter First Name"
                       value={selectedUser?.firstName || ''}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, firstName: e.target.value })
+                        setSelectedUser({
+                          ...selectedUser,
+                          firstName: e.target.value,
+                        })
                       }
                     />
                   </Form.Group>
@@ -151,7 +160,10 @@ export default function User() {
                       placeholder="Enter Last Name"
                       value={selectedUser?.lastName || ''}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, lastName: e.target.value })
+                        setSelectedUser({
+                          ...selectedUser,
+                          lastName: e.target.value,
+                        })
                       }
                     />
                   </Form.Group>
@@ -161,7 +173,10 @@ export default function User() {
                       as="select"
                       value={selectedUser?.gender || 'Male'}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, gender: e.target.value })
+                        setSelectedUser({
+                          ...selectedUser,
+                          gender: e.target.value,
+                        })
                       }
                     >
                       <option value="Male">Male</option>
@@ -175,7 +190,10 @@ export default function User() {
                       placeholder="Enter Email"
                       value={selectedUser?.email || ''}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, email: e.target.value })
+                        setSelectedUser({
+                          ...selectedUser,
+                          email: e.target.value,
+                        })
                       }
                     />
                   </Form.Group>
@@ -185,7 +203,10 @@ export default function User() {
                       as="select"
                       value={selectedUser?.class || 'Class A'}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, class: e.target.value })
+                        setSelectedUser({
+                          ...selectedUser,
+                          class: e.target.value,
+                        })
                       }
                     >
                       <option value="Class A">JS 1</option>
@@ -202,13 +223,15 @@ export default function User() {
                 <Button variant="secondary" onClick={handleCloseEditModal}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={() => handleUpdateUser(selectedUser)}>
+                <Button
+                  variant="primary"
+                  onClick={() => handleUpdateUser(selectedUser)}
+                >
                   Save Changes
                 </Button>
               </Modal.Footer>
             </Modal>
 
-            {/* Add User Modal */}
             <Modal show={showAddModal} onHide={handleCloseAddModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Add User</Modal.Title>
@@ -273,8 +296,8 @@ export default function User() {
                       <option value="Class A">JS 1</option>
                       <option value="Class B">JS 2</option>
                       <option value="Class C">JS 3</option>
-                      <option value="Class C">SS 1</option>
-                      <option value="Class C">SS 2</option>
+                      <option value="Class A">SS 1</option>
+                      <option value="Class B">SS 2</option>
                       <option value="Class C">SS 3</option>
                     </Form.Control>
                   </Form.Group>

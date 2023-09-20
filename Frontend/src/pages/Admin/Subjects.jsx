@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
-import '../Schedule/Schedule.css'
+import '../Schedule/Schedule.css';
 import '../../layout/Sidebar/SideBar.css';
 import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
+
+// Import the addSubject function here
+import { addSubject } from '../queryBackEnd'
 
 export default function Subject() {
   const [users, setUsers] = useState([
@@ -13,7 +16,6 @@ export default function Subject() {
       title: 'Mathematics JS 1',
       subject: 'Mathematics',
       teacher: 'Male',
-      
     },
     {
       id: 2,
@@ -29,7 +31,6 @@ export default function Subject() {
     title: '',
     subject: '',
     teacher: '',
-   
   });
 
   const handleEditUser = (user) => {
@@ -65,17 +66,37 @@ export default function Subject() {
       title: '',
       subject: '',
       teacher: '',
-      
     });
   };
 
-  const handleAddUser = () => {
-    const newUserWithId = {
-      ...newUser,
-      id: users.length + 1, // Generate a new ID (replace)
-    };
-    setUsers([...users, newUserWithId]);
-    handleCloseAddModal();
+  // Function to add a subject
+  const addSubjectHandler = () => {
+    const { title, subject, teacher } = newUser;
+
+    if (title && subject && teacher) {
+      addSubject(title, subject, teacher)
+        .then((response) => {
+          if (response.status === 1) {
+            setUsers([
+              ...users,
+              {
+                id: users.length + 1,
+                title: title,
+                subject: subject,
+                teacher: teacher,
+              },
+            ]);
+            handleCloseAddModal();
+          } else {
+            console.error(response.message);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      console.error('All fields are required');
+    }
   };
 
   return (
@@ -85,11 +106,11 @@ export default function Subject() {
         <Navbar />
         <div className="home-content">
           <div>
-            <h1 className='custom-heading'>Manage Subject</h1>
+            <h1 className="custom-heading">Manage Subject</h1>
             <Button variant="primary" onClick={handleShowAddModal}>
               Add Subject
             </Button>
-            <Table >
+            <Table>
               <thead>
                 <tr>
                   <th>Title</th>
@@ -146,11 +167,11 @@ export default function Subject() {
                       }
                     />
                   </Form.Group>
-                  
+
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label>Teacher</Form.Label>
                     <Form.Control
-                      type="email"
+                      type="text"
                       placeholder="Enter Teacher"
                       value={selectedUser?.teacher || ''}
                       onChange={(e) =>
@@ -158,7 +179,6 @@ export default function Subject() {
                       }
                     />
                   </Form.Group>
-                  
                 </Form>
               </Modal.Body>
               <Modal.Footer>
@@ -200,11 +220,11 @@ export default function Subject() {
                       }
                     />
                   </Form.Group>
-                
-                  <Form.Group controlId="formBasicTeacher">
+
+                  <Form.Group controlId="formBasicEmail">
                     <Form.Label>Teacher</Form.Label>
                     <Form.Control
-                      type="email"
+                      type="text"
                       placeholder="Enter Teacher"
                       value={newUser.teacher}
                       onChange={(e) =>
@@ -212,15 +232,14 @@ export default function Subject() {
                       }
                     />
                   </Form.Group>
-                
                 </Form>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseAddModal}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleAddUser}>
-                  Add User
+                <Button variant="primary" onClick={addSubjectHandler}>
+                  Add Subject
                 </Button>
               </Modal.Footer>
             </Modal>

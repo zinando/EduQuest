@@ -6,7 +6,7 @@ import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
 
-export default function Subject() {
+export default function User() {
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -188,9 +188,12 @@ export default function Subject() {
                         setSelectedUser({ ...selectedUser, class: e.target.value })
                       }
                     >
-                      <option value="Class A">Class A</option>
-                      <option value="Class B">Class B</option>
-                      <option value="Class C">Class C</option>
+                      <option value="Class A">JS 1</option>
+                      <option value="Class B">JS 2</option>
+                      <option value="Class C">JS 3</option>
+                      <option value="Class A">SS 1</option>
+                      <option value="Class B">SS 2</option>
+                      <option value="Class C">SS 3</option>
                     </Form.Control>
                   </Form.Group>
                 </Form>

@@ -5,19 +5,17 @@ import '../../layout/Sidebar/SideBar.css';
 import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
+import queryBackEnd from '../queryBackEnd'
 
 export default function Classes() {
   const [users, setUsers] = useState([
     {
       id: 1,
       class: 'JS 1',
-      
-
     },
     {
       id: 2,
       class: 'JS 3',
-      
     },
   ]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -25,8 +23,6 @@ export default function Classes() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [newUser, setNewUser] = useState({
     class: '',
-   
-
   });
 
   const handleEditUser = (user) => {
@@ -60,18 +56,29 @@ export default function Classes() {
     setShowAddModal(false);
     setNewUser({
       class: '',
-      
-
     });
   };
 
-  const handleAddUser = () => {
-    const newUserWithId = {
-      ...newUser,
-      id: users.length + 1, // Generate a new ID (replace)
-    };
-    setUsers([...users, newUserWithId]);
-    handleCloseAddModal();
+  // Function to add a class
+  const addClass = () => {
+    const className = newUser.class;
+
+    if (className) {
+      queryBackEnd('/admin_actions/manage_classes', { class_name: className }, 'ADD-CLASS', 'POST')
+        .then((response) => {
+          if (response.status === 1) {
+            setUsers([...users, { id: users.length + 1, class: className }]);
+            handleCloseAddModal();
+          } else {
+            console.error(response.message);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else {
+      console.error('Class name cannot be empty');
+    }
   };
 
   return (
@@ -89,14 +96,12 @@ export default function Classes() {
               <thead>
                 <tr>
                   <th>Class</th>
-                  
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
                     <td>{user.class}</td>
-                   
                     <td>
                       <Button variant="primary" onClick={() => handleEditUser(user)}>
                         Edit
@@ -128,20 +133,6 @@ export default function Classes() {
                       }
                     />
                   </Form.Group>
-                  <Form.Group controlId="formBasicLastName">
-                    <Form.Label>Class</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Class"
-                      value={selectedUser?.class || ''}
-                      onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, class: e.target.value })
-                      }
-                    />
-                  </Form.Group>
-
-            
-
                 </Form>
               </Modal.Body>
               <Modal.Footer>
@@ -161,7 +152,6 @@ export default function Classes() {
               </Modal.Header>
               <Modal.Body>
                 <Form>
-                 
                   <Form.Group controlId="formBasicClass">
                     <Form.Label>Class</Form.Label>
                     <Form.Control
@@ -174,22 +164,19 @@ export default function Classes() {
                       <option value="Class A">JS 1</option>
                       <option value="Class B">JS 2</option>
                       <option value="Class C">JS 3</option>
-                      <option value="Class C">SS 1</option>
-                      <option value="Class C">SS 2</option>
-                      <option value="Class C">SS 3</option>
+                      <option value="Class D">SS 1</option>
+                      <option value="Class E">SS 2</option>
+                      <option value="Class F">SS 3</option>
                     </Form.Control>
                   </Form.Group>
-
-                
-
                 </Form>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseAddModal}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={handleAddUser}>
-                  Add User
+                <Button variant="primary" onClick={addClass}>
+                  Add Class
                 </Button>
               </Modal.Footer>
             </Modal>

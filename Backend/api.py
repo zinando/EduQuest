@@ -71,11 +71,11 @@ def dashboard(user: str):
         message = 'User does not have access privilege'
         return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
 
-    # return json.dumps({'status': 1, 'data': str(current_user), 'message': 'success', 'error': None})
 
     if user == "SUPER":
         if request.args.get("action") == "FETCH-EXAM-INSTANCES":
-            pass
+            data = resource.fetch_examina()
+            return json.dumps({'status': 1, 'data': data, 'message': 'success!', 'error': [None]})
 
     if user == "STUDENT":
         pass

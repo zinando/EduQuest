@@ -1,5 +1,5 @@
 """ this module contains functions that provide resources to clients """
-from models import User, Subjects, Cohorts
+from models import User, Subjects, Cohorts, Examina
 from extensions import db
 from flask import session
 
@@ -39,5 +39,22 @@ def fetch_classes(scope_id: int = 0):
         mr['id'] = subj.cid
         mr['name'] = subj.classname
         data.append(mr)
+
+    return data
+
+
+def fetch_examina() -> list:
+    """ fetches all examination instances """
+    exams = Examina.query.order_by(Examina.start.desc())
+    data = []
+    if exams:
+        for exam in exams:
+            mr = {}
+            mr['title'] = exam.title
+            mr['type'] = exam.type
+            mr['classes'] = ''  # list of class names
+            mr['start_time'] = exam.start
+            mr['end_time'] = exam.end
+            data.append(mr)
 
     return data

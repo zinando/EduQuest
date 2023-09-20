@@ -84,10 +84,9 @@ class Examina(db.Model):
     """This is the model for session examination instance"""
     __tablename__ = "examina"
     exid = db.Column(db.Integer, primary_key=True)
-    session_code = db.Column(db.String(25), nullable=False)
-    year = db.Column(db.Date(), nullable=False)
+    title = db.Column(db.String(50), nullable=False)
     type = db.Column(db.String(25))  # e.g test,examination
-    subjects = db.Column(db.String(625), nullable=False)
+    cohorts = db.Column(db.String(625), nullable=False)
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
     reg_date = db.Column(db.DateTime(), default=func.now())

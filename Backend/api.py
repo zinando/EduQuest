@@ -115,8 +115,7 @@ def admin_actions(action: str):
             data = request.get_json()
             try:
                 Subjects(subj_code="{}".format(myfunc.random_numbers()), title=data['title'],
-                         general_title=data['general_title'], subject_class=data['class'],
-                         subject_expert=data['teacher']).add()
+                         general_title=data['general_title'], subject_class=data['class']).add()
                 db.session.commit()
                 status = 1
                 message = 'Subject added successfully'

@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     userid = db.Column(db.String(45), nullable=False, unique=True)
-    cohort_id = db.Column(db.Integer, db.ForeignKey("student_class.cid"))
+    cohort = db.Column(db.Integer, db.ForeignKey("student_class.cid"))
     fname = db.Column(db.String(50), nullable=False)
     sname = db.Column(db.String(50), nullable=False)
     oname = db.Column(db.String(225), nullable=True)
@@ -28,8 +28,8 @@ class User(UserMixin, db.Model):
     activated = db.Column(db.Integer, default=0)
     activatecode = db.Column(db.String(255), nullable=True)
     last_activation_code_time = db.Column(db.DateTime(), nullable=True)
-    courses = db.relationship("Subjects", secondary="user_subjects", backref="students")
-    linkcohort = db.relationship("Cohorts", backref="students")
+    #courses = db.relationship("Subjects", secondary="user_subjects", backref="students")
+    #linkcohort = db.relationship("Cohorts", backref="students")
 
     def __str__(self):
         return "{} {} {} class {}".format(self.userid, self.sname, self.fname, self.cohort_id)
@@ -52,6 +52,8 @@ class Cohorts(db.Model):
     cid = db.Column(db.Integer, primary_key=True)
     classname = db.Column(db.String(50), nullable=False, unique=True)
     reg_date = db.Column(db.DateTime(), default=func.now())
+    linksubjects = db.relationship("Subjects", backref="subject_class")
+    linkuser = db.relationship("User", backref="cohort")
 
 
 class Subjects(db.Model):
@@ -61,7 +63,7 @@ class Subjects(db.Model):
     subj_code = db.Column(db.String(20), nullable=False)
     title = db.Column(db.String(20), nullable=False)
     general_title = db.Column(db.String(20), nullable=False)
-    subject_class = db.Column(db.Integer, nullable=False)
+    subject_class = db.Column(db.Integer, db.ForeignKey('student_class.cid'), nullable=False)
     subject_expert = db.Column(db.Integer, nullable=True)
     reg_date = db.Column(db.DateTime(), default=func.now())
 
@@ -120,9 +122,9 @@ class Result(db.Model):
     linkclassresult = db.relationship("ClassResult", backref="class_results")
 
 
-class UserSubjects(db.Model):
-    """This is an intermediate table that defines many-to-many relationship between Subjects and Users Models"""
-    __tablename__ = "user_subjects"
-    us_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    subject_id = db.Column(db.Integer, db.ForeignKey('subjects.sid'), primary_key=True)
+# class UserSubjects(db.Model):
+    # """This is an intermediate table that defines many-to-many relationship between Subjects and Users Models"""
+    # __tablename__ = "user_subjects"
+    # us_id = db.Column(db.Integer, primary_key=True)
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    # subject_id = db.Column(db.Integer, db.ForeignKey('subjects.sid'), primary_key=True)

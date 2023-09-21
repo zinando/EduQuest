@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 
 
 
+
 export default function Landing() {
   useEffect(() => {
     AOS.init({
@@ -65,7 +66,7 @@ export default function Landing() {
               style={{ marginTop: '10px' }}
               >
                 <Link to="/login">
-                  <b>Log In</b>
+                  <b>Log In</b> 
                 </Link>
               </Nav.Item>
             </Nav>
@@ -203,7 +204,8 @@ export default function Landing() {
                   achieve your educational goals
                 </li>
               </ul>
-              <p>
+              
+             <p>
                 <a href="#" className="btn btn-primary">
                   About us
                 </a>
@@ -226,6 +228,26 @@ export default function Landing() {
           </div>
         </div>
       </div>
+      <h2>The authors of the application</h2>
+            <div class='authors'>
+                  <div class="slide">
+                    <img src="./images/image2.jpg" alt="image2"style={{width: 200, height: 200, borderRadius:150,}}/>
+                    <p>Front-end Developer<br/>Peace Chinagwam </p>
+                  </div>
+                  <div class="slide">
+                    <img src="./images/image4.jpg" alt="image4"style={{width: 200, height: 200, borderRadius:150,}}/>
+                    <p>Front-end Developer<br/>ALI Essonani </p>
+                  </div>
+                    <div class="slide">
+                      <img src="./images/image1.jpg" alt="image1"style={{width: 200, height: 200, borderRadius:150,}}/>
+                      <p>Backend Developer <br/>Samuel Ndubumma </p>
+                    </div>
+                  <div class="slide">
+                    <img src="./images/image3.jpg" alt="image3"style={{width: 200, height: 200, borderRadius:150,}}/>
+                    <p>Backend Developer <br/>Justice Maduka </p>
+                    </div>
+            </div>
+
       <footer
         style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 5 }}
       >

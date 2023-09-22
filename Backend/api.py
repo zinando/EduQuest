@@ -40,6 +40,7 @@ def index():
 @app.route("/signup", methods=["POST"])
 def signup() -> str:
     """ receives sign up request and converts the data into python dict then returns a response """
+    # db.create_all()
     data = request.get_json()
     auth = UserAuth(data['email'], data['password'], first_name=data['first_name'], admin_type='super',
                     other_names=data['other_names'], email=data['email'], surname=data['surname'])

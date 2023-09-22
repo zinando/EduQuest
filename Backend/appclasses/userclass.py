@@ -27,7 +27,7 @@ class USERCLASS:
         info['email'] = user.email
         info['full_name'] = "{} {} {}".format(user.sname, user.fname, user.oname)
         info['admin_type'] = user.admin_type
-        info['user_class'] = user.linkcohort
+        info['user_class'] = user.cohort.classname if user.cohort else ""
         # info['subjects'] = [x for x in user.courses]
 
         return info

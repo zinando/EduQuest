@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     userid = db.Column(db.String(45), nullable=False, unique=True)
-    cohort = db.Column(db.Integer, db.ForeignKey("student_class.cid"))
+    cohort_id = db.Column(db.Integer, db.ForeignKey("student_class.cid"))
     fname = db.Column(db.String(50), nullable=False)
     sname = db.Column(db.String(50), nullable=False)
     oname = db.Column(db.String(225), nullable=True)
@@ -28,8 +28,8 @@ class User(UserMixin, db.Model):
     activated = db.Column(db.Integer, default=0)
     activatecode = db.Column(db.String(255), nullable=True)
     last_activation_code_time = db.Column(db.DateTime(), nullable=True)
-    #courses = db.relationship("Subjects", secondary="user_subjects", backref="students")
-    #linkcohort = db.relationship("Cohorts", backref="students")
+    results = db.relationship("Result", backref="user")
+
 
     def __str__(self):
         return "{} {} {} class {}".format(self.userid, self.sname, self.fname, self.cohort_id)
@@ -52,8 +52,9 @@ class Cohorts(db.Model):
     cid = db.Column(db.Integer, primary_key=True)
     classname = db.Column(db.String(50), nullable=False, unique=True)
     reg_date = db.Column(db.DateTime(), default=func.now())
-    linksubjects = db.relationship("Subjects", backref="subject_class")
-    linkuser = db.relationship("User", backref="cohort")
+    subjects = db.relationship("Subjects", backref="cohort")
+    students = db.relationship("User", backref="cohort")
+    results = db.relationship("Result", backref="cohort")
 
 
 class Subjects(db.Model):
@@ -63,9 +64,11 @@ class Subjects(db.Model):
     subj_code = db.Column(db.String(20), nullable=False)
     title = db.Column(db.String(20), nullable=False)
     general_title = db.Column(db.String(20), nullable=False)
-    subject_class = db.Column(db.Integer, db.ForeignKey('student_class.cid'), nullable=False)
+    cohort_id = db.Column(db.Integer, db.ForeignKey('student_class.cid'), nullable=False)
     subject_expert = db.Column(db.Integer, nullable=True)
     reg_date = db.Column(db.DateTime(), default=func.now())
+    questions = db.relationship("Questions", backref="subject")
+    results = db.relationship("Result", backref="subject")
 
 class Questions(db.Model):
     """This is the model for sessional exam questions"""
@@ -73,13 +76,9 @@ class Questions(db.Model):
     qid = db.Column(db.Integer, primary_key=True)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.sid'), nullable=False)
     examina_id = db.Column(db.Integer, db.ForeignKey('examina.exid'), nullable=False)
-    cohort_id = db.Column(db.Integer, db.ForeignKey("student_class.cid"), nullable=False)
     content = db.Column(db.String(625), nullable=True)
     approval_request = db.Column(db.Integer, default=0)
     approval_status = db.Column(db.String(22), default="pending")
-    linkexamina = db.relationship("Examina", backref="questions")
-    linksubjects = db.relationship("Subjects", backref="questions")
-    linkcohort = db.relationship("Cohorts", backref="questions")
 
 
 class Examina(db.Model):
@@ -92,6 +91,8 @@ class Examina(db.Model):
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
     reg_date = db.Column(db.DateTime(), default=func.now())
+    questions = db.relationship("Questions", backref="examina")
+    results = db.relationship("Result", backref="examina")
 
 
 class ClassResult(db.Model):
@@ -104,6 +105,7 @@ class ClassResult(db.Model):
     admin_approval = db.Column(db.String(20), ENUM('pending', 'approved'), default='pending')
     admin_action = db.Column(db.String(20), ENUM('canceled', 'released'), default='released')
     publish_date = db.Column(db.DateTime())
+    results = db.relationship("Result", backref="class_result")
 
 
 class Result(db.Model):
@@ -111,20 +113,10 @@ class Result(db.Model):
     __tablename__ = "result"
     rid = db.Column(db.Integer, primary_key=True)
     classresult_id = db.Column(db.Integer, db.ForeignKey("class_result.crid"))
+    examina_id = db.Column(db.Integer, db.ForeignKey("examina.exid"))
     cohort_id = db.Column(db.Integer, db.ForeignKey("student_class.cid"))
-    userid = db.Column(db.Integer, db.ForeignKey("users.id"))
-    subject = db.Column(db.Integer, db.ForeignKey("subjects.sid"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    subject_id = db.Column(db.Integer, db.ForeignKey("subjects.sid"))
     admin_action = db.Column(db.String(20), ENUM('seized', 'released'), default='released')
     reg_date = db.Column(db.DateTime(), default=func.now())
-    linkuser = db.relationship("User", backref="user_results")
-    linkcohort = db.relationship("Cohorts", backref="cohort_results")
-    linksubject = db.relationship("Subjects", backref="subject_results")
-    linkclassresult = db.relationship("ClassResult", backref="class_results")
 
-
-# class UserSubjects(db.Model):
-    # """This is an intermediate table that defines many-to-many relationship between Subjects and Users Models"""
-    # __tablename__ = "user_subjects"
-    # us_id = db.Column(db.Integer, primary_key=True)
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    # subject_id = db.Column(db.Integer, db.ForeignKey('subjects.sid'), primary_key=True)

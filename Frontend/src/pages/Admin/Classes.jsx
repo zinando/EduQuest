@@ -8,6 +8,8 @@ import { Button, Table, Modal, Form } from 'react-bootstrap';
 import queryBackEnd from '../queryBackEnd'
 
 export default function Classes() {
+
+  
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -67,19 +69,33 @@ export default function Classes() {
       queryBackEnd('/admin_actions/manage_classes', { class_name: className }, 'ADD-CLASS', 'POST')
         .then((response) => {
           if (response.status === 1) {
-            setUsers([...users, { id: users.length + 1, class: className }]);
+            // Extract the newly added class from the response
+            const newClass = {
+              id: response.data.id,
+              class: response.data.name,
+            };
+
+            // Update the users state with the new class
+            setUsers([...users, newClass]);
             handleCloseAddModal();
           } else {
-            console.error(response.message);
+            // Handle case where operation was not successful
+            console.error('Operation was not successful:', response.message);
+            alert('Operation was not successful. Please try again later.');
           }
         })
         .catch((error) => {
-          console.error(error);
+          console.error('Error:', error);
+          // display an error message to the user
+          alert('An error occurred while processing your request. Please try again later.');
         });
     } else {
       console.error('Class name cannot be empty');
+      alert('Class name cannot be empty.');
     }
   };
+
+
 
   return (
     <>
@@ -145,6 +161,7 @@ export default function Classes() {
               </Modal.Footer>
             </Modal>
 
+            
             {/* Add User Modal */}
             <Modal show={showAddModal} onHide={handleCloseAddModal}>
               <Modal.Header closeButton>

@@ -182,7 +182,7 @@ export default function Landing() {
               <p style={{ color: "black" }}>
                 Choose our educational app for an exceptional experience. With a
                 variety of captivating teachers and exams, a user-friendly
-                interface, and periodic end-of-session exam tracking, we&aposre your
+                interface, and periodic end-of-session exam tracking, we are your
                 ideal partner in your quest for knowledge. Join our community of
                 passionate users today and take the first step towards a brighter
                 future..

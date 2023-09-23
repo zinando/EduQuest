@@ -134,8 +134,8 @@ footer {
 
 .slide {
   display: inline-block;
-  width: 100%;
-  animation: defilement 30s linear infinite;
+  width: 25%;
+  animation: defilement 10s linear infinite;
 }
 
 .slide img {
@@ -154,4 +154,5 @@ footer {
 
 p{
   color: black;
+  text-align: left;
     }

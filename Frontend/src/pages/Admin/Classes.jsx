@@ -114,10 +114,9 @@ export default function Classes() {
   };
 
   const handleDeleteUser = (userId) => {
-    // Display a confirmation 
+    // Display a confirmation
     Swal.fire({
       title: 'Are you sure?',
-      text: 'Once deleted, you will not be able to recover this class!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete!',
@@ -126,8 +125,47 @@ export default function Classes() {
     }).then((result) => {
       if (result.isConfirmed) {
         // User confirmed the deletion, proceed with deletion
-        const updatedUsers = users.filter((user) => user.id !== userId);
-        setUsers(updatedUsers);
+        const classIdToDelete = userId;
+
+        // Prepare data for the delete request
+        const deleteData = {
+          id: classIdToDelete,
+        };
+
+        // Send the delete request
+        queryBackEnd(fetchUrl, deleteData, 'DELETE-CLASS', fetchMethod)
+          .then((response) => {
+            if (response.status === 1 && Array.isArray(response.data)) {
+              // Update the users state with the new list of classes after deletion
+              setUsers(response.data.map((classObj) => ({
+                id: classObj.id,
+                class: classObj.name,
+              })));
+
+              // Display a success message
+              Swal.fire({
+                icon: 'success',
+                title: 'Class Deleted',
+                text: 'Class has been deleted successfully.',
+              });
+            } else {
+              console.error('Operation was not successful:', response.message);
+              // Display the error message from the API response
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: response.message || 'Failed to delete the class. Please try again later.',
+              });
+            }
+          })
+          .catch((error) => {
+            console.error('Network error:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Network Error',
+              text: 'Please check your internet connection and try again.',
+            });
+          });
       }
     });
   };

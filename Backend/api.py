@@ -89,12 +89,10 @@ def dashboard(user: str):
 
 
 @app.route("/admin_actions/<action>", methods=["GET", "POST"])
+@jwt_required()
 def admin_actions(action: str):
     """ this serves all resources associated with admin action menu """
     # db.create_all()
-    usr = User()
-    if usr.decode_auth_token(data['auth_token'])['status'] > 1:
-        return json.dumps(usr.decode_auth_token(data['auth_token']))
     if action == "manage_users":
         if request.args.get("action") == "FETCH-USERS":
             worker = USERCLASS()

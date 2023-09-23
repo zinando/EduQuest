@@ -137,6 +137,12 @@ def admin_actions(action: str):
             db.session.commit()
             worker = resource.fetch_classes()
             return json.dumps({'status': 1, 'data': worker, 'message': 'class updated successfully', 'error': None})
+        elif request.args.get('action') == 'DELETE-CLASS':
+            data = request.get_json()
+            db.session.query(Cohorts).filter_by(cid=data['id']).delete()
+            db.session.commit()
+            worker = resource.fetch_classes()
+            return json.dumps({'status': 1, 'data': worker, 'message': 'class deleted successfully', 'error': None})
         elif request.args.get("action") == "ADD-CLASS":
             data = request.get_json()
             try:

@@ -4,7 +4,7 @@ import {useIdleTimer} from 'react-idle-timer';
 export default function useIdle({
     //ADD THE onIdle AND idleTime props
     onIdle,
-    idleTime=5
+    idleTime=30
 }){
 	const [isIdle, setIsIdle] = useState();
 

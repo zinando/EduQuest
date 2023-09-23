@@ -5,9 +5,8 @@ import '../../layout/Sidebar/SideBar.css';
 import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
+import { addSubject } from '../queryBackEnd';
 
-// Import the addSubject function here
-import { addSubject } from '../queryBackEnd'
 
 export default function Subject() {
   const [users, setUsers] = useState([
@@ -16,12 +15,14 @@ export default function Subject() {
       title: 'Mathematics JS 1',
       subject: 'Mathematics',
       teacher: 'Male',
+      subjectClass: 'Class 1',
     },
     {
       id: 2,
       title: 'English language JS 3',
       subject: 'English',
       teacher: 'Female',
+      subjectClass: 'Class 3',
     },
   ]);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -31,6 +32,7 @@ export default function Subject() {
     title: '',
     subject: '',
     teacher: '',
+    subjectClass: 'Class 1', 
   });
 
   const handleEditUser = (user) => {
@@ -66,27 +68,20 @@ export default function Subject() {
       title: '',
       subject: '',
       teacher: '',
+      subjectClass: 'Class 1', 
     });
   };
 
   // Function to add a subject
   const addSubjectHandler = () => {
-    const { title, subject, teacher } = newUser;
+    const { title, generalTitle, subjectClass, teacher } = newUser;
 
-    if (title && subject && teacher) {
-      addSubject(title, subject, teacher)
+    if (title && generalTitle && subjectClass && teacher) {
+     
+      addSubject(title, generalTitle, subjectClass, teacher)
         .then((response) => {
           if (response.status === 1) {
-            setUsers([
-              ...users,
-              {
-                id: users.length + 1,
-                title: title,
-                subject: subject,
-                teacher: teacher,
-              },
-            ]);
-            handleCloseAddModal();
+            // Subject added successfully, 
           } else {
             console.error(response.message);
           }
@@ -95,9 +90,13 @@ export default function Subject() {
           console.error(error);
         });
     } else {
+      // Display an error message when any of the fields is empty
       console.error('All fields are required');
     }
   };
+
+
+
 
   return (
     <>
@@ -116,6 +115,7 @@ export default function Subject() {
                   <th>Title</th>
                   <th>Subject</th>
                   <th>Teacher</th>
+                  <th>Subject Class</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -125,6 +125,7 @@ export default function Subject() {
                     <td>{user.title}</td>
                     <td>{user.subject}</td>
                     <td>{user.teacher}</td>
+                    <td>{user.subjectClass}</td>
                     <td>
                       <Button variant="primary" onClick={() => handleEditUser(user)}>
                         Edit
@@ -179,6 +180,21 @@ export default function Subject() {
                       }
                     />
                   </Form.Group>
+
+                  <Form.Group controlId="formBasicSubjectClass">
+                    <Form.Label>Subject Class</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={selectedUser?.subjectClass || ''}
+                      onChange={(e) =>
+                        setSelectedUser({ ...selectedUser, subjectClass: e.target.value })
+                      }
+                    >
+                      <option value="Class 1">Class 1</option>
+                      <option value="Class 2">Class 2</option>
+                      {/* Add more options for different classes */}
+                    </Form.Control>
+                  </Form.Group>
                 </Form>
               </Modal.Body>
               <Modal.Footer>
@@ -231,6 +247,21 @@ export default function Subject() {
                         setNewUser({ ...newUser, teacher: e.target.value })
                       }
                     />
+                  </Form.Group>
+
+                  <Form.Group controlId="formBasicSubjectClass">
+                    <Form.Label>Subject Class</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={newUser.subjectClass}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, subjectClass: e.target.value })
+                      }
+                    >
+                      <option value="Class 1">Class 1</option>
+                      <option value="Class 2">Class 2</option>
+                      {/* Add more options for different classes */}
+                    </Form.Control>
                   </Form.Group>
                 </Form>
               </Modal.Body>

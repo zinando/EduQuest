@@ -139,12 +139,14 @@ def admin_actions(action: str):
                 status = 1
                 message = 'Class added successfully'
                 error = None
+                classList = resource.fetch_classes()
             except Exception as e:
                 status = 2
                 message = 'Operation was not successful'
                 error = [str(e)]
+                classList = None
 
-            response = {'status': status, 'data': None, 'message': message, 'error': error}
+            response = {'status': status, 'data': classList, 'message': message, 'error': error}
             return json.dumps(response)
 
 

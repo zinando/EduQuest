@@ -6,6 +6,10 @@ import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
 import queryBackEnd from '../queryBackEnd'
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+
 
 export default function Classes() {
 
@@ -68,32 +72,42 @@ export default function Classes() {
     if (className) {
       queryBackEnd('/admin_actions/manage_classes', { class_name: className }, 'ADD-CLASS', 'POST')
         .then((response) => {
-          if (response.status === 1) {
-            // Extract the newly added class from the response
-            const newClass = {
-              id: response.data.id,
-              class: response.data.name,
-            };
+          console.log('API Response:', response);
 
-            // Update the users state with the new class
-            setUsers([...users, newClass]);
+          if (response.status === 1 && Array.isArray(response.data)) {
+            // Update the users state with the new list of classes
+            setUsers(response.data.map((classObj) => ({
+              id: classObj.id,
+              class: classObj.name,
+            })));
             handleCloseAddModal();
           } else {
-            // Handle case where operation was not successful
             console.error('Operation was not successful:', response.message);
-            alert('Operation was not successful. Please try again later.');
+            // Display the error message from the API response
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: response.message || 'Failed to add the class. Please try again later.',
+            });
           }
         })
         .catch((error) => {
-          console.error('Error:', error);
-          // display an error message to the user
-          alert('An error occurred while processing your request. Please try again later.');
+          console.error('Network error:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Network Error',
+            text: 'Please check your internet connection and try again.',
+          });
         });
     } else {
-      console.error('Class name cannot be empty');
-      alert('Class name cannot be empty.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Class name cannot be empty.',
+      });
     }
   };
+
 
 
 

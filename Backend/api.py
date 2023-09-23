@@ -133,10 +133,20 @@ def admin_actions(action: str):
             return json.dumps({'status': 1, 'data': worker, 'message': 'ok', 'error': None})
         elif request.args.get('action') == 'EDIT-CLASS':
             data = request.get_json()
-            db.session.query(Cohorts).filter_by(cid=data['id']).update({'classname': data['name']})
-            db.session.commit()
-            worker = resource.fetch_classes()
-            return json.dumps({'status': 1, 'data': worker, 'message': 'class updated successfully', 'error': None})
+            try:
+                db.session.query(Cohorts).filter_by(cid=data['id']).update({'classname': data['class_name']})
+                db.session.commit()
+                worker = resource.fetch_classes()
+                message = "class updated successfully"
+                status = 1
+                error = None
+            except Exception as e:
+                error = [str(e)]
+                status = 2
+                message = 'Operation was not successful'
+                worker = None
+            print(error)
+            return json.dumps({'status': status, 'data': worker, 'message': message, 'error': error})
         elif request.args.get('action') == 'DELETE-CLASS':
             data = request.get_json()
             db.session.query(Cohorts).filter_by(cid=data['id']).delete()

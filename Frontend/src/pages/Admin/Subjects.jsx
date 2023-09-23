@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import '../Schedule/Schedule.css';
 import '../../layout/Sidebar/SideBar.css';
@@ -7,24 +7,10 @@ import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
 import { addSubject } from '../queryBackEnd';
 
-
 export default function Subject() {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      title: 'Mathematics JS 1',
-      subject: 'Mathematics',
-      teacher: 'Male',
-      subjectClass: 'Class 1',
-    },
-    {
-      id: 2,
-      title: 'English language JS 3',
-      subject: 'English',
-      teacher: 'Female',
-      subjectClass: 'Class 3',
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -32,8 +18,69 @@ export default function Subject() {
     title: '',
     subject: '',
     teacher: '',
-    subjectClass: 'Class 1', 
+    subjectClass: '',
   });
+
+  useEffect(() => {
+    // Fetch subjects and classes when the component mounts
+    fetchSubjects();
+    fetchClasses();
+  }, []);
+
+  const fetchSubjects = () => {
+    const url = '/admin_actions/manage_subjects';
+    const action = 'FETCH-SUBJECTS';
+    const data = {};
+    const method = 'POST';
+
+    // Fetch subjects from the backend
+    fetch(`${url}?action=${action}`, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text(); 
+      })
+      .then((data) => {
+        try {
+          const jsonData = JSON.parse(data);
+          if (Array.isArray(jsonData.data)) {
+            setSubjects(jsonData.data); 
+          } else {
+            console.error('Invalid data format for subjects');
+          }
+        } catch (error) {
+          console.error('Error parsing JSON data:', error);
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
+
+  const fetchClasses = () => {
+    const url = '/admin_actions/manage_classes';
+    const action = 'FETCH-CLASSES';
+    const data = {};
+    const method = 'POST';
+
+    // Fetch classes from the backend
+    fetch(`${url}?action=${action}`, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => setClasses(data.data)) 
+      .catch((error) => console.error(error));
+  };
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -68,20 +115,20 @@ export default function Subject() {
       title: '',
       subject: '',
       teacher: '',
-      subjectClass: 'Class 1', 
+      subjectClass: 'Class 1',
     });
   };
 
   // Function to add a subject
   const addSubjectHandler = () => {
-    const { title, generalTitle, subjectClass, teacher } = newUser;
+    const { title, subject, teacher, subjectClass } = newUser;
 
-    if (title && generalTitle && subjectClass && teacher) {
-     
-      addSubject(title, generalTitle, subjectClass, teacher)
+    if (title && subject && subjectClass) {
+      // All required fields have values, proceed with adding the subject
+      addSubject(title, subject, teacher, subjectClass)
         .then((response) => {
           if (response.status === 1) {
-            // Subject added successfully, 
+            // Subject added successfully, update the state 
           } else {
             console.error(response.message);
           }
@@ -90,13 +137,10 @@ export default function Subject() {
           console.error(error);
         });
     } else {
-      // Display an error message when any of the fields is empty
-      console.error('All fields are required');
+      // Display an error message when any of the required fields is empty
+      console.error('All required fields are not filled');
     }
   };
-
-
-
 
   return (
     <>
@@ -123,9 +167,9 @@ export default function Subject() {
                 {users.map((user) => (
                   <tr key={user.id}>
                     <td>{user.title}</td>
-                    <td>{user.subject}</td>
+                    <td>{subjects.find((subject) => subject.id === user.subject)?.name || 'N/A'}</td>
                     <td>{user.teacher}</td>
-                    <td>{user.subjectClass}</td>
+                    <td>{classes.find((classItem) => classItem.id === user.subjectClass)?.name || 'N/A'}</td>
                     <td>
                       <Button variant="primary" onClick={() => handleEditUser(user)}>
                         Edit
@@ -137,6 +181,7 @@ export default function Subject() {
                   </tr>
                 ))}
               </tbody>
+
             </Table>
 
             {/* Edit User Modal */}
@@ -192,7 +237,6 @@ export default function Subject() {
                     >
                       <option value="Class 1">Class 1</option>
                       <option value="Class 2">Class 2</option>
-                      {/* Add more options for different classes */}
                     </Form.Control>
                   </Form.Group>
                 </Form>
@@ -237,7 +281,7 @@ export default function Subject() {
                     />
                   </Form.Group>
 
-                  <Form.Group controlId="formBasicEmail">
+                  <Form.Group controlId="formBasicTeacher">
                     <Form.Label>Teacher</Form.Label>
                     <Form.Control
                       type="text"
@@ -260,7 +304,6 @@ export default function Subject() {
                     >
                       <option value="Class 1">Class 1</option>
                       <option value="Class 2">Class 2</option>
-                      {/* Add more options for different classes */}
                     </Form.Control>
                   </Form.Group>
                 </Form>

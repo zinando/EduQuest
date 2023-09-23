@@ -131,7 +131,13 @@ def admin_actions(action: str):
         if request.args.get('action') == 'FETCH-CLASSES':
             worker = resource.fetch_classes()
             return json.dumps({'status': 1, 'data': worker, 'message': 'ok', 'error': None})
-        if request.args.get("action") == "ADD-CLASS":
+        elif request.args.get('action') == 'EDIT-CLASS':
+            data = request.get_json()
+            db.session.query(Cohorts).filter_by(cid=data['id']).update({'classname': data['name']})
+            db.session.commit()
+            worker = resource.fetch_classes()
+            return json.dumps({'status': 1, 'data': worker, 'message': 'class updated successfully', 'error': None})
+        elif request.args.get("action") == "ADD-CLASS":
             data = request.get_json()
             try:
                 new = Cohorts()

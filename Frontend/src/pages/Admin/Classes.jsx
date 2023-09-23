@@ -1,35 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
-import '../Schedule/Schedule.css'
+import '../Schedule/Schedule.css';
 import '../../layout/Sidebar/SideBar.css';
 import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
-import queryBackEnd from '../queryBackEnd'
+import queryBackEnd from '../queryBackEnd';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
-
-
 export default function Classes() {
-
-  
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      class: 'JS 1',
-    },
-    {
-      id: 2,
-      class: 'JS 3',
-    },
-  ]);
+  const [users, setUsers] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [newUser, setNewUser] = useState({
     class: '',
   });
+
+  // URL and action for fetching classes
+  const url = '/admin_actions/manage_classes';
+  const action = 'FETCH-CLASSES';
+  const data = {};
+  const method = 'POST';
+
+  // Function to fetch classes from the backend
+  const fetchClasses = () => {
+    queryBackEnd(url, data, action, method)
+      .then((response) => {
+        if (response.status === 1 && Array.isArray(response.data)) {
+          // Update the 'users' state with the fetched classes
+          setUsers(response.data.map((classObj) => ({
+            id: classObj.id,
+            class: classObj.name,
+          })));
+        } else {
+          console.error('Failed to fetch classes:', response.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Network error:', error);
+      });
+  };
+
+
+  useEffect(() => {
+    fetchClasses(); 
+  }, []); 
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -47,12 +64,35 @@ export default function Classes() {
     );
     setUsers(updatedUsers);
     handleCloseEditModal();
+
+    // Display a "Done" alert
+    Swal.fire({
+      icon: 'success',
+      title: 'Done',
+      text: 'Changes have been saved successfully.',
+    });
   };
 
+
   const handleDeleteUser = (userId) => {
-    const updatedUsers = users.filter((user) => user.id !== userId);
-    setUsers(updatedUsers);
-  };
+  // Display a confirmation 
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'Once deleted, you will not be able to recover this class!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete!',
+    cancelButtonText: 'No, cancel',
+    reverseButtons: true,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // User confirmed the deletion, proceed with deletion
+      const updatedUsers = users.filter((user) => user.id !== userId);
+      setUsers(updatedUsers);
+    }
+  });
+};
+
 
   const handleShowAddModal = () => {
     setShowAddModal(true);
@@ -67,49 +107,53 @@ export default function Classes() {
 
   // Function to add a class
   const addClass = () => {
-    const className = newUser.class;
+  const className = newUser.class;
 
-    if (className) {
-      queryBackEnd('/admin_actions/manage_classes', { class_name: className }, 'ADD-CLASS', 'POST')
-        .then((response) => {
-          console.log('API Response:', response);
+  if (className) {
+    queryBackEnd('/admin_actions/manage_classes', { class_name: className }, 'ADD-CLASS', 'POST')
+      .then((response) => {
+        console.log('API Response:', response);
 
-          if (response.status === 1 && Array.isArray(response.data)) {
-            // Update the users state with the new list of classes
-            setUsers(response.data.map((classObj) => ({
-              id: classObj.id,
-              class: classObj.name,
-            })));
-            handleCloseAddModal();
-          } else {
-            console.error('Operation was not successful:', response.message);
-            // Display the error message from the API response
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: response.message || 'Failed to add the class. Please try again later.',
-            });
-          }
-        })
-        .catch((error) => {
-          console.error('Network error:', error);
+        if (response.status === 1 && Array.isArray(response.data)) {
+          // Update the users state with the new list of classes
+          setUsers(response.data.map((classObj) => ({
+            id: classObj.id,
+            class: classObj.name,
+          })));
+          handleCloseAddModal();
+
+          // Display the success message
+          Swal.fire({
+            icon: 'success',
+            title: 'Class Added',
+            text: 'Class has been added successfully.',
+          });
+        } else {
+          console.error('Operation was not successful:', response.message);
+          // Display the error message from the API response
           Swal.fire({
             icon: 'error',
-            title: 'Network Error',
-            text: 'Please check your internet connection and try again.',
+            title: 'Oops...',
+            text: response.message || 'Failed to add the class. Please try again later.',
           });
+        }
+      })
+      .catch((error) => {
+        console.error('Network error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Network Error',
+          text: 'Please check your internet connection and try again.',
         });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Validation Error',
-        text: 'Class name cannot be empty.',
       });
-    }
-  };
-
-
-
+  } else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Validation Error',
+      text: 'Class name cannot be empty.',
+    });
+  }
+};
 
   return (
     <>
@@ -184,9 +228,10 @@ export default function Classes() {
               <Modal.Body>
                 <Form>
                   <Form.Group controlId="formBasicClass">
-                    <Form.Label>Class</Form.Label>
+                    <Form.Label>Class Title</Form.Label>
                     <Form.Control
                       type="text"
+                      placeholder='Enter class title...'
                       value={newUser.class}
                       onChange={(e) =>
                         setNewUser({ ...newUser, class: e.target.value })

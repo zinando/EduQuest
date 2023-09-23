@@ -89,12 +89,10 @@ def dashboard(user: str):
 
 
 @app.route("/admin_actions/<action>", methods=["GET", "POST"])
+@jwt_required()
 def admin_actions(action: str):
     """ this serves all resources associated with admin action menu """
     # db.create_all()
-    usr = User()
-    if usr.decode_auth_token(data['auth_token'])['status'] > 1:
-        return json.dumps(usr.decode_auth_token(data['auth_token']))
     if action == "manage_users":
         if request.args.get("action") == "FETCH-USERS":
             worker = USERCLASS()
@@ -136,17 +134,21 @@ def admin_actions(action: str):
         if request.args.get("action") == "ADD-CLASS":
             data = request.get_json()
             try:
-                Cohorts(classname=data['class_name']).add()
+                new = Cohorts()
+                new.classname = data['class_name']
+                db.session.add(new)
                 db.session.commit()
                 status = 1
                 message = 'Class added successfully'
                 error = None
+                classList = resource.fetch_classes()
             except Exception as e:
                 status = 2
                 message = 'Operation was not successful'
                 error = [str(e)]
-
-            response = {'status': status, 'data': None, 'message': message, 'error': error}
+                classList = None
+            print(status)
+            response = {'status': status, 'data': classList, 'message': message, 'error': error}
             return json.dumps(response)
 
 

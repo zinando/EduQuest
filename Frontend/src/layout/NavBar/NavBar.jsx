@@ -1,20 +1,25 @@
-import { useState } from 'react';
-import '../Sidebar/SideBar.css'
+import { useState, useEffect } from 'react';
+import '../Sidebar/SideBar.css';
 import * as Unicons from '@iconscout/react-unicons';
-import profile from '../../assets/profile.jpg'
+import profile from '../../assets/profile.jpg';
 import Dropdown from 'react-bootstrap/Dropdown';
-
-
-
+import { userInfo } from '../../pages/queryBackEnd'; 
 
 export default function Navbar() {
   const [sidebarActive, setSidebarActive] = useState(false);
+  const [userFirstName, setUserFirstName] = useState('');
 
   const toggleSidebar = () => {
     setSidebarActive(!sidebarActive);
   };
 
-  
+  // Fetch user information and update userFirstName
+  useEffect(() => {
+    const user = userInfo();
+    if (user && user.firstName) {
+      setUserFirstName(user.firstName);
+    }
+  }, []);
 
   return (
     <nav>
@@ -26,7 +31,7 @@ export default function Navbar() {
         <Unicons.UilSearch className="bx-search icon" />
       </div>
       <Dropdown className='profile-details'>
-        <span className="admin_name">Hi, Prem Shahi</span>
+        <span className="admin_name">Hi, {userFirstName}</span>
         <img src={profile} alt="" />
         <Dropdown.Toggle as="span" id="dropdown-custom-components">
           <i className="fa fa-caret-down"></i>

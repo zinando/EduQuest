@@ -135,7 +135,7 @@ footer {
 .slide {
   display: inline-block;
   width: 25%;
-  animation: defilement 10s linear infinite;
+  animation: defilement 8s linear infinite;
 }
 
 .slide img {

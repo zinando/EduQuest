@@ -3,6 +3,7 @@
 from flask import request
 from appclasses.user_auth import UserAuth
 from appclasses.userclass import USERCLASS
+from appclasses.subjectclass import SUBJECTS
 import json
 from extensions import app, db, jwt
 from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
@@ -93,6 +94,17 @@ def dashboard(user: str):
 def admin_actions(action: str):
     """ this serves all resources associated with admin action menu """
     # db.create_all()
+    if 'Authorization' not in request.headers:
+        message = 'Authorization header not in request headers'
+        return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+
+    userid = get_jwt_identity()
+    user_view = UserAuth(userid, 'xgdjbehj').user_access_view()[current_user.admin_type]
+
+    if current_user is None or "SUPER_DASHBOARD" not in user_view:
+        message = 'User does not have access privilege'
+        return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+
     if action == "manage_users":
         if request.args.get("action") == "FETCH-USERS":
             worker = USERCLASS()
@@ -109,29 +121,53 @@ def admin_actions(action: str):
     elif action == "manage_subjects":
         if request.args.get('action') == 'FETCH-SUBJECTS':
             worker = resource.fetch_subjects()
-            return json.dumps({'status': 1, 'data': worker, 'message': 'ok', 'error': None})
+            worker2 = resource.fetch_classes()
+            return json.dumps({'status': 1, 'data': worker, 'class': worker2, 'message': 'ok', 'error': None})
         if request.args.get("action") == "ADD-SUBJECT":
             data = request.get_json()
             try:
-                Subjects(subj_code="{}".format(myfunc.random_numbers()), title=data['title'],
-                         general_title=data['general_title'], subject_class=data['class']).add()
-                db.session.commit()
+                worker = SUBJECTS()
+                worker.add_subject(data)
                 status = 1
                 message = 'Subject added successfully'
                 error = None
+                data = resource.fetch_subjects()
             except Exception as e:
                 status = 2
                 message = 'Operation was not successful'
                 error = [str(e)]
+                data = None
 
-            response = {'status': status, 'data': None, 'message': message, 'error': error}
+            response = {'status': status, 'data': data, 'message': message, 'error': error}
             return json.dumps(response)
 
     elif action == "manage_classes":
         if request.args.get('action') == 'FETCH-CLASSES':
             worker = resource.fetch_classes()
             return json.dumps({'status': 1, 'data': worker, 'message': 'ok', 'error': None})
-        if request.args.get("action") == "ADD-CLASS":
+        elif request.args.get('action') == 'EDIT-CLASS':
+            data = request.get_json()
+            try:
+                db.session.query(Cohorts).filter_by(cid=data['id']).update({'classname': data['class_name']})
+                db.session.commit()
+                worker = resource.fetch_classes()
+                message = "class updated successfully"
+                status = 1
+                error = None
+            except Exception as e:
+                error = [str(e)]
+                status = 2
+                message = 'Operation was not successful'
+                worker = None
+            print(error)
+            return json.dumps({'status': status, 'data': worker, 'message': message, 'error': error})
+        elif request.args.get('action') == 'DELETE-CLASS':
+            data = request.get_json()
+            db.session.query(Cohorts).filter_by(cid=data['id']).delete()
+            db.session.commit()
+            worker = resource.fetch_classes()
+            return json.dumps({'status': 1, 'data': worker, 'message': 'class deleted successfully', 'error': None})
+        elif request.args.get("action") == "ADD-CLASS":
             data = request.get_json()
             try:
                 new = Cohorts()

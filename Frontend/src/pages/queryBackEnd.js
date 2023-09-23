@@ -99,17 +99,19 @@ export function addClass(className) {
 }
 
 // Function to add a subject
-export function addSubject(title, generalTitle, subjectClass) {
+export function addSubject(title, generalTitle, subjectClass, teacher) {
   const url = "/admin_actions/manage_subjects";
   const action = "ADD-SUBJECT";
   const req_data = {
     title: title,
     general_title: generalTitle,
     class: subjectClass,
+    teacher: teacher,
   };
 
   return queryBackEnd(url, req_data, action);
 }
+
 
 // Function to add a user
 export function addUser(first_name, surname, other_names, admin_type, password, email, user_class) {

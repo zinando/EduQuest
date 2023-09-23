@@ -19,14 +19,14 @@ export default function Classes() {
   });
 
   // URL and action for fetching classes
-  const url = '/admin_actions/manage_classes';
-  const action = 'FETCH-CLASSES';
-  const data = {};
-  const method = 'POST';
+  const fetchUrl = '/admin_actions/manage_classes';
+  const fetchAction = 'FETCH-CLASSES';
+  const fetchData = {};
+  const fetchMethod = 'POST';
 
   // Function to fetch classes from the backend
   const fetchClasses = () => {
-    queryBackEnd(url, data, action, method)
+    queryBackEnd(fetchUrl, fetchData, fetchAction, fetchMethod)
       .then((response) => {
         if (response.status === 1 && Array.isArray(response.data)) {
           // Update the 'users' state with the fetched classes
@@ -43,10 +43,9 @@ export default function Classes() {
       });
   };
 
-
   useEffect(() => {
-    fetchClasses(); 
-  }, []); 
+    fetchClasses();
+  }, []);
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -58,41 +57,118 @@ export default function Classes() {
     setShowEditModal(false);
   };
 
-  const handleUpdateUser = (updatedUser) => {
-    const updatedUsers = users.map((user) =>
-      user.id === updatedUser.id ? updatedUser : user
-    );
-    setUsers(updatedUsers);
-    handleCloseEditModal();
+  const handleUpdateUser = () => {
+    const classId = selectedUser.id;
+    const className = selectedUser.class;
 
-    // Display a "Done" alert
-    Swal.fire({
-      icon: 'success',
-      title: 'Done',
-      text: 'Changes have been saved successfully.',
-    });
+    if (!className) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Class name cannot be empty.',
+      });
+      return;
+    }
+
+    // Prepare data for the update request
+    const updateData = {
+      id: classId,
+      class_name: className,
+    };
+
+    // Send the update request
+    queryBackEnd(fetchUrl, updateData, 'EDIT-CLASS', fetchMethod)
+      .then((response) => {
+        if (response.status === 1 && Array.isArray(response.data)) {
+          // Update the users state with the new list of classes
+          setUsers(response.data.map((classObj) => ({
+            id: classObj.id,
+            class: classObj.name,
+          })));
+          handleCloseEditModal();
+
+          // Display the success message
+          Swal.fire({
+            icon: 'success',
+            title: 'Class Updated',
+            text: 'Class has been updated successfully.',
+          });
+        } else {
+          console.error('Operation was not successful:', response.message);
+          // Display the error message from the API response
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: response.message || 'Failed to update the class. Please try again later.',
+          });
+        }
+      })
+      .catch((error) => {
+        console.error('Network error:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Network Error',
+          text: 'Please check your internet connection and try again.',
+        });
+      });
   };
 
-
   const handleDeleteUser = (userId) => {
-  // Display a confirmation 
-  Swal.fire({
-    title: 'Are you sure?',
-    text: 'Once deleted, you will not be able to recover this class!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, delete!',
-    cancelButtonText: 'No, cancel',
-    reverseButtons: true,
-  }).then((result) => {
-    if (result.isConfirmed) {
-      // User confirmed the deletion, proceed with deletion
-      const updatedUsers = users.filter((user) => user.id !== userId);
-      setUsers(updatedUsers);
-    }
-  });
-};
+    // Display a confirmation
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // User confirmed the deletion, proceed with deletion
+        const classIdToDelete = userId;
 
+        // Prepare data for the delete request
+        const deleteData = {
+          id: classIdToDelete,
+        };
+
+        // Send the delete request
+        queryBackEnd(fetchUrl, deleteData, 'DELETE-CLASS', fetchMethod)
+          .then((response) => {
+            if (response.status === 1 && Array.isArray(response.data)) {
+              // Update the users state with the new list of classes after deletion
+              setUsers(response.data.map((classObj) => ({
+                id: classObj.id,
+                class: classObj.name,
+              })));
+
+              // Display a success message
+              Swal.fire({
+                icon: 'success',
+                title: 'Class Deleted',
+                text: 'Class has been deleted successfully.',
+              });
+            } else {
+              console.error('Operation was not successful:', response.message);
+              // Display the error message from the API response
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: response.message || 'Failed to delete the class. Please try again later.',
+              });
+            }
+          })
+          .catch((error) => {
+            console.error('Network error:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Network Error',
+              text: 'Please check your internet connection and try again.',
+            });
+          });
+      }
+    });
+  };
 
   const handleShowAddModal = () => {
     setShowAddModal(true);
@@ -107,53 +183,53 @@ export default function Classes() {
 
   // Function to add a class
   const addClass = () => {
-  const className = newUser.class;
+    const className = newUser.class;
 
-  if (className) {
-    queryBackEnd('/admin_actions/manage_classes', { class_name: className }, 'ADD-CLASS', 'POST')
-      .then((response) => {
-        console.log('API Response:', response);
+    if (className) {
+      queryBackEnd('/admin_actions/manage_classes', { class_name: className }, 'ADD-CLASS', 'POST')
+        .then((response) => {
+          console.log('API Response:', response);
 
-        if (response.status === 1 && Array.isArray(response.data)) {
-          // Update the users state with the new list of classes
-          setUsers(response.data.map((classObj) => ({
-            id: classObj.id,
-            class: classObj.name,
-          })));
-          handleCloseAddModal();
+          if (response.status === 1 && Array.isArray(response.data)) {
+            // Update the users state with the new list of classes
+            setUsers(response.data.map((classObj) => ({
+              id: classObj.id,
+              class: classObj.name,
+            })));
+            handleCloseAddModal();
 
-          // Display the success message
-          Swal.fire({
-            icon: 'success',
-            title: 'Class Added',
-            text: 'Class has been added successfully.',
-          });
-        } else {
-          console.error('Operation was not successful:', response.message);
-          // Display the error message from the API response
+            // Display the success message
+            Swal.fire({
+              icon: 'success',
+              title: 'Class Added',
+              text: 'Class has been added successfully.',
+            });
+          } else {
+            console.error('Operation was not successful:', response.message);
+            // Display the error message from the API response
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: response.message || 'Failed to add the class. Please try again later.',
+            });
+          }
+        })
+        .catch((error) => {
+          console.error('Network error:', error);
           Swal.fire({
             icon: 'error',
-            title: 'Oops...',
-            text: response.message || 'Failed to add the class. Please try again later.',
+            title: 'Network Error',
+            text: 'Please check your internet connection and try again.',
           });
-        }
-      })
-      .catch((error) => {
-        console.error('Network error:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Network Error',
-          text: 'Please check your internet connection and try again.',
         });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Class name cannot be empty.',
       });
-  } else {
-    Swal.fire({
-      icon: 'error',
-      title: 'Validation Error',
-      text: 'Class name cannot be empty.',
-    });
-  }
-};
+    }
+  };
 
   return (
     <>
@@ -166,7 +242,7 @@ export default function Classes() {
             <Button variant="primary" onClick={handleShowAddModal}>
               Add Class
             </Button>
-            <Table >
+            <Table>
               <thead>
                 <tr>
                   <th>Class</th>
@@ -213,13 +289,12 @@ export default function Classes() {
                 <Button variant="secondary" onClick={handleCloseEditModal}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={() => handleUpdateUser(selectedUser)}>
+                <Button variant="primary" onClick={handleUpdateUser}>
                   Save Changes
                 </Button>
               </Modal.Footer>
             </Modal>
 
-            
             {/* Add User Modal */}
             <Modal show={showAddModal} onHide={handleCloseAddModal}>
               <Modal.Header closeButton>

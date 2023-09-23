@@ -93,6 +93,17 @@ def dashboard(user: str):
 def admin_actions(action: str):
     """ this serves all resources associated with admin action menu """
     # db.create_all()
+    if 'Authorization' not in request.headers:
+        message = 'Authorization header not in request headers'
+        return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+
+    userid = get_jwt_identity()
+    user_view = UserAuth(userid, 'xgdjbehj').user_access_view()[current_user.admin_type]
+
+    if current_user is None or "SUPER_DASHBOARD" not in user_view:
+        message = 'User does not have access privilege'
+        return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+
     if action == "manage_users":
         if request.args.get("action") == "FETCH-USERS":
             worker = USERCLASS()

@@ -155,19 +155,12 @@ export default function Classes() {
                   <Form.Group controlId="formBasicClass">
                     <Form.Label>Class</Form.Label>
                     <Form.Control
-                      as="select"
+                      type="text"
                       value={newUser.class}
                       onChange={(e) =>
                         setNewUser({ ...newUser, class: e.target.value })
                       }
-                    >
-                      <option value="Class A">JS 1</option>
-                      <option value="Class B">JS 2</option>
-                      <option value="Class C">JS 3</option>
-                      <option value="Class D">SS 1</option>
-                      <option value="Class E">SS 2</option>
-                      <option value="Class F">SS 3</option>
-                    </Form.Control>
+                    />
                   </Form.Group>
                 </Form>
               </Modal.Body>

@@ -134,7 +134,9 @@ def admin_actions(action: str):
         if request.args.get("action") == "ADD-CLASS":
             data = request.get_json()
             try:
-                Cohorts(classname=data['class_name']).add()
+                new = Cohorts()
+                new.classname = data['class_name']
+                db.session.add(new)
                 db.session.commit()
                 status = 1
                 message = 'Class added successfully'
@@ -145,7 +147,7 @@ def admin_actions(action: str):
                 message = 'Operation was not successful'
                 error = [str(e)]
                 classList = None
-
+            print(status)
             response = {'status': status, 'data': classList, 'message': message, 'error': error}
             return json.dumps(response)
 

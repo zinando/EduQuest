@@ -18,8 +18,12 @@ def fetch_subjects(scope: str = "all", scope_id=None):
     data = []
     for subj in subjs:
         mr = {}
-        mr['subj_code'] = subj.subj_code
+        mr['id'] = subj.sid
+        print(subj.cohort_id)
         mr['title'] = subj.title
+        mr['general_title'] = subj.general_title
+        mr['teacher'] = subj.subject_expert
+        mr['klass'] = subj.cohort_id
         data.append(mr)
 
     return data
@@ -39,6 +43,20 @@ def fetch_classes(scope_id: int = 0):
         mr['id'] = subj.cid
         mr['name'] = subj.classname
         data.append(mr)
+
+    return data
+
+
+def fetch_subject_experts():
+    """ fetches users with admin_type equal to teacher """
+    users = User.query.filter_by(admin_type='teacher').all()
+    data = []
+    if users:
+        for user in users:
+            mr = {}
+            mr['id'] = user.id
+            mr['name'] = "{} {}".format(user.sname, user.fname)
+            data.append(mr)
 
     return data
 

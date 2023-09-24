@@ -12,6 +12,10 @@ export default function queryBackEnd(url, req_data = {}, action = '', method = "
 
   return fetch(`http://localhost:5000${url}?action=${action}`, options)
     .then((res) => {
+      //check if user token has expired, then log user out
+      if (res.status == 401){
+        logOutUser();
+      }
       return res.json();
     })
     .then(function (result) {
@@ -99,7 +103,7 @@ export function addClass(className) {
 }
 
 // Function to add a subject
-export function addSubject(title, generalTitle, subjectClass, teacher) {
+export function addSubject(title, generalTitle, teacher, subjectClass) {
   const url = "/admin_actions/manage_subjects";
   const action = "ADD-SUBJECT";
   const req_data = {
@@ -108,7 +112,6 @@ export function addSubject(title, generalTitle, subjectClass, teacher) {
     class: subjectClass,
     teacher: teacher,
   };
-
   return queryBackEnd(url, req_data, action);
 }
 

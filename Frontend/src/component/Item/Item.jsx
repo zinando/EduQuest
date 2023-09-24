@@ -68,7 +68,7 @@ const ItemTable = () => {
         <tr>
           <th>From Date</th>
           <th>To Date</th>
-          <th>Assessment</th>
+          <th>Description</th>
           <th>Type</th>
           <th>Class</th>
           <th>Actions</th>

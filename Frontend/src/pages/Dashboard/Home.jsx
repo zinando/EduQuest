@@ -30,7 +30,7 @@ export default function Home() {
   };
 
   // check if user is idle and logout user
-  const { isIdle } = useIdle({ onIdle: logOutUser, idleTime: 1 });
+  const { isIdle } = useIdle({ onIdle: logOutUser, idleTime: 30 });
 
   return (
     <>
@@ -40,10 +40,10 @@ export default function Home() {
         <div className="home-content">
           <Container>
             
-            <Row>
+            <Row style={{height: '390px', marginBottom: '10px'}}>
               
               <Col xs={4}>
-                <div className='calendar-container'>
+                <div className='calendar-container' style={{height: '300px'}}>
                 <Calendar
                   onChange={handleDateChange}
                   value={date}
@@ -52,23 +52,23 @@ export default function Home() {
                 </div>
                 </Col>
             
-              <Col xs={4} >
+              <Col xs={6} >
                 <div className='border-0 shadow rounded-0 p-4 ' style={{ height: '300px', overflowY: 'scroll' }}>
                   <Timetable/>
                 </div>
               </Col>
-              <Col xs={4}>
-                <div className=" border-0 shadow rounded-0 p-4 time">
+              <Col xs={2}>
+                <div className=" border-0 shadow rounded-0 p-4 time" style={{height: '300px'}}>
                   <h4 className="custom-heading">User Stats</h4>
                   <ul className="card-text" style={{ listStyle: 'none', padding: 10 }}>
                     <li style={{ marginBottom: '10px' }}>
-                      <span style={{ marginRight: '15px' }}><Unicons.UilUsersAlt color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '15px' }}>12 Teachers</span>
-                    </li>
+                      <span style={{ marginRight: '15px' }} title="teachers"><Unicons.UilUsersAlt color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '10px' }}>12</span>
+                    </li><br/>
                     <li style={{ marginBottom: '10px' }}>
-                      <span style={{ marginRight: '15px' }} ><Unicons.UilGraduationCap color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '15px' }}>403 Students</span>
-                    </li>
+                      <span style={{ marginRight: '15px' }} title="students"><Unicons.UilGraduationCap color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '10px' }}>403</span>
+                    </li><br/>
                     <li style={{ marginBottom: '10px' }}>
-                      <span style={{ marginRight: '15px' }}><Unicons.UilFilesLandscapes color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '15px' }}>6 Reviewers</span>
+                      <span style={{ marginRight: '15px' }} title="reviewers"><Unicons.UilFilesLandscapes color="#0B88B3" size="25" /></span> <span style={{ marginLeft: '10px' }}>6</span>
                     </li>
                   </ul>
                 </div>
@@ -77,7 +77,7 @@ export default function Home() {
             </Row>
             <Row>
               <Col sm={7}>
-                <div className='pt-4' style={{ height: '300px', overflowY: 'scroll' }}>
+                <div className='pt-4' style={{ height: '500px', overflowY: 'scroll' }}>
                  <Item/>
                 </div>
               </Col>

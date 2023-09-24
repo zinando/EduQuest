@@ -107,7 +107,7 @@ export default function Login() {
               </div>
 
               <div className="form-check">
-                <input type="checkbox" required={true} className="form-check-input" />
+                <input type="checkbox" className="form-check-input" />
                 <label className="form-check-label">
                   Remember me
                 </label>

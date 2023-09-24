@@ -5,7 +5,7 @@ import '../../layout/Sidebar/SideBar.css';
 import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
-import { addSubject } from '../queryBackEnd';
+import queryBackEnd from '../queryBackEnd';
 
 export default function Subject() {
   const [users, setUsers] = useState([]);
@@ -34,34 +34,19 @@ export default function Subject() {
     const method = 'POST';
 
     // Fetch subjects from the backend
-    fetch(`${url}?action=${action}`, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.text(); 
-      })
+    queryBackEnd(url, data, action, method)
       .then((data) => {
-        try {
-          const jsonData = JSON.parse(data);
-          if (Array.isArray(jsonData.data)) {
-            setSubjects(jsonData.data); 
-          } else {
-            console.error('Invalid data format for subjects');
-          }
-        } catch (error) {
-          console.error('Error parsing JSON data:', error);
+        if (data.status === 1) {
+          setSubjects(data.data); // Assuming data.data contains the updated subject list
+          console.log('Fetched subjects:', data.data);
+        } else {
+          console.error('Error fetching subjects:', data.message);
         }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error('Error fetching subjects:', error);
+      });
   };
-
 
   const fetchClasses = () => {
     const url = '/admin_actions/manage_classes';
@@ -70,16 +55,18 @@ export default function Subject() {
     const method = 'POST';
 
     // Fetch classes from the backend
-    fetch(`${url}?action=${action}`, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => setClasses(data.data)) 
-      .catch((error) => console.error(error));
+    queryBackEnd(url, data, action, method)
+      .then((data) => {
+        if (data.status === 1) {
+          setClasses(data.data);
+          console.log('Fetched classes:', data.data);
+        } else {
+          console.error('Error fetching classes:', data.message);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching classes:', error);
+      });
   };
 
   const handleEditUser = (user) => {
@@ -123,18 +110,29 @@ export default function Subject() {
   const addSubjectHandler = () => {
     const { title, subject, teacher, subjectClass } = newUser;
 
-    if (title && subject && subjectClass) {
+    if (title && subject && teacher && subjectClass) {
       // All required fields have values, proceed with adding the subject
-      addSubject(title, subject, teacher, subjectClass)
-        .then((response) => {
-          if (response.status === 1) {
-            // Subject added successfully, update the state 
+      const requestData = {
+        title,
+        subject,
+        teacher,
+        subjectClass,
+        
+      };
+
+      // Send a POST request to add the subject
+      queryBackEnd('/admin_actions/manage_subjects', requestData, 'ADD-SUBJECT', 'POST')
+        .then((data) => {
+          if (data.status === 1) {
+            // Subject added successfully, update the state with the new subject
+            setSubjects(data.data); 
+            handleCloseAddModal(); 
           } else {
-            console.error(response.message);
+            console.error('Error adding subject:', data.message);
           }
         })
         .catch((error) => {
-          console.error(error);
+          console.error('Error adding subject:', error);
         });
     } else {
       // Display an error message when any of the required fields is empty
@@ -167,9 +165,14 @@ export default function Subject() {
                 {users.map((user) => (
                   <tr key={user.id}>
                     <td>{user.title}</td>
-                    <td>{subjects.find((subject) => subject.id === user.subject)?.name || 'N/A'}</td>
+                    <td>
+                      {subjects.find((subject) => subject.id === user.subject)?.name || 'N/A'}
+                    </td>
                     <td>{user.teacher}</td>
-                    <td>{classes.find((classItem) => classItem.id === user.subjectClass)?.name || 'N/A'}</td>
+                    <td>
+                      {classes.find((classItem) => classItem.id === user.subjectClass)?.name ||
+                        'N/A'}
+                    </td>
                     <td>
                       <Button variant="primary" onClick={() => handleEditUser(user)}>
                         Edit
@@ -181,7 +184,6 @@ export default function Subject() {
                   </tr>
                 ))}
               </tbody>
-
             </Table>
 
             {/* Edit User Modal */}
@@ -230,13 +232,16 @@ export default function Subject() {
                     <Form.Label>Subject Class</Form.Label>
                     <Form.Control
                       as="select"
-                      value={selectedUser?.subjectClass || ''}
+                      value={newUser.subjectClass}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, subjectClass: e.target.value })
+                        setNewUser({ ...newUser, subjectClass: e.target.value })
                       }
                     >
-                      <option value="Class 1">Class 1</option>
-                      <option value="Class 2">Class 2</option>
+                      {classes.map((classItem) => (
+                        <option key={classItem.id} value={classItem.id}>
+                          {classItem.name}
+                        </option>
+                      ))}
                     </Form.Control>
                   </Form.Group>
                 </Form>
@@ -302,8 +307,11 @@ export default function Subject() {
                         setNewUser({ ...newUser, subjectClass: e.target.value })
                       }
                     >
-                      <option value="Class 1">Class 1</option>
-                      <option value="Class 2">Class 2</option>
+                      {classes.map((classItem) => (
+                        <option key={classItem.id} value={classItem.id}>
+                          {classItem.name}
+                        </option>
+                      ))}
                     </Form.Control>
                   </Form.Group>
                 </Form>

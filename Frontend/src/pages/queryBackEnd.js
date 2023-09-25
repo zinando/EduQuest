@@ -117,15 +117,17 @@ export function addSubject(title, generalTitle, teacher, subjectClass) {
 
 
 // Function to add a user
-export function addUser(first_name, surname, other_names, admin_type, password, email, user_class) {
+export function addUser(userInfo) {
   const req_data = {
-    first_name: first_name,
-    surname: surname,
-    other_names: other_names,
-    admin_type: admin_type,
-    password: password,
-    email: email,
-    user_class: user_class
+    id: userInfo.id,
+    userid: userInfo.userid,
+    first_name: userInfo.first_name,
+    surname: userInfo.surname,
+    other_names: userInfo.other_names,
+    admin_type: userInfo.admin_type,
+    password: userInfo.password,
+    email: userInfo.email,
+    klass: userInfo.klass
   };
 
   return queryBackEnd('/admin_actions/manage_users', req_data, 'ADD-USER');

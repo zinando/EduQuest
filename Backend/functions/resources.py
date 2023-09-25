@@ -29,6 +29,26 @@ def fetch_subjects(scope: str = "all", scope_id=None):
     return data
 
 
+def fetch_users() -> list:
+    """ fetches user instance with userid, otherwise fetches all user instances """
+
+    users = User.query.order_by(User.sname.desc())
+    user_info = []
+    for user in users:
+        mr = {}
+        mr['id'] = user.id
+        mr['userid'] = user.userid
+        mr['first_name'] = user.fname
+        mr['surname'] = user.sname
+        mr['other_names'] = user.oname
+        mr['email'] = user.email if user.email else ''
+        mr['klass'] = user.cohort_id if user.cohort_id else ''
+        print(user.cohort_id)
+        mr['admin_type'] = user.admin_type
+        user_info.append(mr)
+    return user_info
+
+
 def fetch_classes(scope_id: int = 0):
     """ fetches classes """
 

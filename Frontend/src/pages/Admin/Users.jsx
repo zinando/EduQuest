@@ -1,30 +1,90 @@
-import { useState, useEffect } from 'react'
-import 'react-calendar/dist/Calendar.css'
-import '../Schedule/Schedule.css'
-import '../../layout/Sidebar/SideBar.css'
-import Navbar from '../../layout/NavBar/NavBar'
-import Sidebar from '../../layout/Sidebar/SideBar'
-import { Button, Table, Modal, Form } from 'react-bootstrap'
-import { addUser } from '../queryBackEnd'
+import { useState, useEffect } from 'react';
+import 'react-calendar/dist/Calendar.css';
+import '../Schedule/Schedule.css';
+import '../../layout/Sidebar/SideBar.css';
+import Navbar from '../../layout/NavBar/NavBar';
+import Sidebar from '../../layout/Sidebar/SideBar';
+import { Button, Table, Modal, Form } from 'react-bootstrap';
+import queryBackEnd, { addUser, validate } from '../queryBackEnd';
+import triggerProcessing from '../triggerProcessing';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 export default function User() {
   const [users, setUsers] = useState([]);
+  const [classes, setClasses] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage2, setErrorMessage2] = useState('');
+  const [fontColor, setFontColor] = useState('');
   const [newUser, setNewUser] = useState({
-    firstName: '',
-    lastName: '',
-    gender: 'Male',
+    id: 0,
+    first_name: '',
+    surname: '',
+    other_names: '',
+    userid: '',
     email: '',
-    class: 'Class A',
+    admin_type: 'student',
+    password: '',
+    password2: '',
+    klass: 0
   });
+
+// Function to handle password validation
+  const checkPassword = async (value, from) => {
+    if (from === 'p1') {
+      setNewUser({ ...newUser, password: value });
+      const passwordCheck = await validate(value);
+      setErrorMessage(passwordCheck.message);
+      if (passwordCheck.status === 1) {
+        setFontColor('#0B88B3');
+      } else {
+        setFontColor('#E97464');
+      }
+    } else {
+      setNewUser({ ...newUser, password2: value });
+      if (value !== newUser.password) {
+        setErrorMessage2('Passwords DO NOT match!');
+      } else {
+        setErrorMessage2('');
+      }
+    }
+  }
+
+
 
   useEffect(() => {
     // Fetch user data from the backend and set it in the users state
-    // Replace this with actual code to fetch user data
-    // fetchUserDataFromBackend().then((data) => setUsers(data));
+    fetchUsers();
   }, []);
+
+  const fetchUsers = () => {
+    const url = '/admin_actions/manage_users';
+    const action = 'FETCH-USERS';
+    const data = {};
+    const method = 'POST';
+
+    // Fetch users from the backend
+    queryBackEnd(url, data, action, method)
+      .then((response) => {
+            if (response.status === 1){
+                try {
+                  if (Array.isArray(response.data) && Array.isArray(response.class)) {
+                    setUsers(response.data);
+                    setClasses(response.class);
+                  } else {
+                    console.error('Invalid data format');
+                  }
+                } catch (error) {
+                  console.error(error);
+                }
+            }
+      })
+      .catch((error) => console.error(error));
+  };
+
 
   const handleEditUser = (user) => {
     setSelectedUser(user);
@@ -32,21 +92,77 @@ export default function User() {
   };
 
   const handleCloseEditModal = () => {
-    setSelectedUser(null);
+    setSelectedUser({});
     setShowEditModal(false);
   };
 
-  const handleUpdateUser = (updatedUser) => {
-    const updatedUsers = users.map((user) =>
-      user.id === updatedUser.id ? updatedUser : user
-    );
-    setUsers(updatedUsers);
+  const handleUpdateUser = (userInfo) => {
+    console.log(userInfo);
+    triggerProcessing();
+  const worker = userInfo;
+    const req_data = {id:worker.id, userid:worker.userid,
+    email:worker.email, first_name:worker.first_name, surname:worker.surname, other_names:worker.other_names,
+    klass:worker.klass, admin_type:worker.admin_type};
+    const url = '/admin_actions/manage_users';
+    const action = 'EDIT-USER';
+    queryBackEnd(url, req_data, action)
+    .then((response) => {
+        if (response.status ===1){
+            Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: response.message,
+            });
+            setUsers(response.data);
+        } else {
+            Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: response.message,
+            })
+        }
+    }).catch((error) => {
+          console.error(error);
+        });
     handleCloseEditModal();
   };
 
   const handleDeleteUser = (userId) => {
-    const updatedUsers = users.filter((user) => user.id !== userId);
-    setUsers(updatedUsers);
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      text: 'This action cannot be reversed',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        triggerProcessing();
+        const req_data = {id:userId};
+        const url = '/admin_actions/manage_users';
+        const action = 'DELETE-USER';
+        queryBackEnd(url, req_data, action)
+        .then((response) => {
+            if (response.status ===1){
+                Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message,
+                });
+                setUsers(response.data);
+            } else {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.message,
+                })
+            }
+        }).catch((error) => {
+              console.error(error);
+            });
+    }
+    });
   };
 
   const handleShowAddModal = () => {
@@ -56,32 +172,53 @@ export default function User() {
   const handleCloseAddModal = () => {
     setShowAddModal(false);
     setNewUser({
-      firstName: '',
-      lastName: '',
-      gender: 'Male',
-      email: '',
-      class: 'Class A',
+      id: 0,
+    first_name: '',
+    surname: '',
+    other_names: '',
+    userid: '',
+    email: '',
+    admin_type: 'student',
+    password: '',
+    password2: '',
+    klass: 0
     });
   };
 
   const handleAddUser = () => {
+    if (!(newUser.first_name && newUser.surname && newUser.password && newUser.klass && newUser.admin_type)){
+        alert('Some fields are empty');
+        return;
+    }
+    triggerProcessing();
     addUser(newUser)
-      .then((response) => {
-        if (response.status === 1) {
-          const newUserWithId = {
-            ...newUser,
-            id: response.data.id,
-          };
-          setUsers([...users, newUserWithId]);
-          handleCloseAddModal();
-        } else {
-          alert('Failed to add user. Please try again.');
-        }
-      })
-      .catch((error) => {
-        console.error('Error adding user:', error);
-        alert('An error occurred while adding the user. Please try again.');
-      });
+        .then((response) => {
+          if (response.status === 1) {
+            // Subject added successfully, update the state
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message,
+            });
+            setUsers(response.data);
+            handleCloseAddModal();
+          } else {
+            console.error(response.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.message,
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: error,
+          });
+        });
   };
 
   return (
@@ -98,9 +235,11 @@ export default function User() {
             <Table>
               <thead>
                 <tr>
+                  <th>User Id</th>
+                  <th>Admin Type</th>
                   <th>First Name</th>
                   <th>Last Name</th>
-                  <th>Gender</th>
+                  <th>Other Names</th>
                   <th>Email</th>
                   <th>Class</th>
                   <th>Actions</th>
@@ -109,11 +248,13 @@ export default function User() {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id}>
-                    <td>{user.firstName}</td>
-                    <td>{user.lastName}</td>
-                    <td>{user.gender}</td>
+                    <td>{user.userid}</td>
+                    <td>{user.admin_type}</td>
+                    <td>{user.first_name}</td>
+                    <td>{user.surname}</td>
+                    <td>{user.other_names}</td>
                     <td>{user.email}</td>
-                    <td>{user.class}</td>
+                    <td>{classes.find((val) => val.id == user.klass)?.name || ''}</td>
                     <td>
                       <Button
                         variant="primary"
@@ -133,6 +274,7 @@ export default function User() {
               </tbody>
             </Table>
 
+            {/* Edit User Modal */}
             <Modal show={showEditModal} onHide={handleCloseEditModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit User</Modal.Title>
@@ -144,11 +286,11 @@ export default function User() {
                     <Form.Control
                       type="text"
                       placeholder="Enter First Name"
-                      value={selectedUser?.firstName || ''}
+                      value={selectedUser?.first_name || ''}
                       onChange={(e) =>
                         setSelectedUser({
                           ...selectedUser,
-                          firstName: e.target.value,
+                          first_name: e.target.value,
                         })
                       }
                     />
@@ -158,29 +300,27 @@ export default function User() {
                     <Form.Control
                       type="text"
                       placeholder="Enter Last Name"
-                      value={selectedUser?.lastName || ''}
+                      value={selectedUser?.surname || ''}
                       onChange={(e) =>
                         setSelectedUser({
                           ...selectedUser,
-                          lastName: e.target.value,
+                          surname: e.target.value,
                         })
                       }
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicGender">
-                    <Form.Label>Gender</Form.Label>
+                    <Form.Label>Other Names</Form.Label>
                     <Form.Control
-                      as="select"
-                      value={selectedUser?.gender || 'Male'}
+                      type='text'
+                      value={selectedUser?.other_names || ''}
                       onChange={(e) =>
                         setSelectedUser({
                           ...selectedUser,
-                          gender: e.target.value,
+                          other_names: e.target.value,
                         })
                       }
                     >
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
                     </Form.Control>
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail">
@@ -198,23 +338,39 @@ export default function User() {
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicClass">
-                    <Form.Label>Class</Form.Label>
+                    <Form.Label>Admin Type</Form.Label>
                     <Form.Control
                       as="select"
-                      value={selectedUser?.class || 'Class A'}
+                      value={['student', 'super', 'teacher', 'reviewer'].find((val) => val == selectedUser.admin_type) || 'student'}
                       onChange={(e) =>
                         setSelectedUser({
                           ...selectedUser,
-                          class: e.target.value,
+                          admin_type: e.target.value,
                         })
                       }
                     >
-                      <option value="Class A">JS 1</option>
-                      <option value="Class B">JS 2</option>
-                      <option value="Class C">JS 3</option>
-                      <option value="Class A">SS 1</option>
-                      <option value="Class B">SS 2</option>
-                      <option value="Class C">SS 3</option>
+                      <option value=''>Select</option>
+                      {['student', 'teacher', 'reviewer', 'super'].map((klass) => (
+                        <option value={klass}>{klass}</option>
+                     ))}
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicClass">
+                    <Form.Label>Class</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={selectedUser.klass}
+                      onChange={(e) =>
+                        setSelectedUser({
+                          ...selectedUser,
+                          klass: e.target.value,
+                        })
+                      }
+                    >
+                      <option value={0}>Select</option>
+                      {classes.map((klass) => (
+                        <option value={klass.id}>{klass.name}</option>
+                     ))}
                     </Form.Control>
                   </Form.Group>
                 </Form>
@@ -232,6 +388,7 @@ export default function User() {
               </Modal.Footer>
             </Modal>
 
+            {/* Add User Modal */}
             <Modal show={showAddModal} onHide={handleCloseAddModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Add User</Modal.Title>
@@ -242,10 +399,11 @@ export default function User() {
                     <Form.Label>First Name</Form.Label>
                     <Form.Control
                       type="text"
+                      required={true}
                       placeholder="Enter First Name"
-                      value={newUser.firstName}
+                      value={newUser.first_name}
                       onChange={(e) =>
-                        setNewUser({ ...newUser, firstName: e.target.value })
+                        setNewUser({ ...newUser, first_name: e.target.value })
                       }
                     />
                   </Form.Group>
@@ -253,24 +411,23 @@ export default function User() {
                     <Form.Label>Last Name</Form.Label>
                     <Form.Control
                       type="text"
+                      required={true}
                       placeholder="Enter Last Name"
-                      value={newUser.lastName}
+                      value={newUser.surname}
                       onChange={(e) =>
-                        setNewUser({ ...newUser, lastName: e.target.value })
+                        setNewUser({ ...newUser, surname: e.target.value })
                       }
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicGender">
-                    <Form.Label>Gender</Form.Label>
+                    <Form.Label>Other Names</Form.Label>
                     <Form.Control
-                      as="select"
-                      value={newUser.gender}
+                      type="text"
+                      value={newUser.other_names}
                       onChange={(e) =>
-                        setNewUser({ ...newUser, gender: e.target.value })
+                        setNewUser({ ...newUser, other_names: e.target.value })
                       }
                     >
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
                     </Form.Control>
                   </Form.Group>
                   <Form.Group controlId="formBasicEmail">
@@ -282,24 +439,75 @@ export default function User() {
                       onChange={(e) =>
                         setNewUser({ ...newUser, email: e.target.value })
                       }
-                    />
+                    >
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicClass">
+                    <Form.Label>Admin Type</Form.Label>
+                    <Form.Control
+                      as="select"
+                      required={true}
+                      value={newUser.admin_type}
+                      onChange={(e) =>
+                        setNewUser({ ...newUser, admin_type: e.target.value })
+                      }
+                    >
+                      <option value=''>Select</option>
+                      {['teacher', 'student', 'reviewer'].map((klass) => (
+                        <option value={klass}>{klass}</option>
+                     ))}
+                    </Form.Control>
                   </Form.Group>
                   <Form.Group controlId="formBasicClass">
                     <Form.Label>Class</Form.Label>
                     <Form.Control
                       as="select"
-                      value={newUser.class}
+                      value={newUser.klass}
                       onChange={(e) =>
-                        setNewUser({ ...newUser, class: e.target.value })
+                        setNewUser({ ...newUser, klass: e.target.value })
                       }
                     >
-                      <option value="Class A">JS 1</option>
-                      <option value="Class B">JS 2</option>
-                      <option value="Class C">JS 3</option>
-                      <option value="Class A">SS 1</option>
-                      <option value="Class B">SS 2</option>
-                      <option value="Class C">SS 3</option>
+                      <option value=''>Select</option>
+                      {classes.map((klass) => (
+                        <option value={klass.id}>{klass.name}</option>
+                     ))}
                     </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Create Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      required
+                      placeholder="Enter password"
+                      value={newUser.password}
+                      onChange={(e) => checkPassword(e.target.value, 'p1')
+                      }
+                    >
+                    </Form.Control>
+                    {errorMessage === '' ? null :
+                      <span style={{
+                        marginLeft: '10px',
+                        fontSize: '11px',
+                        color: fontColor,
+                      }}>{errorMessage}</span>}
+                  </Form.Group>
+                  <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Re-type Password</Form.Label>
+                    <Form.Control
+                      type="password"
+                      required={true}
+                      placeholder="repeat password"
+                      value={newUser.password2}
+                      onChange={(e) => checkPassword(e.target.value, 'p2')
+                      }
+                    >
+                    </Form.Control>
+                    {errorMessage2 === '' ? null :
+                      <span style={{
+                        marginLeft: '10px',
+                        fontSize: '11px',
+                        color: '#E97464',
+                      }}>{errorMessage2}</span>}
                   </Form.Group>
                 </Form>
               </Modal.Body>

@@ -19,6 +19,13 @@ a {
   font-weight: 500;
 }
 
+.nav-link:hover {
+  color: #E97464;
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  /* Adjust the value to control the space */
+}
+
 /* Hero Section */
 .hero-section {
   background-color: #FFFFFF;

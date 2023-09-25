@@ -1,12 +1,10 @@
-import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import './SignUp.css'
-import * as Unicons from '@iconscout/react-unicons'
-import { Link } from 'react-router-dom'
-import queryBackEnd, { validate } from '../queryBackEnd'
-
-
-
+import  { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './SignUp.css';
+import * as Unicons from '@iconscout/react-unicons';
+import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2'; // Import SweetAlert2
+import queryBackEnd, { validate } from '../queryBackEnd';
 
 export default function SignUp() {
   // Define state variables to store form input values
@@ -22,6 +20,26 @@ export default function SignUp() {
   const [resp, setResp] = useState('');
   const [passwordVisible1, setPasswordVisible1] = useState(false);
   const [passwordVisible2, setPasswordVisible2] = useState(false);
+
+  // Function to display a toast notification using SweetAlert2
+  const showToast = () => {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer);
+        toast.addEventListener('mouseleave', Swal.resumeTimer);
+      }
+    });
+
+    Toast.fire({
+      icon: 'success',
+      title: 'Signup Successful',
+    });
+  };
 
   // Function to handle password validation
   const checkPassword = async (value, from) => {
@@ -42,7 +60,7 @@ export default function SignUp() {
         setErrorMessage2('');
       }
     }
-  }
+  };
 
   // Function to toggle password visibility
   const togglePasswordVisibility = (field) => {
@@ -51,7 +69,7 @@ export default function SignUp() {
     } else {
       setPasswordVisible2(!passwordVisible2);
     }
-  }
+  };
 
   // Function to handle form submission
   const signUp = async (event) => {
@@ -76,8 +94,12 @@ export default function SignUp() {
     try {
       const response = await queryBackEnd('/signup', data);
       if (response.status === 1) {
-        // setResp(response.message);
-        location.href = 'Login';
+        // Signup successful, display success message as a toast notification
+        showToast();
+        // Redirect to the login page after a delay
+        setTimeout(() => {
+          location.href = 'Login';
+        }, 3000); // 3000 milliseconds (3 seconds) delay
       } else {
         setResp(response.message);
       }
@@ -95,13 +117,13 @@ export default function SignUp() {
 
           <div className="col-lg-6 col-md-6 col-sm-12 form-container">
             <div className='row'>
-              <div 
-                  className="col-12 text-center"
-                  style={{
-                      color:'#E97464',
-                      marginBottom:'12px'
-                  }}>{resp}
-              </div> 
+              <div
+                className="col-12 text-center"
+                style={{
+                  color: '#E97464',
+                  marginBottom: '12px'
+                }}>{resp}
+              </div>
             </div>
             <Link to="/" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
             <form onSubmit={signUp}>
@@ -115,7 +137,7 @@ export default function SignUp() {
                   placeholder="Enter first name"
                   required={true}
                   id="first_name"
-                  style={{marginLeft: '12px'}}
+                  style={{ marginLeft: '12px' }}
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                 />
@@ -130,7 +152,7 @@ export default function SignUp() {
                   placeholder="Enter your surname"
                   required={true}
                   id="surname"
-                  style={{marginLeft: '12px'}}
+                  style={{ marginLeft: '12px' }}
                   value={surname}
                   onChange={(e) => setSurname(e.target.value)}
                 />
@@ -146,7 +168,7 @@ export default function SignUp() {
                   placeholder="Other names"
                   required=""
                   id="other_names"
-                  style={{marginLeft: '12px'}}
+                  style={{ marginLeft: '12px' }}
                   value={otherNames}
                   onChange={(e) => setOtherNames(e.target.value)}
                 />
@@ -162,7 +184,7 @@ export default function SignUp() {
                   placeholder="Enter your email"
                   required={true}
                   id="email"
-                  style={{marginLeft: '12px'}}
+                  style={{ marginLeft: '12px' }}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />

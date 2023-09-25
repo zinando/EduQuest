@@ -99,9 +99,15 @@ footer {
   font-weight: bold;
   text-decoration: none;
   border: none;
-  border-radius: 20px;
+  border-radius: 9px;
   transition: 0.3s ease-in-out;
   cursor: pointer;
+}
+.btn:hover {
+  background-color: #066B94;
+  color: #fff;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transform: translateY(-2px);
 }
 
 .btn-primary {
@@ -122,6 +128,12 @@ footer {
 .btn-outline-primary:hover {
   background-color: #0B88B3;
   color: #fff;
+}
+
+.btn:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
 
 .authors{

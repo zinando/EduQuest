@@ -21,7 +21,8 @@ a {
   position: relative;
   text-decoration: none;
 }
-.nav-link:hover{
+
+.nav-link:hover {
   color: #066B94;
 }
 
@@ -44,16 +45,13 @@ a {
 }
 
 .heading {
-  font-weight: 600;
+  font-weight: 700;
   font-size: 30px;
   color: #066B94;
   text-transform: capitalize;
+  margin-bottom: 30px;
 }
 
-.hero {
-  background: #3b5d50;
-  padding: calc(4rem - 30px) 0 0rem 0;
-}
 
 @media (min-width: 768px) {
   .hero {
@@ -92,7 +90,7 @@ a {
 
 .hero p {
   color: rgba(255, 255, 255, 0.5);
-  margin-botom: 30px;
+  margin-bottom: 30px;
 }
 
 .hero .hero-img-wrap {
@@ -137,7 +135,7 @@ a {
   position: absolute;
   width: 255px;
   height: 217px;
-  background-image: url("../images/dots-light.svg");
+  background-image: url("../images/colleagues\ .jpeg");
   background-size: contain;
   background-repeat: no-repeat;
   right: -100px;
@@ -148,60 +146,6 @@ a {
   .hero .hero-img-wrap:after {
     top: -40px;
   }
-}
-
-.btn {
-  font-weight: 600;
-  padding: 12px 30px;
-  border-radius: 30px;
-  color: #ffffff;
-  background: #2f2f2f;
-  border-color: #2f2f2f;
-}
-
-.btn:hover {
-  color: #ffffff;
-  background: #222222;
-  border-color: #222222;
-}
-
-.btn:active,
-.btn:focus {
-  outline: none !important;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-
-.btn.btn-primary {
-  background: #3b5d50;
-  border-color: #3b5d50;
-}
-
-.btn.btn-primary:hover {
-  background: #314d43;
-  border-color: #314d43;
-}
-
-.btn.btn-secondary {
-  color: #2f2f2f;
-  background: #f9bf29;
-  border-color: #f9bf29;
-}
-
-.btn.btn-secondary:hover {
-  background: #f8b810;
-  border-color: #f8b810;
-}
-
-.btn.btn-white-outline {
-  background: transparent;
-  border-width: 2px;
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.btn.btn-white-outline:hover {
-  border-color: white;
-  color: #ffffff;
 }
 
 
@@ -219,7 +163,7 @@ a {
 }
 
 .paragraph {
-  color: #323232;
+  color: rgba(255, 255, 255, 0.5);
   font-size: 20px;
   line-height: 1.2;
   font-weight: 400;
@@ -259,7 +203,7 @@ a {
   font-size: 15px;
 }
 
-.card-title{
+.card-title {
   font-weight: 500;
   font-size: 25px;
   text-transform: capitalize;

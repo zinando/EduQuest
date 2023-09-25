@@ -12,6 +12,10 @@ export default function queryBackEnd(url, req_data = {}, action = '', method = "
 
   return fetch(`http://localhost:5000${url}?action=${action}`, options)
     .then((res) => {
+      //check if user token has expired, then log user out
+      if (res.status == 401){
+        logOutUser();
+      }
       return res.json();
     })
     .then(function (result) {
@@ -99,7 +103,7 @@ export function addClass(className) {
 }
 
 // Function to add a subject
-export function addSubject(title, generalTitle, subjectClass, teacher) {
+export function addSubject(title, generalTitle, teacher, subjectClass) {
   const url = "/admin_actions/manage_subjects";
   const action = "ADD-SUBJECT";
   const req_data = {
@@ -108,21 +112,22 @@ export function addSubject(title, generalTitle, subjectClass, teacher) {
     class: subjectClass,
     teacher: teacher,
   };
-
   return queryBackEnd(url, req_data, action);
 }
 
 
 // Function to add a user
-export function addUser(first_name, surname, other_names, admin_type, password, email, user_class) {
+export function addUser(userInfo) {
   const req_data = {
-    first_name: first_name,
-    surname: surname,
-    other_names: other_names,
-    admin_type: admin_type,
-    password: password,
-    email: email,
-    user_class: user_class
+    id: userInfo.id,
+    userid: userInfo.userid,
+    first_name: userInfo.first_name,
+    surname: userInfo.surname,
+    other_names: userInfo.other_names,
+    admin_type: userInfo.admin_type,
+    password: userInfo.password,
+    email: userInfo.email,
+    klass: userInfo.klass
   };
 
   return queryBackEnd('/admin_actions/manage_users', req_data, 'ADD-USER');

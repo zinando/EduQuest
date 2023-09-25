@@ -16,8 +16,8 @@ class SUBJECTS:
         """ adds a new subject record to the database"""
         new = Subjects()
         new.subj_code = self.generate_subj_code()
-        new.title = data['title']
-        new.general_title = data['general_title']
+        new.title = data['title'].title()
+        new.general_title = data['general_title'].title()
         new.cohort_id = data['class']
         new.subject_expert = data['teacher']
         db.session.add(new)

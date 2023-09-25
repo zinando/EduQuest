@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import '../Schedule/Schedule.css';
@@ -5,26 +6,32 @@ import '../../layout/Sidebar/SideBar.css';
 import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import { Button, Table, Modal, Form } from 'react-bootstrap';
-import queryBackEnd from '../queryBackEnd';
+import queryBackEnd, { addSubject } from '../queryBackEnd';
+import triggerProcessing from '../triggerProcessing';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 export default function Subject() {
   const [users, setUsers] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [classes, setClasses] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [editTeacher, setEditTeacher] = useState('');
+  const [editClass, setEditClass] = useState('');
+  //const editClass = React.useRef('');
   const [newUser, setNewUser] = useState({
     title: '',
     subject: '',
-    teacher: '',
-    subjectClass: '',
+    teacher: 0,
+    subjectClass: 0,
   });
 
   useEffect(() => {
     // Fetch subjects and classes when the component mounts
     fetchSubjects();
-    fetchClasses();
   }, []);
 
   const fetchSubjects = () => {
@@ -35,61 +42,105 @@ export default function Subject() {
 
     // Fetch subjects from the backend
     queryBackEnd(url, data, action, method)
-      .then((data) => {
-        if (data.status === 1) {
-          setSubjects(data.data); // Assuming data.data contains the updated subject list
-          console.log('Fetched subjects:', data.data);
-        } else {
-          console.error('Error fetching subjects:', data.message);
-        }
+      .then((response) => {
+            if (response.status === 1){
+                try {
+                  if (Array.isArray(response.data) && Array.isArray(response.class) && Array.isArray(response.teacher)) {
+                    setSubjects(response.data);
+                    setClasses(response.class);
+                    setTeachers(response.teacher);
+                  } else {
+                    console.error('Invalid data format');
+                  }
+                } catch (error) {
+                  console.error(error);
+                }
+            }
       })
-      .catch((error) => {
-        console.error('Error fetching subjects:', error);
-      });
+      .catch((error) => console.error(error));
   };
 
-  const fetchClasses = () => {
-    const url = '/admin_actions/manage_classes';
-    const action = 'FETCH-CLASSES';
-    const data = {};
-    const method = 'POST';
-
-    // Fetch classes from the backend
-    queryBackEnd(url, data, action, method)
-      .then((data) => {
-        if (data.status === 1) {
-          setClasses(data.data);
-          console.log('Fetched classes:', data.data);
-        } else {
-          console.error('Error fetching classes:', data.message);
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching classes:', error);
-      });
-  };
-
-  const handleEditUser = (user) => {
+  const handleEditSubject = (user) => {
+    //editClass.current = user.klass;
+    //console.log(editClass.current);
+    setEditClass(user.klass);
+    setEditTeacher(user.teacher);
     setSelectedUser(user);
     setShowEditModal(true);
   };
 
   const handleCloseEditModal = () => {
     setSelectedUser(null);
+    setEditTeacher('');
+    setEditClass('');
     setShowEditModal(false);
   };
 
-  const handleUpdateUser = (updatedUser) => {
-    const updatedUsers = users.map((user) =>
-      user.id === updatedUser.id ? updatedUser : user
-    );
-    setUsers(updatedUsers);
+  const handleUpdateSubj = (updatedSubj) => {
+  triggerProcessing();
+  const worker = updatedSubj;
+    const req_data = {id:worker.id, title:worker.title,
+    general_title:worker.general_title, teacher:editTeacher,
+    class:editClass};
+    const url = '/admin_actions/manage_subjects';
+    const action = 'EDIT-SUBJECT';
+    queryBackEnd(url, req_data, action)
+    .then((response) => {
+        if (response.status ===1){
+            Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: response.message,
+            });
+            setSubjects(response.data);
+        } else {
+            Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: response.message,
+            })
+        }
+    }).catch((error) => {
+          console.error(error);
+        });
     handleCloseEditModal();
   };
 
-  const handleDeleteUser = (userId) => {
-    const updatedUsers = users.filter((user) => user.id !== userId);
-    setUsers(updatedUsers);
+  const handleDeleteSubject = (subjId) => {
+  Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        triggerProcessing();
+        const req_data = {id:subjId};
+        const url = '/admin_actions/manage_subjects';
+        const action = 'DELETE-SUBJECT';
+        queryBackEnd(url, req_data, action)
+        .then((response) => {
+            if (response.status ===1){
+                Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message,
+                });
+                setSubjects(response.data);
+            } else {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.message,
+                })
+            }
+        }).catch((error) => {
+              console.error(error);
+            });
+    }
+    });
   };
 
   const handleShowAddModal = () => {
@@ -101,38 +152,45 @@ export default function Subject() {
     setNewUser({
       title: '',
       subject: '',
-      teacher: '',
-      subjectClass: 'Class 1',
+      teacher: 0,
+      subjectClass: 0,
     });
   };
 
   // Function to add a subject
   const addSubjectHandler = () => {
+
+    triggerProcessing();
     const { title, subject, teacher, subjectClass } = newUser;
-
-    if (title && subject && teacher && subjectClass) {
+    if (title && subject && subjectClass != 0) {
       // All required fields have values, proceed with adding the subject
-      const requestData = {
-        title,
-        subject,
-        teacher,
-        subjectClass,
-        
-      };
-
-      // Send a POST request to add the subject
-      queryBackEnd('/admin_actions/manage_subjects', requestData, 'ADD-SUBJECT', 'POST')
-        .then((data) => {
-          if (data.status === 1) {
-            // Subject added successfully, update the state with the new subject
-            setSubjects(data.data); 
-            handleCloseAddModal(); 
+      addSubject(title, subject, teacher, subjectClass)
+        .then((response) => {
+          if (response.status === 1) {
+            // Subject added successfully, update the state
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message,
+            });
+            setSubjects(response.data);
+            handleCloseAddModal();
           } else {
-            console.error('Error adding subject:', data.message);
+            console.error(response.message);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.message,
+            });
           }
         })
         .catch((error) => {
-          console.error('Error adding subject:', error);
+          console.error(error);
+          Swal.fire({
+                icon: 'error',
+                title: 'Validation Error',
+                text: error,
+          });
         });
     } else {
       // Display an error message when any of the required fields is empty
@@ -162,31 +220,27 @@ export default function Subject() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.title}</td>
+                {subjects.map((subj) => (
+                  <tr key={subj.id}>
+                    <td>{subj.title}</td>
+                    <td>{subj.general_title}</td>
+                    <td>{teachers.find((classItem) => classItem.id === subj.teacher)?.name || ''}</td>
+                    <td>{classes.find((classItem) => classItem.id === subj.klass)?.name || ''}</td>
                     <td>
-                      {subjects.find((subject) => subject.id === user.subject)?.name || 'N/A'}
-                    </td>
-                    <td>{user.teacher}</td>
-                    <td>
-                      {classes.find((classItem) => classItem.id === user.subjectClass)?.name ||
-                        'N/A'}
-                    </td>
-                    <td>
-                      <Button variant="primary" onClick={() => handleEditUser(user)}>
+                      <Button variant="primary" onClick={() => handleEditSubject(subj)}>
                         Edit
                       </Button>{' '}
-                      <Button variant="danger" onClick={() => handleDeleteUser(user.id)}>
+                      <Button variant="danger" onClick={() => handleDeleteSubject(subj.id)}>
                         Delete
                       </Button>
                     </td>
                   </tr>
                 ))}
               </tbody>
+
             </Table>
 
-            {/* Edit User Modal */}
+            {/* Edit Subject Modal */}
             <Modal show={showEditModal} onHide={handleCloseEditModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit Subject</Modal.Title>
@@ -209,9 +263,9 @@ export default function Subject() {
                     <Form.Control
                       type="text"
                       placeholder="Enter Subject"
-                      value={selectedUser?.subject || ''}
+                      value={selectedUser?.general_title || ''}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, subject: e.target.value })
+                        setSelectedUser({ ...selectedUser, general_title: e.target.value })
                       }
                     />
                   </Form.Group>
@@ -219,29 +273,32 @@ export default function Subject() {
                   <Form.Group controlId="formBasicEmail">
                     <Form.Label>Teacher</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Enter Teacher"
-                      value={selectedUser?.teacher || ''}
+                      as="select"
+                      value={editTeacher}
                       onChange={(e) =>
-                        setSelectedUser({ ...selectedUser, teacher: e.target.value })
+                        setEditTeacher(e.target.value)
                       }
-                    />
+                    >
+                        <option value=''>Select</option>
+                    {teachers.map((teacher) => (
+                        <option value={teacher.id}>{teacher.name}</option>
+                     ))}
+                    </Form.Control>
                   </Form.Group>
 
                   <Form.Group controlId="formBasicSubjectClass">
                     <Form.Label>Subject Class</Form.Label>
                     <Form.Control
                       as="select"
-                      value={newUser.subjectClass}
+                      value={editClass}
                       onChange={(e) =>
-                        setNewUser({ ...newUser, subjectClass: e.target.value })
+                        setEditClass(e.target.value)
                       }
                     >
-                      {classes.map((classItem) => (
-                        <option key={classItem.id} value={classItem.id}>
-                          {classItem.name}
-                        </option>
-                      ))}
+                      <option value={0}>Select</option>
+                    {classes.map((klass) => (
+                      <option value={klass.id}>{klass.name}</option>
+                     ))}
                     </Form.Control>
                   </Form.Group>
                 </Form>
@@ -250,13 +307,13 @@ export default function Subject() {
                 <Button variant="secondary" onClick={handleCloseEditModal}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={() => handleUpdateUser(selectedUser)}>
+                <Button variant="primary" onClick={() => handleUpdateSubj(selectedUser)}>
                   Save Changes
                 </Button>
               </Modal.Footer>
             </Modal>
 
-            {/* Add User Modal */}
+            {/* Add Subject Modal */}
             <Modal show={showAddModal} onHide={handleCloseAddModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Add Subject</Modal.Title>
@@ -267,6 +324,7 @@ export default function Subject() {
                     <Form.Label>Title</Form.Label>
                     <Form.Control
                       type="text"
+                      required={true}
                       placeholder="Enter Title"
                       value={newUser.title}
                       onChange={(e) =>
@@ -289,29 +347,33 @@ export default function Subject() {
                   <Form.Group controlId="formBasicTeacher">
                     <Form.Label>Teacher</Form.Label>
                     <Form.Control
-                      type="text"
-                      placeholder="Enter Teacher"
+                      as="select"
                       value={newUser.teacher}
                       onChange={(e) =>
                         setNewUser({ ...newUser, teacher: e.target.value })
                       }
-                    />
+                    >
+                       <option value='0'>Select</option>
+                    {teachers.map((teacher) => (
+                      <option value={teacher.id}>{teacher.name}</option>
+                     ))}
+                    </Form.Control>
                   </Form.Group>
 
                   <Form.Group controlId="formBasicSubjectClass">
                     <Form.Label>Subject Class</Form.Label>
                     <Form.Control
                       as="select"
+                      required={true}
                       value={newUser.subjectClass}
                       onChange={(e) =>
                         setNewUser({ ...newUser, subjectClass: e.target.value })
                       }
                     >
-                      {classes.map((classItem) => (
-                        <option key={classItem.id} value={classItem.id}>
-                          {classItem.name}
-                        </option>
-                      ))}
+                      <option value='0'>Select</option>
+                    {classes.map((klass) => (
+                      <option value={klass.id}>{klass.name}</option>
+                     ))}
                     </Form.Control>
                   </Form.Group>
                 </Form>

@@ -89,7 +89,6 @@ class UserAuth:
 
     def validate_new_user_credentials(self) -> dict:
         """ validates password strength for new user and check that userid is unique """
-        text = ""
         user = db.session.query(User).filter((User.userid == self.userid) | (User.email == self.userid)).first()
         if user:
             return {'status': 2, 'message': 'userid already exists.', 'error': ['userid already exists.']}

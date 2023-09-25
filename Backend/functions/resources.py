@@ -18,11 +18,35 @@ def fetch_subjects(scope: str = "all", scope_id=None):
     data = []
     for subj in subjs:
         mr = {}
-        mr['subj_code'] = subj.subj_code
+        mr['id'] = subj.sid
+        print(subj.cohort_id)
         mr['title'] = subj.title
+        mr['general_title'] = subj.general_title
+        mr['teacher'] = subj.subject_expert
+        mr['klass'] = subj.cohort_id
         data.append(mr)
 
     return data
+
+
+def fetch_users() -> list:
+    """ fetches user instance with userid, otherwise fetches all user instances """
+
+    users = User.query.order_by(User.sname.desc())
+    user_info = []
+    for user in users:
+        mr = {}
+        mr['id'] = user.id
+        mr['userid'] = user.userid
+        mr['first_name'] = user.fname
+        mr['surname'] = user.sname
+        mr['other_names'] = user.oname
+        mr['email'] = user.email if user.email else ''
+        mr['klass'] = user.cohort_id if user.cohort_id else ''
+        print(user.cohort_id)
+        mr['admin_type'] = user.admin_type
+        user_info.append(mr)
+    return user_info
 
 
 def fetch_classes(scope_id: int = 0):
@@ -39,6 +63,20 @@ def fetch_classes(scope_id: int = 0):
         mr['id'] = subj.cid
         mr['name'] = subj.classname
         data.append(mr)
+
+    return data
+
+
+def fetch_subject_experts():
+    """ fetches users with admin_type equal to teacher """
+    users = User.query.filter_by(admin_type='teacher').all()
+    data = []
+    if users:
+        for user in users:
+            mr = {}
+            mr['id'] = user.id
+            mr['name'] = "{} {}".format(user.sname, user.fname)
+            data.append(mr)
 
     return data
 

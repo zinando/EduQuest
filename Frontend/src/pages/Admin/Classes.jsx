@@ -245,7 +245,8 @@ export default function Classes() {
             <Table>
               <thead>
                 <tr>
-                  <th>Class</th>
+                  <th>Class Title</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -265,7 +266,7 @@ export default function Classes() {
               </tbody>
             </Table>
 
-            {/* Edit User Modal */}
+            {/* Edit Class Modal */}
             <Modal show={showEditModal} onHide={handleCloseEditModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit Class</Modal.Title>
@@ -295,7 +296,7 @@ export default function Classes() {
               </Modal.Footer>
             </Modal>
 
-            {/* Add User Modal */}
+            {/* Add Class Modal */}
             <Modal show={showAddModal} onHide={handleCloseAddModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Add Class</Modal.Title>

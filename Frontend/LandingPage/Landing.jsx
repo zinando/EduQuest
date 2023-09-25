@@ -61,16 +61,16 @@ export default function Landing() {
               >
                 <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
-              <Nav.Item className="btn btn-primary">
+              <Nav.Item className="btn">
                 <Link to="/signup">
-                  <b>Sign Up</b>
+                  Sign Up
                 </Link>
               </Nav.Item> 
               <Nav.Item className="cta-button2" 
               style={{ marginTop: '10px' }}
               >
                 <Link to="/login">
-                  <b>Log In</b> 
+                  Log In
                 </Link>
               </Nav.Item>
             </Nav>
@@ -102,7 +102,7 @@ export default function Landing() {
                 enrich your knowledge and skills.
               </p>
               <p data-aos="fade-up" data-aos-delay={300}>
-                <a href="#" className="btn btn-primary mr-2">
+                <a href="#" className="btn mr-2">
                   Learn More
                 </a>{" "}
               </p>

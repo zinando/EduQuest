@@ -4,16 +4,24 @@ import { Link } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { logOutUser, checkUserPermission } from '../../pages/queryBackEnd'
 import { NavLink } from 'react-router-dom';
+import logo from '../../assets/Group 1.png'
 
 
-export default function SideBar() {
+
+
+
+export default function SideBar({ isVisible }) {
   return (
     <>
-      <div className="sidebar">
+      <div className={`sidebar ${isVisible ? 'visible' : ''}`}>
         <div className="logo-details">
-          <Link to="/Login" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
+          <Link to="/Login" className="logo">
+            <img src={logo} alt="eduquest log" className="small-image" />
+          </Link>
         </div>
-        <ul className="nav-links">
+
+
+        <ul className={`nav-links ${isVisible ? 'visible' : ''}`}>
           <li>
             <NavLink to="/Home" className="active-link">
               <Unicons.UilWindowGrid className='icon' />
@@ -73,3 +81,14 @@ export default function SideBar() {
 
   )
 }
+
+SideBar.propTypes = {
+  // eslint-disable-next-line no-undef
+  isVisible: PropTypes.bool.isRequired,
+};
+
+
+
+
+
+

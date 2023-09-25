@@ -7,7 +7,7 @@ import girl from '../src/assets/girl.jpeg'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
-
+import logo from '../../Frontend/src/assets/Group 1.png'
 
 
 
@@ -35,7 +35,11 @@ export default function Landing() {
       </div>
       <Navbar expand="lg" style={{ backgroundColor: "white",marginTop: '10px' }}>
         <div className="container">
-          <Link to="/SignUp" className='mb-3 logo'><h3 className='logo'>Edu<span>Quest</span></h3></Link>
+          <div className="logo-details">
+            <Link to="/Login" className="logo">
+              <img src={logo} alt="eduquest log" className="small-image" />
+            </Link>
+          </div>
           <Navbar.Toggle aria-controls="main-navbar" />
           <Navbar.Collapse id="main-navbar">
             <Nav className="ms-auto">

@@ -6,6 +6,7 @@ import '../Signup/SignUp.css';
 import queryBackEnd, { setSession, userInfo } from '../queryBackEnd';
 import Swal from 'sweetalert2';
 
+
 export default function Login() {
   const [validated, setValidated] = useState(false);
   const [resp, setResp] = useState('');
@@ -88,11 +89,9 @@ export default function Login() {
                 {resp}
               </div>
             </div>
-            <Link to="/" className="mb-3 logo">
-              <h2 className="logo">
-                Edu<span className="quest">Quest</span>
-              </h2>
-            </Link>
+            <Link to="/" className='mb-3 logo'><h2 className='logo'>Edu<span className='quest'>Quest</span></h2></Link>
+            
+
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <div className="form-group mb-3 d-flex align-items-center">
                 <label htmlFor="name" className="form2">
@@ -106,12 +105,12 @@ export default function Login() {
                   placeholder="Enter userid or email"
                   style={{ marginLeft: '12px' }}
                 />
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                
               </div>
 
               <div className="form-group mb-3 pt-3 d-flex align-items-center">
                 <label htmlFor="name" className="form2">
-                  <Unicons.UilUser color="#0B88B3" size="25" />
+                  <Unicons.UilKeySkeleton color="#0B88B3" size="25" />
                 </label>
                 <input
                   className="form-control"
@@ -124,16 +123,19 @@ export default function Login() {
                 <div className="password-toggle" onClick={() => setPasswordVisible(!passwordVisible)}>
                   {passwordVisible ? <Unicons.UilEyeSlash size="25" /> : <Unicons.UilEye size="25" />}
                 </div>
-                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
               </div>
 
               <div className="form-check">
-                <input type="checkbox" required={true} className="form-check-input" />
+                <input type="checkbox" className="form-check-input" />
                 <label className="form-check-label">Remember me</label>
+                <h3>
+                  <Link to="/Forgot">Forgot Password?</Link>
+                </h3>
               </div>
+              
 
               <div className="mb-4 d-grid">
-                <button type="submit" className="btn button">
+                <button type="submit" className="btn">
                   Login
                 </button>
               </div>

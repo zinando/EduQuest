@@ -4,37 +4,24 @@ import { Link } from 'react-router-dom';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { logOutUser, checkUserPermission } from '../../pages/queryBackEnd'
 import { NavLink } from 'react-router-dom';
+import logo from '../../assets/Group 1.png'
 
 
-export default function SideBar() {
+
+
+
+export default function SideBar({ isVisible }) {
   return (
     <>
-      <div className="sidebar">
+      <div className={`sidebar ${isVisible ? 'visible' : ''}`}>
         <div className="logo-details">
-          <svg
-            width="100"
-            height="50"
-            viewBox="0 20 50 150" 
-            xmlns="http://www.w3.org/2000/svg"
-            className="svg-class"
-          >
-            <g filter="url(#filter0_d_6_85)">
-              <ellipse cx="63.5" cy="33" rx="22.5" ry="5" fill="#0B88B3" />
-            </g>
-            <ellipse cx="63.5" cy="94" rx="22.5" ry="5" fill="#FFCD6E" />
-            <ellipse cx="63.5" cy="63" rx="22.5" ry="9" fill="#E97463" />
-            
-          </svg>
-
-          <Link to="/Login" className="mb-3 logo">
-            <h2 className="logo">
-              Edu<span className="quest">Quest</span>
-            </h2>
+          <Link to="/Login" className="logo">
+            <img src={logo} alt="eduquest log" className="small-image" />
           </Link>
         </div>
 
 
-        <ul className="nav-links">
+        <ul className={`nav-links ${isVisible ? 'visible' : ''}`}>
           <li>
             <NavLink to="/Home" className="active-link">
               <Unicons.UilWindowGrid className='icon' />
@@ -94,3 +81,14 @@ export default function SideBar() {
 
   )
 }
+
+SideBar.propTypes = {
+  // eslint-disable-next-line no-undef
+  isVisible: PropTypes.bool.isRequired,
+};
+
+
+
+
+
+

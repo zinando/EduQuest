@@ -105,6 +105,22 @@ form .text h3 a:hover {
   padding: 20px;
 }
 
+.form-check{
+    display: flex;
+      flex-direction: row;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+      -webkit-box-align: center;
+      align-items: center;
+      margin-top: 16px;
+      margin-bottom: 16px;
+}
+
+
 .form-check-label{
-  font-size: 15px;
+      margin: 0px;
+       
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 1.5;
 }

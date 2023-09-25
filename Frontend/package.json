@@ -28,6 +28,7 @@
     "cdbreact": "^1.5.18",
     "chart.js": "^4.4.0",
     "echarts": "^5.4.3",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-calendar": "^4.6.0",

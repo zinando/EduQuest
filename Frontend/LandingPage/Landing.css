@@ -12,9 +12,11 @@ a {
 }
 
 .nav-link {
-  color: #E97464;
-  width: 150px;
+  color: #0B88B3;
+  width: 130px;
   padding-top: 0;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 /* Hero Section */

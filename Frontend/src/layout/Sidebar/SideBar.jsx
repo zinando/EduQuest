@@ -32,14 +32,14 @@ export default function SideBar({ isVisible }) {
             <NavLink>
               <Unicons.UilUsersAlt className='icon' />
               <NavDropdown id="nav-dropdown" title={<span className="nav-dropdown-title">Admin</span>}>
+                <NavDropdown.Item as={Link} to="/Users" eventKey="4.1">
+                  Manage users
+                </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/Classes" eventKey="4.2">
                   Manage classes
                 </NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/Subjects" eventKey="4.3">
                   Manage subjects
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/Users" eventKey="4.1">
-                  Manage users
                 </NavDropdown.Item>
               </NavDropdown>
             </NavLink>
@@ -81,7 +81,6 @@ export default function SideBar({ isVisible }) {
 
   )
 }
-
 
 
 

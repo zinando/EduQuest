@@ -85,7 +85,7 @@ export default function Landing() {
               <span className="subheading mb-2" data-aos="fade-up">
                 Welcome to our educational platform!
               </span>
-              <h1 className="subheading mb-3" data-aos="fade-up" data-aos-delay={100}>
+              <h1 className="subheading-2 mb-3" data-aos="fade-up" data-aos-delay={100}>
                 <b>
                   We are delighted to have you here and accompany you on your
                   learning journey

@@ -82,10 +82,7 @@ export default function SideBar({ isVisible }) {
   )
 }
 
-SideBar.propTypes = {
-  // eslint-disable-next-line no-undef
-  isVisible: PropTypes.bool.isRequired,
-};
+
 
 
 

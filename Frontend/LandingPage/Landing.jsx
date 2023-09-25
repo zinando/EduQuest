@@ -210,7 +210,7 @@ export default function Landing() {
               </ul>
               
              <p>
-                <a href="#" className="btn btn-primary">
+                <a href="#" className="btn">
                   About us
                 </a>
               </p>

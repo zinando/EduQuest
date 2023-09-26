@@ -69,15 +69,19 @@ def dashboard(user: str):
     userid = get_jwt_identity()
     user_view = UserAuth(userid, 'xgdjbehj').user_access_view()[current_user.admin_type]
 
-    if current_user is None or "SUPER_DASHBOARD" not in user_view:
-        message = 'User does not have access privilege'
-        return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
-
-
     if user == "SUPER":
+        if current_user is None or "SUPER_DASHBOARD" not in user_view:
+            message = 'User does not have access privilege'
+            return json.dumps({'status': 404, 'data': None, 'message': message, 'error': [message]})
+
         if request.args.get("action") == "FETCH-EXAM-INSTANCES":
-            data = resource.fetch_examina()
-            return json.dumps({'status': 1, 'data': data, 'message': 'success!', 'error': [None]})
+            worker1 = resource.fetch_examina()
+            worker2 = resource.fetch_user_stat()
+            worker3 = resource.fetch_exam_skedule()
+            worker4 = resource.fetch_classes()
+            worker5 = resource.fetch_subjects()
+
+            return json.dumps({'status': 1, 'exams': worker1, 'subjects': worker5, 'klass': worker4, 'user_stat': worker2, 'skedule': worker3, 'message': 'success!', 'error': [None]})
 
     if user == "STUDENT":
         pass

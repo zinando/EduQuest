@@ -40,7 +40,8 @@ class USERCLASS:
         new.sname = data['surname']
         new.oname = data['othernames']
         new.email = data['email']
-        new.cohort_id = data['cohort_id'] if data['cohort_id'] else 0
+        if data['admin_type'] != 'super':
+            new.cohort_id = data['cohort_id'] if data['cohort_id'] else 0
         new.password = generate_password_hash(data['password'])
         new.admin_type = data['admin_type']
         new.createdby = 1

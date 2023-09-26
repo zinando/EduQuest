@@ -3,8 +3,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-
-# from flask_migrate import Migrate
+from flask_migrate import Migrate
 from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager
 import datetime
@@ -19,5 +18,5 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=1)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
-# migrate = Migrate(app, db)
+migrate = Migrate(app, db)
 jwt = JWTManager(app)

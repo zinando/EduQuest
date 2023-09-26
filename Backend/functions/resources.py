@@ -1,7 +1,9 @@
 """ this module contains functions that provide resources to clients """
 from models import User, Subjects, Cohorts, Examina
 from extensions import db
-from flask import session
+from datetime import datetime
+import json
+import calendar
 
 
 def fetch_subjects(scope: str = "all", scope_id=None):
@@ -87,12 +89,48 @@ def fetch_examina() -> list:
     data = []
     if exams:
         for exam in exams:
-            mr = {}
-            mr['title'] = exam.title
-            mr['type'] = exam.type
-            mr['classes'] = ''  # list of class names
-            mr['start_time'] = exam.start
-            mr['end_time'] = exam.end
+            mr = {'id': exam.exid, 'title': exam.title, 'type': exam.type, 'klasses': json.loads(exam.cohorts),
+                  'start': exam.start.strftime("%Y-%m-%d"), 'end': exam.end.strftime("%Y-%m-%d"), 'exclude': json.loads(exam.exclude_subjs)}
             data.append(mr)
+
+    return data
+
+
+def fetch_user_stat() -> dict:
+    """ counts the number of different categories of users and returns the number as a dict"""
+    mr = {'teachers': User.query.filter_by(admin_type='teacher').count(),
+          'students': User.query.filter_by(admin_type='student').count(),
+          'reviewers': User.query.filter_by(admin_type='reviewer').count()}
+
+    return mr
+
+
+def fetch_exam_skedule() -> list:
+    """ prepares a timetable for all exams within an instance"""
+    exams = db.session.query(Examina).filter(Examina.end > datetime.now()).order_by(Examina.start.desc())
+    data = []
+    if exams:
+        group1 = []  # unique and has no date attr
+        group2 = []
+        for exam in exams:
+            for quest in exam.questions:
+                mr = {'day': quest.start.strftime('%A'), 'month': quest.start.strftime('%B'),
+                      'start_time': quest.start.strftime('%I:%M:%S %p'), 'week': quest.start.strftime('%U'),
+                      'end_time': quest.end.strftime('%I:%M:%S %p'), 'date': str(quest.start.date())}
+                if mr not in group1:
+                    group1.append(mr)
+                mr2 = {'subj': quest.subject.title, 'skedule': mr, 'klas': quest.subject.cohort.classname}
+                group2.append(mr2)
+
+        if len(group1) > 0:
+            for i in group1:
+                subjs = []
+                klas = []
+                for x in group2:
+                    if x['skedule'] == i:
+                        subjs.append(x['subj'])
+                        klas.append(x['klas'])
+                MR = {'subjects': subjs, 'skedule': i, 'klasses': klas}
+                data.append(MR)
 
     return data

@@ -74,6 +74,8 @@ class Questions(db.Model):
     """This is the model for sessional exam questions"""
     __tablename__ = "questions"
     qid = db.Column(db.Integer, primary_key=True)
+    start = db.Column(db.DateTime(), nullable=False)
+    end = db.Column(db.DateTime(), nullable=False)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.sid'), nullable=False)
     examina_id = db.Column(db.Integer, db.ForeignKey('examina.exid'), nullable=False)
     content = db.Column(db.String(625), nullable=True)
@@ -91,8 +93,10 @@ class Examina(db.Model):
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
     reg_date = db.Column(db.DateTime(), default=func.now())
+    exclude_subjs = db.Column(db.String(225), nullable=False)
     questions = db.relationship("Questions", backref="examina")
     results = db.relationship("Result", backref="examina")
+
 
 
 class ClassResult(db.Model):

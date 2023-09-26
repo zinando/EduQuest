@@ -1,12 +1,1 @@
-.calendar-container {
-  background-color: rgb(250, 251, 251);
-  color: rgb(0, 0, 0);
-  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  background-image: none;
-  overflow: hidden;
-  border-radius: 20px;
-  box-shadow: rgba(90, 114, 123, 0.11) 0px 7px 30px 0px;
-  padding: 0px;
-  border: none;
-  position: relative;
-}
+

@@ -1,56 +1,50 @@
-import { useState } from 'react';
-import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
+import  { useEffect, useRef } from 'react';
+import { Calendar } from '@fullcalendar/core';
+import listPlugin from '@fullcalendar/list';
 
-const Scheduler = () => {
-  const [date, setDate] = useState(new Date());
-  const [events, setEvents] = useState([]);
-  const [eventText, setEventText] = useState('');
+const MyCalendar = () => {
+  const calendarElRef = useRef(null);
 
-  const handleDateChange = (newDate) => {
-    setDate(newDate);
-  };
+  useEffect(() => {
+    const calendarEl = calendarElRef.current;
 
-  const handleEventInputChange = (e) => {
-    setEventText(e.target.value);
-  };
+    const calendar = new Calendar(calendarEl, {
+      plugins: [listPlugin],
+      initialView: 'listWeek', 
+      events: [ 
+        {
+          title: 'Event 1',
+          start: '2023-09-26',
+          end: '2023-09-26',
+        },
+        {
+          title: 'Event 2',
+          start: '2023-09-2023 10:30:00',
+          end: '2023-09-2023 12:30:00',
+        },
+      ],
+      views: {
+        listDay: { buttonText: 'Day' },
+        listWeek: { buttonText: 'Week' },
+        listMonth: { buttonText: 'Month' },
+      },
+      headerToolbar: {
+        left: 'title',
+        center: '',
+        right: 'listDay,listWeek,listMonth',
+      },
+    });
 
-  const handleAddEvent = () => {
-    if (eventText.trim() === '') {
-      return;
-    }
+    calendar.render();
 
-    setEvents([...events, { date, text: eventText }]);
-    setEventText('');
-  };
+    return () => {
+      calendar.destroy();
+    };
+  }, []);
 
   return (
-    <div className="container"> {/* Apply the "container" class */}
-      <h1 className='custom-heading'>Scheduler</h1>
-      <div>
-        <Calendar onChange={handleDateChange} value={date} />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Event description"
-          value={eventText}
-          onChange={handleEventInputChange}
-        />
-        <button onClick={handleAddEvent}>Add Event</button>
-      </div>
-      <div>
-        <h2>Events for {date.toLocaleDateString()}</h2>
-        <ul>
-          {events.map((event, index) => (
-            <li key={index}>
-              {event.date.toLocaleTimeString()}: {event.text}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+    <div ref={calendarElRef} />
   );
 };
 
-export default Scheduler;
+export default MyCalendar;

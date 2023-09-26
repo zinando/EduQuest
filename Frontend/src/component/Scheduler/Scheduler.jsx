@@ -10,12 +10,23 @@ const MyCalendar = () => {
 
     const calendar = new Calendar(calendarEl, {
       plugins: [listPlugin],
+      editable: true,
       initialView: 'listWeek', 
       events: [ 
         {
-          title: 'Event 1',
+          title: 'Debate Show',
           start: '2023-09-26',
           end: '2023-09-26',
+        },
+        {
+          title: 'Parent and Teachers Meeting',
+          start: '2023-09-27',
+          end: '2023-09-28',
+        },
+        {
+          title: 'Drama Presentation',
+          start: '2023-09-28',
+          end: '2023-09-29',
         },
         {
           title: 'Event 2',

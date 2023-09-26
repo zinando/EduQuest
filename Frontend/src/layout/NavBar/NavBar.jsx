@@ -32,8 +32,8 @@ export default function Navbar() {
       <Sidebar isVisible={sidebarVisible} />
         <>
           <div className="search-box">
-            <input type="text" placeholder="Search..." />
-            <Unicons.UilSearch className="bx-search icon" />
+            <input type="text" placeholder="Search class, subjects etc..." />
+          <Unicons.UilSearch className="bx-search" size="40" color="#B3B3B3" />
           </div>
           <Dropdown className='profile-details'>
             <span className="admin_name">Hi, {userFirstName}</span>

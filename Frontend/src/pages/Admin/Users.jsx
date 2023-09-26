@@ -227,12 +227,12 @@ export default function User() {
       <section className="home-section">
         <Navbar />
         <div className="home-content">
-          <div>
+          <div className='p-4'>
             <h1 className="custom-heading">Manage Users</h1>
             <Button variant="primary" onClick={handleShowAddModal}>
               Add User
             </Button>
-            <Table>
+            <Table className="custom-table">
               <thead>
                 <tr>
                   <th>User Id</th>
@@ -258,12 +258,14 @@ export default function User() {
                     <td>
                       <Button
                         variant="primary"
+                        className="custom-button edit"
                         onClick={() => handleEditUser(user)}
                       >
                         Edit
                       </Button>{' '}
                       <Button
                         variant="danger"
+                        className="custom-button delete"
                         onClick={() => handleDeleteUser(user.id)}
                       >
                         Delete

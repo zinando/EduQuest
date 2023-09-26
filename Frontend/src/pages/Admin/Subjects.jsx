@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
 import 'react-calendar/dist/Calendar.css';
 import '../Schedule/Schedule.css';
@@ -10,6 +9,7 @@ import queryBackEnd, { addSubject } from '../queryBackEnd';
 import triggerProcessing from '../triggerProcessing';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import './Admin.css'
 
 export default function Subject() {
   const [users, setUsers] = useState([]);
@@ -204,12 +204,12 @@ export default function Subject() {
       <section className="home-section">
         <Navbar />
         <div className="home-content">
-          <div>
+          <div className='p-4'>
             <h1 className="custom-heading">Manage Subject</h1>
             <Button variant="primary" onClick={handleShowAddModal}>
               Add Subject
             </Button>
-            <Table>
+            <Table className="custom-table">
               <thead>
                 <tr>
                   <th>Title</th>
@@ -227,10 +227,10 @@ export default function Subject() {
                     <td>{teachers.find((classItem) => classItem.id === subj.teacher)?.name || ''}</td>
                     <td>{classes.find((classItem) => classItem.id === subj.klass)?.name || ''}</td>
                     <td>
-                      <Button variant="primary" onClick={() => handleEditSubject(subj)}>
+                      <Button variant="primary" className="custom-button edit" onClick={() => handleEditSubject(subj)}>
                         Edit
                       </Button>{' '}
-                      <Button variant="danger" onClick={() => handleDeleteSubject(subj.id)}>
+                      <Button variant="danger" className="custom-button delete" onClick={() => handleDeleteSubject(subj.id)}>
                         Delete
                       </Button>
                     </td>
@@ -304,7 +304,7 @@ export default function Subject() {
                 </Form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseEditModal}>
+                <Button variant="secondary"  onClick={handleCloseEditModal}>
                   Close
                 </Button>
                 <Button variant="primary" onClick={() => handleUpdateSubj(selectedUser)}>

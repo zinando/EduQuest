@@ -1,7 +1,8 @@
-.site-mobile-menu {
-  position: fixed;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
 
 a {
   color: #8FC8DB;
@@ -17,13 +18,136 @@ a {
   padding-top: 0;
   font-size: 16px;
   font-weight: 500;
+  position: relative;
+  text-decoration: none;
 }
 
 .nav-link:hover {
-  color: #E97464;
-  text-decoration: underline;
-  text-underline-offset: 10px;
+  color: #066B94;
 }
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20%;
+  height: 2px;
+  background-color: #FFCE6D;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.heading {
+  font-weight: 700;
+  font-size: 30px;
+  color: #066B94;
+  text-transform: capitalize;
+  margin-bottom: 30px;
+}
+
+
+@media (min-width: 768px) {
+  .hero {
+    padding: calc(4rem - 30px) 0 4rem 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero {
+    padding: calc(8rem - 30px) 0 8rem 0;
+  }
+}
+
+.hero .intro-excerpt {
+  position: relative;
+  z-index: 4;
+}
+
+@media (min-width: 992px) {
+  .hero .intro-excerpt {
+    max-width: 450px;
+  }
+}
+
+.hero h1 {
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 1400px) {
+  .hero h1 {
+    font-size: 54px;
+  }
+}
+
+.hero p {
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 30px;
+}
+
+.hero .hero-img-wrap {
+  position: relative;
+}
+
+.hero .hero-img-wrap img {
+  position: relative;
+  top: 0px;
+  right: 0px;
+  z-index: 2;
+  max-width: 780px;
+  left: -20px;
+}
+
+@media (min-width: 768px) {
+  .hero .hero-img-wrap img {
+    right: 0px;
+    left: -100px;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero .hero-img-wrap img {
+    left: 0px;
+    top: -80px;
+    position: absolute;
+    right: -50px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero .hero-img-wrap img {
+    left: 0px;
+    top: -80px;
+    right: -100px;
+  }
+}
+
+.hero .hero-img-wrap:after {
+  content: "";
+  position: absolute;
+  width: 255px;
+  height: 217px;
+  background-image: url("../images/colleagues\ .jpeg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  right: -100px;
+  top: -0px;
+}
+
+@media (min-width: 1200px) {
+  .hero .hero-img-wrap:after {
+    top: -40px;
+  }
+}
+
 
 /* Hero Section */
 .hero-section {
@@ -38,13 +162,20 @@ a {
   margin-bottom: 20px;
 }
 
-.hero-section p {
-  color: #323232;
+.paragraph {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 400;
 }
 
 .subheading {
   color: #E97464;
+  font-weight: 600;
+  font-size: 30px;
 }
+
+
 
 /* Section 2 */
 .section-2 {
@@ -53,8 +184,8 @@ a {
 }
 
 .section-2 h1 {
-  font-size: 32px;
-  font-weight: bold;
+  font-size: 30px;
+  font-weight: 400;
   color: #323232;
   margin-bottom: 20px;
 }
@@ -62,6 +193,53 @@ a {
 .section-2 p {
   color: #323232;
 }
+
+.card-body {
+  border: none !important;
+}
+
+.card-text {
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.card-title {
+  font-weight: 500;
+  font-size: 25px;
+  text-transform: capitalize;
+}
+
+.card-1 {
+  background-color: #066B94;
+  color: #FFFFFF;
+  box-shadow: rgba(36, 144, 187, 0.448) 0px 7px 29px 0px;
+}
+
+.icon-circle-1 {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #8FC8DB;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+}
+
+
+
+.icon-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #ffd889;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+}
+
+
 
 /* Section 3 */
 .section-3 {
@@ -136,13 +314,14 @@ footer {
 
 .btn-outline-primary {
   background-color: transparent;
-  border: 2px solid #0B88B3;
+  border: 1px solid #0B88B3;
   color: #0B88B3;
+  padding: 10px 20px;
+  border-radius: 9px;
 }
 
 .btn-outline-primary:hover {
-  background-color: #0B88B3;
-  color: #fff;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
 .btn:disabled {
@@ -150,6 +329,8 @@ footer {
   color: #666;
   cursor: not-allowed;
 }
+
+
 
 .authors {
   width: 100%;
@@ -177,8 +358,4 @@ footer {
   100% {
     transform: translateX(-100%);
   }
-}
-
-p {
-  color: black;
 }

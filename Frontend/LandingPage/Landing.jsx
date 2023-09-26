@@ -8,7 +8,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import logo from '../../Frontend/src/assets/Group 1.png'
-
+import * as Unicons from '@iconscout/react-unicons';
 
 
 
@@ -25,14 +25,7 @@ export default function Landing() {
 
   return (
     <>
-      <div className="site-mobile-menu site-navbar-target">
-        <div className="site-mobile-menu-header">
-          <div className="site-mobile-menu-close">
-            <span className="icofont-close js-menu-toggle" />
-          </div>
-        </div>
-        <div className="site-mobile-menu-body" />
-      </div>
+    
       <Navbar expand="lg" style={{ backgroundColor: "white",marginTop: '10px' }}>
         <div className="container">
           <div className="logo-details">
@@ -82,30 +75,28 @@ export default function Landing() {
         <div className="container">
           <div className="row justify-content-between">
             <div className="col-lg-5">
-              <span className="subheading mb-2" data-aos="fade-up">
+              <span className="heading mb-2" data-aos="fade-up">
                 Welcome to our educational platform!
               </span>
-              <h1 className="subheading-2 mb-3" data-aos="fade-up" data-aos-delay={100}>
-                <b>
-                  We are delighted to have you here and accompany you on your
-                  learning journey
-                </b>
-              </h1>
+              
               <p
-                className="mb-3"
+                className="mb-3 pt-3 paragraph"
                 data-aos="fade-up"
                 data-aos-delay={200}
-                style={{ color: "black" }}
+                style={{ color: "black"  }}
               >
                 Whether you are a student, a teacher, or simply a lifelong learner,
                 you will find a variety of courses, lessons, and resources here to
                 enrich your knowledge and skills.
               </p>
-              <p data-aos="fade-up" data-aos-delay={300}>
-                <a href="#" className="btn mr-2">
+              <div className='pt-4'>
+                <a href="#" className="btn mr-2" data-aos="fade-up" data-aos-delay={300}>
+                  Get Started
+                </a>{" "}
+                <a href="#" className="btn-outline-primary mr-2" data-aos="fade-up" data-aos-delay={300}>
                   Learn More
                 </a>{" "}
-              </p>
+              </div>
             </div>
             <div className="col-lg-6">
               <div className="img-wrap" data-aos="fade-left">
@@ -126,52 +117,64 @@ export default function Landing() {
             <div className="col-lg-5 mx-auto text-center" data-aos="fade-up">
               <br />
               <span className="subheading">Features</span>
-              <h2 className="heading mb-3">Our Features</h2>
-              <p style={{ color: "black" }}>
+              
+              <p style={{ color: "black" }} className='paragraph pt-4'>
                 {" "}
                 EduQuest offers a set of features for complete management of your
                 exams
               </p>
             </div>
           </div>
-          <div className="row g-5 text-center">
+          <div className="row g-5 text-center pt-4">
             <div className="col-lg-4" data-aos="fade-up" data-aos-delay={0}>
-              <div className="feature text-center">
-                <div className="icon">
-                  <span className="flaticon-startup" />
+              <div className="card card-1">
+                <div className="card-body">
+                  <div className="icon-circle-1">
+                    <Unicons.UilBookOpen size="40" color="#FFF" />
+                  </div>
+                  <h4 className="card-title">Launch of exam sessions</h4>
+                  <p className="card-text" style={{ color: "white" }}>
+                    From their smartphone or PC, the establishment launches and
+                    informs students in real-time of the opening exam sessions.
+                  </p>
                 </div>
-                <h3>Launch of exam sessions</h3>
-                <p style={{ color: "black" }}>
-                  From their smartphone or PC, the establishment launches and
-                  informs students in real time of the opening exam sessions{" "}
-                </p>
               </div>
             </div>
             <div className="col-lg-4" data-aos="fade-up" data-aos-delay={100}>
-              <div className="feature text-center">
-                <div className="icon">
-                  <span className="flaticon-link" />
+              <div className="card">
+                <div className="card-body">
+                  <div className="icon-circle">
+                    <Unicons.UilBookOpen />
+                  </div>
+                  <h4 className="card-title">Management of exam subjects</h4>
+                  <p className="card-text" style={{ color: "black" }}>
+                    Add or personalize subjects according to the specialties of your
+                    establishment.
+                  </p>
                 </div>
-                <h3>Management of exam subjects</h3>
-                <p style={{ color: "black" }}>
-                  Add or personalize subjects according to the specialties of your
-                  establishment.
-                </p>
               </div>
             </div>
             <div className="col-lg-4" data-aos="fade-up" data-aos-delay={200}>
-              <div className="feature text-center">
-                <div className="icon">
-                  <span className="flaticon-trophy" />
+              <div className="card">
+                <div className="card-body">
+                  <div className="icon-circle">
+                    <Unicons.UilBookOpen />
+                  </div>
+                  <h4 className="card-title">
+                    Reports analysis of results.
+                  </h4>
+                  <p className="card-text" style={{ color: "black" }}>
+                    Monitor the grades of each student and analyze the results online.
+                  </p>
                 </div>
-                <h3>End of exam reports analysis of results.</h3>
-                <p style={{ color: "black" }}>
-                  Monitoring the grades of each student, and analyzing the results
-                  online.
-                </p>
               </div>
             </div>
           </div>
+
+
+
+
+
         </div>
       </div>
       <div className="section section-3" style={{ backgroundColor: "white" }}>

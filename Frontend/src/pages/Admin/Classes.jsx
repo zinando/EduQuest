@@ -8,6 +8,7 @@ import { Button, Table, Modal, Form } from 'react-bootstrap';
 import queryBackEnd from '../queryBackEnd';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import './Admin.css'
 
 export default function Classes() {
   const [users, setUsers] = useState([]);
@@ -237,15 +238,17 @@ export default function Classes() {
       <section className="home-section">
         <Navbar />
         <div className="home-content">
-          <div>
+          <div className='p-4'>
             <h1 className='custom-heading'>Manage Class</h1>
-            <Button variant="primary" onClick={handleShowAddModal}>
+            <Button className='btn-primary' onClick={handleShowAddModal}>
               Add Class
             </Button>
-            <Table>
+          
+            <Table className="custom-table">
               <thead>
                 <tr>
-                  <th>Class</th>
+                  <th>Class Title</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -253,10 +256,18 @@ export default function Classes() {
                   <tr key={user.id}>
                     <td>{user.class}</td>
                     <td>
-                      <Button variant="primary" onClick={() => handleEditUser(user)}>
+                      <Button
+                        variant="primary"
+                        className="custom-button edit"
+                        onClick={() => handleEditUser(user)}
+                      >
                         Edit
                       </Button>{' '}
-                      <Button variant="danger" onClick={() => handleDeleteUser(user.id)}>
+                      <Button
+                        variant="danger"
+                        className="custom-button delete"
+                        onClick={() => handleDeleteUser(user.id)}
+                      >
                         Delete
                       </Button>
                     </td>
@@ -265,7 +276,9 @@ export default function Classes() {
               </tbody>
             </Table>
 
-            {/* Edit User Modal */}
+
+
+            {/* Edit Class Modal */}
             <Modal show={showEditModal} onHide={handleCloseEditModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Edit Class</Modal.Title>
@@ -295,7 +308,7 @@ export default function Classes() {
               </Modal.Footer>
             </Modal>
 
-            {/* Add User Modal */}
+            {/* Add Class Modal */}
             <Modal show={showAddModal} onHide={handleCloseAddModal}>
               <Modal.Header closeButton>
                 <Modal.Title>Add Class</Modal.Title>

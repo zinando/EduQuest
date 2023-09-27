@@ -40,10 +40,11 @@ class USERCLASS:
         new.sname = data['surname']
         new.oname = data['othernames']
         new.email = data['email']
-        new.cohort_id = data['cohort'] if 'cohort' in data.keys() else 0
+        if data['admin_type'] != 'super':
+            new.cohort_id = data['cohort_id'] if data['cohort_id'] else 0
         new.password = generate_password_hash(data['password'])
         new.admin_type = data['admin_type']
-        new.createdby = session['user_id'] if 'user_id' in session else 1
+        new.createdby = 1
         db.session.add(new)
         db.session.commit()
 
@@ -63,7 +64,6 @@ class USERCLASS:
             mr['other_names'] = user.oname
             mr['email'] = user.email if user.email else ''
             mr['class'] = ""
-            mr['subjects'] = ""
             mr['admin_type'] = user.admin_type
             user_info.append(mr)
         return user_info

@@ -69,15 +69,19 @@ def dashboard(user: str):
     userid = get_jwt_identity()
     user_view = UserAuth(userid, 'xgdjbehj').user_access_view()[current_user.admin_type]
 
-    if current_user is None or "SUPER_DASHBOARD" not in user_view:
-        message = 'User does not have access privilege'
-        return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
-
-
     if user == "SUPER":
+        if current_user is None or "SUPER_DASHBOARD" not in user_view:
+            message = 'User does not have access privilege'
+            return json.dumps({'status': 404, 'data': None, 'message': message, 'error': [message]})
+
         if request.args.get("action") == "FETCH-EXAM-INSTANCES":
-            data = resource.fetch_examina()
-            return json.dumps({'status': 1, 'data': data, 'message': 'success!', 'error': [None]})
+            worker1 = resource.fetch_examina()
+            worker2 = resource.fetch_user_stat()
+            worker3 = resource.fetch_exam_skedule()
+            worker4 = resource.fetch_classes()
+            worker5 = resource.fetch_subjects()
+
+            return json.dumps({'status': 1, 'exams': worker1, 'subjects': worker5, 'klass': worker4, 'user_stat': worker2, 'skedule': worker3, 'message': 'success!', 'error': [None]})
 
     if user == "STUDENT":
         pass
@@ -107,23 +111,80 @@ def admin_actions(action: str):
 
     if action == "manage_users":
         if request.args.get("action") == "FETCH-USERS":
-            worker = USERCLASS()
-            user_info = worker.fetch_users()
-            return json.dumps({'status': 1, 'data': user_info, 'message': 'ok', 'error': None})
+            user_info = resource.fetch_users()
+            class_info = resource.fetch_classes()
+            return json.dumps({'status': 1, 'data': user_info, 'class': class_info, 'message': 'ok', 'error': None})
+        elif request.args.get('action') == 'DELETE-USER':
+            data = request.get_json()
+            db.session.query(User).filter_by(id=data['id']).delete()
+            db.session.commit()
+            worker = resource.fetch_users()
+            return json.dumps({'status': 1, 'data': worker, 'message': 'Subject deleted successfully', 'error': None})
         if request.args.get("action") == "ADD-USER":
             data = request.get_json()
             auth = UserAuth('xhdgbc', data['password'], first_name=data['first_name'],
-                            admin_type=data['admin_type'], user_class=data['user_class'],
+                            admin_type=data['admin_type'], user_class=data['klass'],
                             other_names=data['other_names'], email=data['email'], surname=data['surname'])
             response = auth.validate_new_user_credentials()
+            response['data'] = resource.fetch_users()
             return json.dumps(response)
+        elif request.args.get('action') == 'EDIT-USER':
+            data = request.get_json()
+            try:
+                db.session.query(User).filter_by(id=data['id']).update({'fname': data['first_name'],
+                                                                             'sname': data['surname'],
+                                                                             'cohort_id': data['klass'],
+                                                                        'userid': data['userid'],
+                                                                             'admin_type': data['admin_type'],
+                                                                        'oname': data['other_names'],
+                                                                        'email': data['email'],
+                                                                        })
+                db.session.commit()
+                worker = resource.fetch_users()
+                message = "Subject updated successfully"
+                status = 1
+                error = None
+            except Exception as e:
+                error = [str(e)]
+                status = 2
+                message = 'Operation was not successful'
+                worker = None
+            return json.dumps({'status': status, 'data': worker, 'message': message, 'error': error})
 
     elif action == "manage_subjects":
         if request.args.get('action') == 'FETCH-SUBJECTS':
             worker = resource.fetch_subjects()
             worker2 = resource.fetch_classes()
-            return json.dumps({'status': 1, 'data': worker, 'class': worker2, 'message': 'ok', 'error': None})
-        if request.args.get("action") == "ADD-SUBJECT":
+            worker3 = resource.fetch_subject_experts()
+            return json.dumps({'status': 1, 'data': worker, 'teacher': worker3, 'class': worker2, 'message': 'ok', 'error': None})
+
+        elif request.args.get('action') == 'EDIT-SUBJECT':
+            data = request.get_json()
+            try:
+                db.session.query(Subjects).filter_by(sid=data['id']).update({'title': data['title'],
+                                                                             'general_title': data['general_title'],
+                                                                             'cohort_id': data['class'],
+                                                                             'subject_expert': data['teacher']})
+                db.session.commit()
+                worker = resource.fetch_subjects()
+                message = "Subject updated successfully"
+                status = 1
+                error = None
+            except Exception as e:
+                error = [str(e)]
+                status = 2
+                message = 'Operation was not successful'
+                worker = None
+            return json.dumps({'status': status, 'data': worker, 'message': message, 'error': error})
+
+        elif request.args.get('action') == 'DELETE-SUBJECT':
+            data = request.get_json()
+            db.session.query(Subjects).filter_by(sid=data['id']).delete()
+            db.session.commit()
+            worker = resource.fetch_subjects()
+            return json.dumps({'status': 1, 'data': worker, 'message': 'Subject deleted successfully', 'error': None})
+
+        elif request.args.get("action") == "ADD-SUBJECT":
             data = request.get_json()
             try:
                 worker = SUBJECTS()
@@ -159,14 +220,15 @@ def admin_actions(action: str):
                 status = 2
                 message = 'Operation was not successful'
                 worker = None
-            print(error)
             return json.dumps({'status': status, 'data': worker, 'message': message, 'error': error})
+
         elif request.args.get('action') == 'DELETE-CLASS':
             data = request.get_json()
             db.session.query(Cohorts).filter_by(cid=data['id']).delete()
             db.session.commit()
             worker = resource.fetch_classes()
             return json.dumps({'status': 1, 'data': worker, 'message': 'class deleted successfully', 'error': None})
+
         elif request.args.get("action") == "ADD-CLASS":
             data = request.get_json()
             try:

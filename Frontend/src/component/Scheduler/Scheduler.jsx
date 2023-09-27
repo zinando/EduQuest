@@ -104,8 +104,9 @@ const MyCalendar = () => {
   }
 
   return (
-    <div>
-      <div ref={calendarElRef}/>
+  
+      <div > 
+      <div ref={calendarElRef} />
       <Button variant="primary" onClick={() => setIsModalOpen(true)}>
         Add Event
       </Button>
@@ -142,12 +143,12 @@ const MyCalendar = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={saveEvent}>
+          <Button variant="button" onClick={saveEvent}>
             Save
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+        </div>
   );
 };
 

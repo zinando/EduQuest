@@ -361,3 +361,11 @@ p {
 .card:hover {
   transform: translateX(20px);
 }
+
+.heading {
+  transition: transform 0.3s ease-in-out; /* Transition */
+}
+
+.heading:hover {
+  transform: translateY(-10px);
+}

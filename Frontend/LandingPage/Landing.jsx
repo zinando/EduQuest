@@ -177,10 +177,6 @@ export default function Landing() {
             
           </div>
 
-
-
-
-
         </div>
       </div>
       <div className="section section-3" style={{ backgroundColor: "white" }}>

@@ -150,3 +150,17 @@ footer {
 p {
   color: black;
 }
+
+.feature {
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+  border: 2px solid #0b88b3;
+  border-radius: 15px;
+  background-color: #0b88b3;
+  color: #323232;
+}
+
+.feature:hover {
+  transform: translateX(20px);
+}

@@ -121,7 +121,7 @@ export default function Landing() {
           <div className="row mb-6">
             <div className="col-lg-5 mx-auto text-center" data-aos="fade-up">
               <br />
-              <span className="subheading">Features</span>
+             <h3> <span className="subheading mb-1"> Features </span> </h3> 
               <h2 className="heading mb-3">Our Features</h2>
               <p style={{ color: "black" }}>
                 {" "}
@@ -136,13 +136,12 @@ export default function Landing() {
                 <div className="icon">
                   <span className="flaticon-startup" />
                 </div>
-                <h3>Launch of exam sessions</h3>
+               <h3>Launch of exam sessions</h3>
                 <p style={{ color: "black" }}>
-                  From their smartphone or PC, the establishment launches and
-                  informs students in real time of the opening exam sessions{" "}
+                From their smartphone or PC, establishment informs students of exam opening sessions{" "}
                 </p>
               </div>
-            </div>
+                </div>
             <div className="col-lg-4" data-aos="fade-up" data-aos-delay={100}>
               <div className="feature text-center">
                 <div className="icon">
@@ -167,6 +166,7 @@ export default function Landing() {
                 </p>
               </div>
             </div>
+            
           </div>
         </div>
       </div>

@@ -350,3 +350,14 @@ footer {
 p {
   color: black;
 }
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.4s ease-in-out; /* Transition */
+}
+
+.card:hover {
+  transform: translateX(20px);
+}

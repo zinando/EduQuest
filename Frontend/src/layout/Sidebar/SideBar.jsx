@@ -23,7 +23,7 @@ export default function SideBar({ isVisible }) {
 
         <ul className={`nav-links ${isVisible ? 'visible' : ''}`}>
           <li>
-            <NavLink to="/Home" className="active-link">
+            <NavLink to="/Home" >
               <Unicons.UilWindowGrid className='icon' />
               <span className="links_name">Dashboard</span>
             </NavLink>
@@ -70,7 +70,7 @@ export default function SideBar({ isVisible }) {
             </NavLink>
           </li>
           <li className="log_out">
-            <div className="btn" onClick={logOutUser} style={{ color: '#ffffff', cursor: 'pointer' }}>
+            <div  onClick={logOutUser} style={{ color: '#ffffff', cursor: 'pointer' }}>
               <Unicons.UilSignout className='icon' />
               <span className="links_name">Log out</span>
             </div>

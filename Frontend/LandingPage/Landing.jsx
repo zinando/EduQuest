@@ -117,8 +117,8 @@ export default function Landing() {
             <div className="col-lg-5 mx-auto text-center" data-aos="fade-up">
               <br />
               <span className="subheading">Features</span>
-              
-              <p style={{ color: "black" }} className='paragraph pt-4'>
+              <h2 className="heading mb-3">Our Features</h2>
+              <p style={{ color: "black" }}>
                 {" "}
                 EduQuest offers a set of features for complete management of your
                 exams
@@ -138,8 +138,13 @@ export default function Landing() {
                     informs students in real-time of the opening exam sessions.
                   </p>
                 </div>
+                <h3>Launch of exam sessions</h3>
+                <p style={{ color: "black" }}>
+                  From their smartphone or PC, the establishment launches and
+                  informs students in real time of the opening exam sessions{" "}
+                </p>
               </div>
-            </div>
+                </div>
             <div className="col-lg-4" data-aos="fade-up" data-aos-delay={100}>
               <div className="card">
                 <div className="card-body">
@@ -169,11 +174,8 @@ export default function Landing() {
                 </div>
               </div>
             </div>
+            
           </div>
-
-
-
-
 
         </div>
       </div>

@@ -255,14 +255,18 @@ footer {
   background-color: #0b88b3;
   text-align: center;
   padding: 20px;
+  align-items: center;
 }
 
 .social-icons {
   margin-top: 10px;
+  align-items: center;
+  padding-left: 525px;
 }
 
 .social-icons a {
   margin-right: 20px;
+  align-items: center;
 }
 
 /* Buttons */
@@ -368,4 +372,54 @@ p {
 
 .heading:hover {
   transform: translateY(-10px);
+}
+
+.image-gallery {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.image-card {
+  position: relative;
+  width: 30%;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+}
+
+.image-card:hover {
+  transform: scale(1.1);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.image-card:hover .image-overlay {
+  opacity: 1;
+}
+
+.image-overlay p {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
 }

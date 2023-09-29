@@ -237,6 +237,27 @@ export default function Landing() {
           </div>
         </div>
       </div>
+      <div class="image-gallery">
+        <div class="image-card">
+            <img src="./images/celebration.jpg" alt="celebration"/>
+            <div class="image-overlay">
+                <p>Celebration</p>
+            </div>
+        </div>
+        <div class="image-card">
+            <img src="./images/exam.jpg" alt="exam"/>
+            <div class="image-overlay">
+                <p>Exam</p>
+            </div>
+        </div>
+        <div class="image-card">
+            <img src="./images/room.jpg" alt="room"/>
+            <div class="image-overlay">
+                <p>The Room</p>
+            </div>
+        </div>
+    </div>
+
       <h2 className='custom-heading'>MEET THE TEAM</h2>
             <div className='authors'>
                   <div className="slide">
@@ -258,9 +279,9 @@ export default function Landing() {
             </div>
 
       <footer
-        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 5 }}
+        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 5, alignItems: "center" }}
       >
-        <div className="social-icons">
+        <div className="social-icons" style={{ display: "flex", alignItems:"center"}}>
           <a href="https://www.facebook.com/yourpage">
             <img
               src="./images/facebook.png"

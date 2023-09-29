@@ -5,6 +5,7 @@ import * as Unicons from '@iconscout/react-unicons';
 import '../Signup/SignUp.css';
 import queryBackEnd, { setSession, userInfo } from '../queryBackEnd';
 import Swal from 'sweetalert2';
+import fetchDashboardData from '../fetchResources';
 
 
 export default function Login() {
@@ -58,8 +59,10 @@ export default function Login() {
       if (response.status === 1) {
         // Login successful, create session and store user data
         setSession(response);
+        await fetchDashboardData(userInfo().adminType);
         if (userInfo().adminType === 'super') {
           // redirect to super admin dashboard
+         //console.log(JSON.parse(sessionStorage.getItem('userStat')));
           location.href = '/home';
         }
 

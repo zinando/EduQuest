@@ -18,9 +18,13 @@ const Timetable = () => {
 
   useEffect(() => {
     // update state variables from session storage
-    if (sessionStorage.getItem('examRecords')){
+    if (sessionStorage.getItem('examSkedule')){
         //update state variables
-        setExamSkedule(sessionStorage.getItem('examSkedule').json());
+        const mySkedule = JSON.parse(sessionStorage.getItem('examSkedule'));
+        if (mySkedule.length > 0){
+            setExamSkedule(mySkedule);
+        }
+
     }
   },[]);
 

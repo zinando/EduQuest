@@ -2,91 +2,131 @@ import { useState, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Modal } from 'react-bootstrap';
-import queryBackEnd from '../../pages/queryBackEnd'
-
+import fetchDashboardData from '../../pages/fetchResources';
+import queryBackEnd, { userInfo } from '../../pages/queryBackEnd';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import triggerProcessing from '../../pages/triggerProcessing';
 
 const ItemTable = () => {
   //define state variables
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [excludedItems, setExcludedItems] = useState([]);
+  const [examRecords, setExamRecords] = useState([{id: 0, title: '', type: '', klasses: [], exclude: []}]);
   const [showViewExcludeModal, setShowViewExcludeModal] = useState(false);
-  const [examRecords, setExamRecords] = useState([
-    {
-      id: 1,
-      title: 'First Term Examination',
-      klasses: [1, 2, 3, 6],
-      type: 'Examination',
-      start: '2023-10-03',
-      end: '2023-11-02',
-      exclude: [1, 2],
-    },
-    {
-      id: 1,
-      title: 'First Term Examination',
-      klasses: [1, 2, 3, 6],
-      type: 'Examination',
-      start: '2023-10-03',
-      end: '2023-11-02',
-      exclude: [1, 2],
-    },
-  ]);
+  const [excludedItemClass, setExcludedItemClass] = useState({});
+  const [selectedRecord, setSelectedRecord] = useState({});
+
 
   useEffect(() => {
-    if (sessionStorage.getItem('examRecords')){
         //update state variables
-        setExamRecords(sessionStorage.getItem('examRecords').json());
-        setClasses(sessionStorage.getItem('klass').json());
-        setSubjects(sessionStorage.getItem('subjects').json());
-    } else {
-        // fetch data from database
-        fetchData();
-    }
+        fetchDashboardData(userInfo().adminType);
+        const myRecords = JSON.parse(sessionStorage.getItem('examRecords'));
+        const myClasses = JSON.parse(sessionStorage.getItem('klass'));
+        const mySubjects = JSON.parse(sessionStorage.getItem('subjects'));
+        setClasses(myClasses);
+        setSubjects(mySubjects);
+        setExamRecords(myRecords);
 
   },[]);
 
-  const fetchData = () => {
-    const url = '/admin_actions/SUPER';
-    const action = 'FETCH-EXAM-INSTANCES';
-    const data = {};
-    const method = 'POST';
-
-    // Fetch data from the backend
-    queryBackEnd(url, data, action, method)
-      .then((response) => {
-            if (response.status === 1){
-                try {
-                    //save items in session
-                    sessionStorage.setItem('userStat', JSON.stringify(response.user_stat));
-                    sessionStorage.setItem('examRecords', JSON.stringify(response.exams));
-                    sessionStorage.setItem('examSkedule', JSON.stringify(response.skedule));
-                    sessionStorage.setItem('klass', JSON.stringify(response.klass));
-                    sessionStorage.setItem('subjects', JSON.stringify(response.subjects));
-
-                    //update state variables
-                    setExamRecords(response.exams);
-                    setClasses(response.klass);
-                    setSubjects(response.subjects);
-                } catch (error) {
-                  console.error(error);
-                }
-            }else if (response.status === 404){
-                return "404 You are not authorized to view this page.";
-            }
-      })
-      .catch((error) => console.error(error));
+  const updateRecords = (data) => {
+        setExamRecords(data);
   };
 
   const handleDelete = (id) => {
-
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        triggerProcessing();
+        const req_data = {id:id};
+        const url = '/dashboard/'+userInfo().adminType;
+        const action = 'DELETE-EXAM-INSTANCE';
+        queryBackEnd(url, req_data, action)
+        .then((response) => {
+            if (response.status ===1){
+                Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message,
+                });
+                //setSubjects(response.data);
+                updateRecords(response.data);
+            } else {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.message,
+                })
+            }
+        }).catch((error) => {
+              console.error(error);
+            });
+    }
+    });
   };
 
-  const handleCloseViewExcludeModal = (id) => {
-
+  const handleViewExcluded = (record) => {
+    setExcludedItems(record.exclude);
+    setSelectedRecord(record);
+    setShowViewExcludeModal(true);
   };
 
-  const deleteExcludedItem = (id) => {
+  const getExcludedItemClass = (item) => {
+    const subj = subjects.filter(function (subjj){
+        return subjj.id ===item;
+    });
+    return classes.find((klass) => klass.id === subj[0].klass)?.name;
+  };
 
+  const handleCloseViewExcludeModal = () => {
+        setShowViewExcludeModal(false);
+  }
+
+  const deleteExcludedItem = (excludedId, examId) => {
+
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        triggerProcessing();
+        const req_data = {excluded_id:excludedId, exam_id: examId};
+        const url = '/dashboard/'+userInfo().adminType;
+        const action = 'DELETE-EXCLUDED-ITEM';
+        queryBackEnd(url, req_data, action)
+        .then((response) => {
+            if (response.status ===1){
+                Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message,
+                });
+                updateRecords(response.data);
+                fetchDashboardData(userInfo().adminType);
+            } else {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.message,
+                })
+            }
+        }).catch((error) => {
+              console.error(error);
+            });
+    }
+    });
   };
 
   return (
@@ -98,7 +138,7 @@ const ItemTable = () => {
           <th>Description</th>
           <th>Type</th>
           <th>Classes</th>
-          <th>Exclude </th>
+          <th>Excluded </th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -120,15 +160,15 @@ const ItemTable = () => {
             }
             </td>
             <td>
-                <Button variant="warning" onClick={() => handleViewExcluded(rec.exclude)}>
-                        Delete
+                <Button variant="warning" onClick={() => handleViewExcluded(rec)}>
+                    View
                 </Button>
             </td>
 
             <td>
               <div className="d-inline">
                 <Button
-                  variant="danger"
+                  variant="warning"
                   onClick={() => handleDelete(rec.id)}
                 >
                   Delete
@@ -158,9 +198,9 @@ const ItemTable = () => {
               {excludedItems.map((item) => (
                 <tr>
                     <td>{subjects.find((subj) => subj.id === item)?.title}</td>
-                    <td>{classes.find((klass) => klass.id === subjects.find((subj) => subj.id === item)?.klass )}</td>
+                    <td>{getExcludedItemClass(item)}</td>
                     <td>
-                        <Button variant="primary" onClick={() => deleteExcludedItem()}>
+                        <Button variant="warning" onClick={() => deleteExcludedItem(item, selectedRecord.id)}>
                             Delete
                         </Button>
                     </td>
@@ -170,12 +210,6 @@ const ItemTable = () => {
         </Table>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCloseViewExcludeModal}>
-          Close
-        </Button>
-        <Button variant="primary" onClick={() => handleUpdateSubj(selectedUser)}>
-          Save Changes
-        </Button>
       </Modal.Footer>
     </Modal>
     </>

@@ -2,12 +2,12 @@
 
 from flask import request
 from appclasses.user_auth import UserAuth
-from appclasses.userclass import USERCLASS
 from appclasses.subjectclass import SUBJECTS
 import json
+from datetime import datetime
 from extensions import app, db, jwt
 from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
-from models import User, Subjects, Cohorts
+from models import User, Subjects, Cohorts, Examina
 from functions import resources as resource
 from functions import myfunctions as myfunc
 from flask_cors import cross_origin
@@ -69,19 +69,55 @@ def dashboard(user: str):
     userid = get_jwt_identity()
     user_view = UserAuth(userid, 'xgdjbehj').user_access_view()[current_user.admin_type]
 
-    if user == "SUPER":
+    if request.args.get("action") == "FETCH-EXAM-INSTANCES":
+        worker1 = resource.fetch_examina()
+        worker2 = resource.fetch_user_stat()
+        worker3 = resource.fetch_exam_skedule()
+        worker4 = resource.fetch_classes()
+        worker5 = resource.fetch_subjects()
+
+        return json.dumps({'status': 1, 'exams': worker1, 'subjects': worker5, 'klass': worker4, 'user_stat': worker2,
+                           'skedule': worker3, 'message': 'success!', 'error': [None]})
+
+    if user == "SUPER" or user == 'super':
         if current_user is None or "SUPER_DASHBOARD" not in user_view:
             message = 'User does not have access privilege'
             return json.dumps({'status': 404, 'data': None, 'message': message, 'error': [message]})
 
-        if request.args.get("action") == "FETCH-EXAM-INSTANCES":
-            worker1 = resource.fetch_examina()
-            worker2 = resource.fetch_user_stat()
-            worker3 = resource.fetch_exam_skedule()
-            worker4 = resource.fetch_classes()
-            worker5 = resource.fetch_subjects()
+        if request.args.get("action") == "CREATE-EXAM":
+            data = request.get_json()
 
-            return json.dumps({'status': 1, 'exams': worker1, 'subjects': worker5, 'klass': worker4, 'user_stat': worker2, 'skedule': worker3, 'message': 'success!', 'error': [None]})
+            log = Examina()
+            log.title = data['exam_title'].title()
+            log.type = data['exam_type']
+            log.cohorts = json.dumps(data['classes'])
+            log.start = datetime.strptime(data['start_date'], "%d/%m/%Y")
+            log.end = datetime.strptime(data['end_date'], "%d/%m/%Y")
+            if len(data['subjects']) > 0:
+                log.exclude_subjs = json.dumps(data['subjects'])
+            db.session.add(log)
+            db.session.commit()
+
+            worker = resource.fetch_examina()
+            return json.dumps({'status': 1, 'message': 'New Exam created successfully', 'data': worker, 'error': [None]})
+
+        elif request.args.get('action') == "DELETE-EXAM-INSTANCE":
+            id = request.get_json()['id']
+            Examina.query.filter_by(exid=id).delete()
+            db.session.commit()
+            worker = resource.fetch_examina()
+            return json.dumps({'status': 1, 'message': 'Record deleted successfully', 'data': worker, 'error': [None]})
+
+        elif request.args.get('action') == "DELETE-EXCLUDED-ITEM":
+            data = request.get_json()
+            exam = Examina.query.filter_by(exid=data['exam_id']).first()
+            excluded = json.loads(exam.exclude_subjs)
+            new_excluded = [x for x in excluded if x != data['excluded_id']]
+            Examina.query.filter_by(exid=data['exam_id']).update({'exclude_subjs': json.dumps(new_excluded)})
+            db.session.commit()
+            worker = resource.fetch_examina()
+            return json.dumps({'status': 1, 'message': 'Record deleted successfully', 'data': worker, 'error': [None]})
+
 
     if user == "STUDENT":
         pass

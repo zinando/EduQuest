@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import '../../layout/Sidebar/SideBar.css'
+import Item from '../../component/Item/Item';
+import MultiSelectDropdown from '../../component/Multiselect/Multiselect';
+import '../../component/Multiselect/multiselectdropdown.scss';
+import '../../layout/Sidebar/SideBar.css';
 import * as Unicons from '@iconscout/react-unicons';
 import Navbar from '../../layout/NavBar/NavBar';
 import Sidebar from '../../layout/Sidebar/SideBar';
@@ -7,23 +10,49 @@ import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import {Col, Row, Modal } from 'react-bootstrap';
-import Login from '../../pages/Login/Login'
-import queryBackEnd, { userInfo, checkUserPermission, logOutUser } from '../queryBackEnd'
+import Login from '../../pages/Login/Login';
+import queryBackEnd, { userInfo, checkUserPermission, logOutUser } from '../queryBackEnd';
+import fetchDashboardData from '../fetchResources';
 import useIdle from '../../pages/useIdleTimer'
 import Container from 'react-bootstrap/Container';
-import Timetable from '../../component/Timetable/Timetable'
+import Timetable from '../../component/Timetable/Timetable';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
-import Item from '../../component/Item/Item';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import UserStatsPieChart from '../../component/Chart/Chart';
-import './Home.css'
+import './Home.css';
+import triggerProcessing from '../triggerProcessing';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 export default function Home() {
   //define state variables and initialize them
+  const [userStat, setUserStat] = useState({teachers: 0, students: 0, reviewers: 0});
   const [date, setDate] = useState(new Date());
   const [showAddModal, setShowAddModal] = useState(false);
-  const [userStat, setUserStat] = useState({teachers: 0, students: 0, reviewers: 0});
+  const [classes, setClasses] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [examTitle, setExamTitle] = useState('');
+  const [examType, setExamType] = useState(null);
+  const [examClasses, setExamClasses] = useState([]);
+  const [excludedSubjects, setExcludedSubjects] = useState([]);
+  const [selectedClasses, setSelectedClasses] = useState([]);
+  const [selectedSubjects, setSelectedSubjects] = useState([]);
+
+  //update class state and subject state upon page load
+  useEffect(() => {
+        fetchDashboardData(userInfo().adminType);
+        const myStat = JSON.parse(sessionStorage.getItem('userStat'));
+        //console.log(sessionStorage.getItem('examRecords'));
+        //const myItem = JSON.parse(sessionStorage.getItem('userStat'));
+        //console.log(JSON.parse(sessionStorage.getItem('userStat')));
+        setUserStat(myStat);
+
+  },[]);
 
   const handleDateChange = (newDate) => {
     setDate(newDate);
@@ -32,23 +61,99 @@ export default function Home() {
   // check for token and user permission
   checkUserPermission('SUPER_DASHBOARD');
 
-  useEffect(() => {
-    // update state variables from session storage
-    if (sessionStorage.getItem('examRecords')){
-        //update state variables
-        setUserStat(sessionStorage.getItem('userStat').json());
-    }
-  }, []);
+  //change minimum endDate when user selects startDate so endDate is not below startDate
+  const handleNewStartDate = (newDate) => {
+        setStartDate(newDate);
+        setEndDate(newDate);
+  };
+
+//set selected options from the multiselectdropdowns
+   const toggleClassOption = ({ id }) => {
+        setSelectedClasses(prevSelectedClasses => {
+            // if it's in, remove
+            const newArray = [...prevSelectedClasses]
+            if (newArray.includes(id)) {
+                return newArray.filter(item => item != id)
+                // else, add
+            } else {
+                newArray.push(id)
+                return newArray;
+            }
+        })
+   };
+
+   const toggleSubjectOption = ({ id }) => {
+        setSelectedSubjects(prevSelectedSubjects => {
+            // if it's in, remove
+            const newArray = [...prevSelectedSubjects]
+            if (newArray.includes(id)) {
+                return newArray.filter(item => item != id)
+                // else, add
+            } else {
+                newArray.push(id)
+                return newArray;
+            }
+        })
+   };
+
+
 
   const handleShowAddModal = () => {
+    const myClasses = JSON.parse(sessionStorage.getItem('klass'));
+    const mySubjects = JSON.parse(sessionStorage.getItem('subjects'));
+    setSubjects(mySubjects);
+    setClasses(myClasses);
     setShowAddModal(true);
   };
 
   const handleCloseAddModal = () => {
+    setSelectedSubjects([]);
+    setSelectedClasses([]);
+    setExamTitle('');
+    setExamType(null);
+    setStartDate(new Date());
     setShowAddModal(false);
   };
 
+//retrieve and process form inputs, then queryBackEnd
   const addExamHandler = () => {
+    const data = {};
+    data.exam_title = examTitle;
+    data.exam_type = examType;
+    data.start_date = startDate.toLocaleDateString('en-GB');
+    data.end_date = endDate.toLocaleDateString('en-GB');
+    data.classes = selectedClasses;
+    data.subjects = selectedSubjects;
+
+    if (data.exam_title && data.start_date && data.classes){
+         // query queryBackEnd
+        const url = '/dashboard/SUPER';
+        const action = 'CREATE-EXAM';
+
+        queryBackEnd(url, data, action)
+        .then((response) => {
+            if (response.status === 1){
+                //fetch resources, refresh page
+                fetchDashboardData('super');
+                location.reload();
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    icon: 'error',
+                    text: response.message,
+                });
+                console.log(response.error);
+            }
+        });
+
+
+    } else {
+        Swal.fire({
+            title: 'Empty Fields',
+            icon: "error",
+            text: "Some important fields are empty",
+        })
+    }
 
   };
 
@@ -129,48 +234,49 @@ export default function Home() {
                 <Row>
                     <Col sm={12}>
                     <div className=" border-0 shadow rounded-0 p-4">
-                      <h4 className="card-title fw-bold">Add Exam form</h4>
                       <Form>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
                           <Form.Label >
                             Exam title
                           </Form.Label>
                           <Col sm={12}>
-                            <Form.Control type="text" />
+                            <Form.Control type="text" value={examTitle} onChange={(e) => (setExamTitle(e.target.value))} />
                           </Col>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
                           <Form.Label >
                             Exam type
-                            <Form.Select aria-label="Default select example">
-                              <option>select menu</option>
-                              <option value="1">One</option>
-                              <option value="2">Two</option>
-                              <option value="3">Three</option>
+                            <Form.Select aria-label="Default select example" value={examType} onChange={(e) => (setExamType(e.target.value))}>
+                              <option>Select menu</option>
+                              <option value="Examination">Examination</option>
+                              <option value="Test">Test</option>
                             </Form.Select>
                           </Form.Label>
                         </Form.Group>
-
+                        <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+                          <Col sm={6}>
+                              <Form.Label >
+                                From:
+                              </Form.Label>
+                              <DatePicker dateFormat="yyyy-MM-dd" selected={startDate} selectsStart startDate={startDate} endDate={endDate} minDate={new Date()} onChange={date => handleNewStartDate(date)} />
+                          </Col>
+                          <Col sm={6}>
+                              <Form.Label >
+                                To:
+                              </Form.Label>
+                              <DatePicker dateFormat="yyyy-MM-dd" selected={endDate} selectsEnd startDate={startDate} endDate={endDate}  minDate={startDate} onChange={date => setEndDate(date)} />
+                          </Col>
+                        </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
                           <Form.Label >
-                            From
-                            <Form.Select aria-label="Default select example">
-                              <option>select menu</option>
-                              <option value="1">One</option>
-                              <option value="2">Two</option>
-                              <option value="3">Three</option>
-                            </Form.Select>
+                            Classes To Participate
+                            <MultiSelectDropdown options={classes} selected={selectedClasses} toggleOption={toggleClassOption} title="name" />
                           </Form.Label>
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
                           <Form.Label >
-                            To
-                            <Form.Select aria-label="Default select example">
-                              <option>Exam type</option>
-                              <option value="1">One</option>
-                              <option value="2">Two</option>
-                              <option value="3">Three</option>
-                            </Form.Select>
+                            Subjects To Exclude
+                            <MultiSelectDropdown options={subjects} selected={selectedSubjects} toggleOption={toggleSubjectOption} title="title" />
                           </Form.Label>
                         </Form.Group>
                       </Form>
@@ -183,7 +289,7 @@ export default function Home() {
                 <Button variant="secondary" onClick={handleCloseAddModal}>
                   Close
                 </Button>
-                <Button variant="primary" onClick={addExamHandler}>
+                <Button variant="warning" onClick={addExamHandler}>
                   Add Exam
                 </Button>
               </Modal.Footer>

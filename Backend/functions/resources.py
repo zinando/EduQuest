@@ -21,7 +21,6 @@ def fetch_subjects(scope: str = "all", scope_id=None):
     for subj in subjs:
         mr = {}
         mr['id'] = subj.sid
-        print(subj.cohort_id)
         mr['title'] = subj.title
         mr['general_title'] = subj.general_title
         mr['teacher'] = subj.subject_expert
@@ -45,7 +44,6 @@ def fetch_users() -> list:
         mr['other_names'] = user.oname
         mr['email'] = user.email if user.email else ''
         mr['klass'] = user.cohort_id if user.cohort_id else ''
-        print(user.cohort_id)
         mr['admin_type'] = user.admin_type
         user_info.append(mr)
     return user_info
@@ -92,7 +90,7 @@ def fetch_examina() -> list:
             mr = {'id': exam.exid, 'title': exam.title, 'type': exam.type, 'klasses': json.loads(exam.cohorts),
                   'start': exam.start.strftime("%Y-%m-%d"), 'end': exam.end.strftime("%Y-%m-%d"), 'exclude': json.loads(exam.exclude_subjs)}
             data.append(mr)
-
+    print(data)
     return data
 
 

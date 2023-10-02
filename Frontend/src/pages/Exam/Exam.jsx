@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import '../../layout/Sidebar/SideBar.css';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import Navbar from '../../layout/Navbar/NavBar';
@@ -64,8 +64,6 @@ const Exam = () => {
   const startIndex = (currentPage - 1) * questionsPerPage;
   const endIndex = startIndex + questionsPerPage;
   const currentQuestions = questions.slice(startIndex, endIndex);
-
-  const totalPages = Math.ceil(questions.length / questionsPerPage);
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);

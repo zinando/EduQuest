@@ -20,12 +20,11 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import UserStatsPieChart from '../../component/Chart/Chart';
 import './Home.css';
 import triggerProcessing from '../triggerProcessing';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
-
+import { PieChart } from '@mui/x-charts/PieChart';
 
 export default function Home() {
   //define state variables and initialize them
@@ -180,28 +179,27 @@ export default function Home() {
                 </div>
                 </Col>
             
-              <Col xs={6} >
+              <Col xs={4} >
                 <div className='border-0 shadow rounded-0 p-4 ' style={{ height: '300px', overflowY: 'scroll' }}>
                   <Timetable/>
                 </div>
               </Col>
-              <Col xs={2}>
+              <Col xs={4}>
                 <div className=" border-0 shadow rounded-0 p-4 time" style={{height: '300px'}}>
                   <h4 className="custom-heading">User Stats</h4>
-                  <ul className="card-text" style={{ listStyle: 'none', padding: 10 }}>
-                    <li style={{ marginBottom: '10px' }}>
-                      <span style={{ marginRight: '15px' }} title="teachers"><Unicons.UilUsersAlt color="#0B88B3" size="25" /></span>
-                      <span style={{ marginLeft: '10px' }}>{userStat.teachers}</span>
-                    </li><br/>
-                    <li style={{ marginBottom: '10px' }}>
-                      <span style={{ marginRight: '15px' }} title="students"><Unicons.UilGraduationCap color="#0B88B3" size="25" /></span>
-                      <span style={{ marginLeft: '10px' }}>{userStat.students}</span>
-                    </li><br/>
-                    <li style={{ marginBottom: '10px' }}>
-                      <span style={{ marginRight: '15px' }} title="reviewers"><Unicons.UilFilesLandscapes color="#0B88B3" size="25" /></span>
-                       <span style={{ marginLeft: '10px' }}>{userStat.reviewers}</span>
-                    </li>
-                  </ul>
+                  <PieChart
+                    series={[
+                      {
+                        data: [
+                          { id: 0, value: userStat.teachers, label: 'teachers' },
+                          { id: 1, value: userStat.students, label: 'students' },
+                          { id: 2, value: userStat.reviewers, label: 'reviewers' },
+                        ],
+                      },
+                    ]}
+                    width={300}
+                    height={150}
+                  />
                 </div>
 
               </Col>

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './SignUp.css';
 import * as Unicons from '@iconscout/react-unicons';
 import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from 'sweetalert2'; 
 import queryBackEnd, { validate } from '../queryBackEnd';
 
 export default function SignUp() {

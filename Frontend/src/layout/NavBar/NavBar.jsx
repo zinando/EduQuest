@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
-import * as Unicons from '@iconscout/react-unicons';
-import profile from '../../assets/profile.jpg';
+import Avatar from '@mui/material/Avatar';
+import profile from '../../assets/user-1.jpg';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { userInfo } from '../../pages/queryBackEnd';
 import Sidebar from '../Sidebar/SideBar';
+import NotificationsActiveOutlinedIcon from '@mui/icons-material/NotificationsActiveOutlined';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Badge from '@mui/material/Badge';
 
 
 export default function Navbar() {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [userFirstName, setUserFirstName] = useState('');
 
-  const toggleSidebar = () => {
-    setSidebarVisible(!sidebarVisible);
-  };
 
   useEffect(() => {
     const user = userInfo();
@@ -23,21 +23,32 @@ export default function Navbar() {
 
   return (
     <nav>
-      <div className={`sidebar-button ${sidebarVisible ? 'active' : ''}`}>
-        <Unicons.UilBars
-          className={`sidebarBtn ${sidebarVisible ? 'active' : ''}`}
-          onClick={toggleSidebar}
-        />
+      <div>
+        <MenuItem>
+          <IconButton
+            size="large"
+            aria-label="show 17 new notifications"
+            color="inherit"
+          >
+            <Badge
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              color="secondary" variant="dot">
+              <NotificationsActiveOutlinedIcon />
+              
+            </Badge>
+          </IconButton>
+          
+        </MenuItem>
       </div>
-      <Sidebar isVisible={sidebarVisible} />
+      <Sidebar/>
         <>
-          <div className="search-box">
-            <input type="text" placeholder="Search class, subjects etc..." />
-          <Unicons.UilSearch className="bx-search" size="40" color="#B3B3B3" />
-          </div>
+         
           <Dropdown className='profile-details'>
-            <span className="admin_name">Hi, {userFirstName}</span>
-            <img src={profile} alt="" />
+          <span className="admin_name">Hi, {userFirstName}</span>
+          <Avatar alt="user" src={profile} />
             <Dropdown.Toggle as="span" id="dropdown-custom-components">
               <i className="fa fa-caret-down"></i>
             </Dropdown.Toggle>

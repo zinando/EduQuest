@@ -5,6 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { logOutUser, checkUserPermission } from '../../pages/queryBackEnd'
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/Group 1.png'
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 
 
 
@@ -24,7 +25,7 @@ export default function SideBar({ isVisible }) {
         <ul className={`nav-links ${isVisible ? 'visible' : ''}`}>
           <li>
             <NavLink to="/Home" >
-              <Unicons.UilWindowGrid className='icon' />
+              <DashboardOutlinedIcon className='icon' />
               <span className="links_name">Dashboard</span>
             </NavLink>
           </li>

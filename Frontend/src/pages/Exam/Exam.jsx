@@ -28,7 +28,7 @@ const Exam = () => {
           <div className='exam'>
             <ul>
               
-              <li><h5>Fist Term Examination</h5></li>
+              <li><h5>First Term Examination</h5></li>
               <li> <CountdownTimer /></li>
               <li>Mathematics</li>
               <li>Score: 5</li>

@@ -138,9 +138,9 @@ nav .sidebar-button,
 }
 
 .icon {
-  color: #000000;
-  min-width: 60px;
-  padding: 3px 0px;
+  color: rgb(49, 47, 47);
+  min-width: 40px;
+  padding: 1px 0px;
 }
 
 .home-section nav .search-box {

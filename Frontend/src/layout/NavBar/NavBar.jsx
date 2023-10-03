@@ -47,7 +47,7 @@ export default function Navbar() {
         <>
          
           <Dropdown className='profile-details'>
-          <span className="admin_name">Hi, {userFirstName}</span>
+          <span className="admin_name">Hi, <b>{userFirstName}</b></span>
           <Avatar alt="user" src={profile} />
             <Dropdown.Toggle as="span" id="dropdown-custom-components">
               <i className="fa fa-caret-down"></i>

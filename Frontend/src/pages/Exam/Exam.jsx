@@ -54,10 +54,9 @@ const Exam = () => {
     },
   ];
 
-  const questionsPerPage = 2;
+  const questionsPerPage = 1;
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [showAnswers, setShowAnswers] = useState(false); // To show correct answers
   const [score, setScore] = useState(0);
   const [submitClicked, setSubmitClicked] = useState(false);
 
@@ -73,11 +72,11 @@ const Exam = () => {
     setCurrentPage((prevPage) => prevPage - 1);
   };
 
-  const handleSelectAnswer = (questionId, selectedAnswer) => {
+  const handleSelectAnswer = (selectedAnswer) => {
     if (!submitClicked) {
       setSelectedAnswers({
         ...selectedAnswers,
-        [questionId]: [selectedAnswer],
+        [currentPage]: [selectedAnswer],
       });
     }
   };
@@ -104,56 +103,50 @@ const Exam = () => {
               <li><h5>First Term Examination</h5></li>
               <li> <CountdownTimer /></li>
               <li>Mathematics</li>
-              {showAnswers ? (
-                <li>Score: {score}</li>
-              ) : (
-                <li>Score: {submitClicked ? score : 'Not calculated'}</li>
-              )}
+              {submitClicked && <li>Score: {score}</li>}
             </ul>
           </div>
           <div>
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} style={{ boxShadow: '0 8px 24px rgba(149, 157, 165, 0.2)', borderRadius: '20px' }}>
               <Table aria-label="Math Questions Table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>ID</TableCell>
+                    <TableCell></TableCell>
                     <TableCell>Question</TableCell>
-                    <TableCell>Diagram</TableCell>
-                    <TableCell>Answers</TableCell>
+                    {currentQuestions[0].diagram && <TableCell>Diagram</TableCell>}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {currentQuestions.map((question) => (
-                    <TableRow key={question.id}>
-                      <TableCell>{question.id}</TableCell>
-                      <TableCell>{question.question}</TableCell>
+                  <TableRow>
+                    <TableCell>{currentQuestions[0].id}</TableCell>
+                    <TableCell>{currentQuestions[0].question}</TableCell>
+                    {currentQuestions[0].diagram && (
                       <TableCell>
-                        {question.diagram && (
-                          <img src={question.diagram} alt={`Diagram for question ${question.id}`} />
-                        )}
+                        <img src={currentQuestions[0].diagram} alt={`Diagram for question ${currentQuestions[0].id}`} />
                       </TableCell>
-                      <TableCell>
-                        <ul>
-                          {showAnswers ? (
-                            question.correctAnswer.map((correctAnswer) => (
-                              <li key={correctAnswer}>{correctAnswer}</li>
-                            ))
-                          ) : (
-                            question.answers.map((answer) => (
-                              <li key={answer}>
-                                <Checkbox
-                                  checked={selectedAnswers[question.id]?.includes(answer)}
-                                  onChange={() => handleSelectAnswer(question.id, answer)}
-                                  disabled={submitClicked}
-                                />
-                                {answer}
-                              </li>
-                            ))
-                          )}
-                        </ul>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                    )}
+                  </TableRow>
+                </TableBody>
+              </Table>
+              <Table aria-label="Answers Table">
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Answers</TableCell>
+                    <TableCell>
+                      <ul>
+                        {currentQuestions[0].answers.map((answer) => (
+                          <li key={answer}>
+                            <Checkbox
+                              checked={selectedAnswers[currentPage]?.includes(answer)}
+                              onChange={() => handleSelectAnswer(answer)}
+                              disabled={submitClicked}
+                            />
+                            {answer}
+                          </li>
+                        ))}
+                      </ul>
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </TableContainer>
@@ -165,28 +158,18 @@ const Exam = () => {
                 </Button>
               )}
 
-              {!showAnswers && !submitClicked && (
+              {!submitClicked && (
                 <Button variant="contained" color="primary" onClick={handleNextPage} style={{ marginLeft: '10px' }}>
                   Next
                 </Button>
               )}
 
-              {submitClicked ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setShowAnswers(!showAnswers)}
-                  style={{ marginLeft: '10px' }}
-                >
-                  {showAnswers ? "Hide Corrections" : "Show Corrections"}
-                </Button>
-              ) : (
+              {!submitClicked && (
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={() => {
                     calculateScore();
-                    setShowAnswers(true);
                     setSubmitClicked(true);
                   }}
                   style={{ marginLeft: '10px' }}

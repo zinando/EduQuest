@@ -20,7 +20,7 @@ const CardList = () => {
       title: 'Upcoming Exams',
       content: 'Check in',
       actionText: 'Check Calendar',
-      actionLink: '/calendar', 
+      actionLink: '/scheduler', 
     },
     {
       title: 'Ranking',

@@ -14,7 +14,7 @@ import Users from './pages/Admin/Users'
 import Classes from './pages/Admin/classes';
 import Subjects from './pages/Admin/Subjects'
 import Support from './pages/Support/Support';
-import SubjectList from './component/SubjectList/SubjectList';
+
 
 
 
@@ -40,7 +40,7 @@ export default function App() {
             <Route path="/classes" element={< Classes />} />
             <Route path="/subjects" element={< Subjects />} />
             <Route path="/support" element={< Support />} />
-            <Route path="/subjectlist" element={< SubjectList />} />
+
           </Routes>
         </Router>
       </div>

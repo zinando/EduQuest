@@ -10,12 +10,7 @@ const CardList = () => {
       actionText: 'View List',
       actionLink: '/examhistory', 
     },
-    {
-      title: 'Results',
-      content: 'View result for subjects individually.',
-      actionText: 'View Result',
-      actionLink: '/subjectlist', 
-    },
+  
     {
       title: 'Upcoming Exams',
       content: 'Check in',

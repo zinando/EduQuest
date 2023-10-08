@@ -3,6 +3,7 @@
 export default function MultiSelectDropdown ({ options, selected, toggleOption, title }) {
 
     return (
+        <>
         <div className="c-multi-select-dropdown">
             <div className="c-multi-select-dropdown__selected">
                 <div>{selected.length} selected</div>
@@ -20,6 +21,7 @@ export default function MultiSelectDropdown ({ options, selected, toggleOption, 
                     )
                 })}
             </ul>
-        </div>
+            </div>
+        </>
     )
 }

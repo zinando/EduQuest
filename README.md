@@ -1,58 +1,122 @@
-# EduQuest - Virtual Examination Portal
+# EduQuest - Educational Dashboard
 
-EduQuest is a web application designed for schools to efficiently conduct and manage examination results for their students. This platform simplifies the entire examination process, from question creation to result publication.
+![EduQuest Logo](/Frontend/src/assets/Group%201.png)
+
+EduQuest is an advanced educational platform designed to streamline the examination process for teachers, reviewers, and students. With EduQuest, you can create, manage, review, and take examinations with ease.
 
 ## Table of Contents
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
-## Features
-
-1. **Admin Session Management**: Admin officers can easily create examination sessions for all classes within the school.
-
-2. **Subject-based MCQ Creation**: Subject teachers have the ability to create multiple-choice exam questions for the subjects they're responsible for.
-
-3. **Question Approval Workflow**: Questions created by teachers undergo a review process where school admins can review and approve them.
-
-4. **Scheduled Student Exams**: Students can access and answer examination questions for each subject on the scheduled exam day and time.
-
-5. **Result Review and Approval**: Results are meticulously reviewed and approved by subject teachers and designated administrators. Final approval sets the publication date and time for results.
-
-6. **Comprehensive Result Access**:
-   - Students can view their general class results.
-   - Individual student results encompassing all attempted subjects are accessible.
-   - Students can review their exam scripts for each attempted subject.
+1. [Getting Started](#getting-started)
+   - [Installation](#installation)
+   - [Setting Up](#setting-up)
+2. [Features](#features)
+   - [User Roles](#user-roles)
+   - [Question Bank](#question-bank)
+   - [Exam Creation](#exam-creation)
+   - [Exam Review](#exam-review)
+   - [Analytics and Reporting](#analytics-and-reporting)
+   - [Communication](#communication)
+3. [Security](#security)
+4. [Contributing](#contributing)
+5. [License](#license)
 
 ## Getting Started
 
+### Installation
+
 To get started with EduQuest, follow these steps:
 
-1. Clone this repository: `git clone https://github.com/yourusername/eduquest.git`
-2. Navigate to the project directory: `cd eduquest`
-3. Install dependencies: `npm install`
-4. Configure the database and other environment variables.
-5. Run the application: `npm start`
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/eduquest.git
+   ```
 
-## Usage
+2. Install the required dependencies:
+   ```bash
+   npm install
+   ```
 
-1. Admin officers should log in to create examination sessions for each class.
-2. Subject teachers can create multiple-choice questions for their assigned subjects.
-3. Admins review and approve questions for exams.
-4. On the scheduled exam day, students access and answer the questions.
-5. Approved results are published on the designated day and time.
-6. Students can log in to access their various result types and exam scripts.
+3. Configure the environment variables as described in [Setting Up](#setting-up).
+
+4. Start the application:
+   ```bash
+   npm start
+   ```
+
+### Setting Up
+
+EduQuest relies on several environment variables for configuration. Create a `.env` file in the project root and configure the following variables:
+
+```dotenv
+PORT=3000
+DATABASE_URL=your_database_url
+SECRET_KEY=your_secret_key
+```
+
+## Features
+
+### User Roles
+
+EduQuest supports three user roles:
+
+1. **Teacher**: Teachers can create and manage exams, as well as access exam results.
+2. **Reviewer**: Reviewers are responsible for grading student responses and providing feedback.
+3. **Student**: Students can take exams and view their results.
+
+### Question Bank
+
+EduQuest provides a user-friendly question bank where teachers can:
+
+- Create and store questions categorized by subject and topic.
+- Organize questions into folders for easy access.
+- Search for questions based on keywords and filters.
+
+### Exam Creation
+
+Teachers can create exams effortlessly:
+
+- Select questions from the question bank.
+- Set exam parameters such as time limits and question types.
+- Preview exams before publishing.
+
+### Exam Review
+
+Reviewers play a crucial role in the educational process:
+
+- Access exams that require review.
+- Evaluate student responses using rubrics and comments.
+- Collaborate with teachers for a thorough assessment.
+
+### Analytics and Reporting
+
+EduQuest offers in-depth analytics and reporting:
+
+- Track student performance and progress over time.
+- Identify areas for improvement through detailed insights.
+- Generate reports for stakeholders.
+
+### Communication
+
+The platform fosters communication among users:
+
+- Teachers can communicate with reviewers and students.
+- Students can seek clarification on exam questions.
+- Reviewers can provide feedback and engage in discussions.
+
+## Security
+
+EduQuest takes security seriously:
+
+- User data is encrypted and stored securely.
+- Robust authentication and authorization mechanisms.
+- Regular security audits and updates to mitigate vulnerabilities.
 
 ## Contributing
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, please feel free to submit a pull request or open an issue.
-
-1. Fork the repository
-2. Create a new branch: `git checkout -b feature-new-feature`
-3. Make your changes and commit them: `git commit -m 'Add new feature'`
-4. Push to the branch: `git push origin feature-new-feature`
-5. Open a pull request
+We welcome contributions from the community. If you'd like to contribute to EduQuest, please follow our [contribution guidelines](CONTRIBUTING.md).
 
 ## License
+
+EduQuest is licensed under the [MIT License](LICENSE).
+
+---

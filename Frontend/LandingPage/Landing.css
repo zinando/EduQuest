@@ -199,6 +199,7 @@ a {
   font-size: 15px;
 }
 
+
 .card-title {
   font-weight: 500;
   font-size: 25px;
@@ -206,10 +207,24 @@ a {
 }
 
 .card-1 {
-  background-color: #066b94;
+  background-color: #5cb5d8;
   color: #ffffff;
   box-shadow: rgba(36, 144, 187, 0.448) 0px 7px 29px 0px;
 }
+
+.card-2 {
+  background-color: #ee8779;
+  color: #fff;
+  box-shadow: rgba(234, 195, 164, 0.43) 0px 7px 29px 0px;
+}
+
+.card-3 {
+  background-color: #8abbaa;
+  color: #fff;
+  box-shadow: rgba(238, 213, 193, 0.43) 0px 7px 29px 0px;
+}
+
+
 
 .icon-circle-1 {
   width: 70px;
@@ -227,6 +242,17 @@ a {
   height: 70px;
   border-radius: 50%;
   background-color: #ffd889;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+}
+
+.icon-circle-3 {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #b9dfd1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -255,14 +281,18 @@ footer {
   background-color: #0b88b3;
   text-align: center;
   padding: 20px;
+  align-items: center;
 }
 
 .social-icons {
   margin-top: 10px;
+  align-items: center;
+  padding-left: 525px;
 }
 
 .social-icons a {
   margin-right: 20px;
+  align-items: center;
 }
 
 /* Buttons */
@@ -368,4 +398,54 @@ p {
 
 .heading:hover {
   transform: translateY(-10px);
+}
+
+.image-gallery {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.image-card {
+  position: relative;
+  width: 30%;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+}
+
+.image-card:hover {
+  transform: scale(1.1);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  align-items: center;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.image-card:hover .image-overlay {
+  opacity: 1;
+}
+
+.image-overlay p {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
 }

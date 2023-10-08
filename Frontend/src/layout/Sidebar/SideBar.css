@@ -3,17 +3,16 @@
 * {
   margin: 0;
   padding: 0;
-  color: rgb(0, 0, 0);
+  color: rgb(49, 47, 47);
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 16px;
   line-height: 1.5;
-
 }
 
 
 .sidebar {
   background-color: rgb(250, 251, 251);
-  color: rgb(0, 0, 0);
+  color: rgb(49, 47, 47);
   background-image: none;
   overflow-y: auto;
   display: flex;
@@ -139,9 +138,9 @@ nav .sidebar-button,
 }
 
 .icon {
-  color: #000000;
-  min-width: 60px;
-  padding: 3px 0px;
+  color: rgb(49, 47, 47);
+  min-width: 40px;
+  padding: 1px 0px;
 }
 
 .home-section nav .search-box {

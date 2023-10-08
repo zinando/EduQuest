@@ -17,6 +17,9 @@ import Teacher from './pages/Users/Teacher'
 import Student from './pages/Users/Student'
 import Reviewers from './pages/Users/Reviewer'
 import SetExamQuestions from './pages/Questions/SetQuestions'
+import Support from './pages/Support/Support';
+
+
 
 
 
@@ -44,6 +47,7 @@ export default function App() {
             <Route path="/dashboard/teacher" element={< Teacher />} />
             <Route path="/dashboard/reviewer" element={< Reviewers />} />
             <Route path="/set_question" element={<SetExamQuestions />} />
+            <Route path="/support" element={< Support />} />
 
           </Routes>
         </Router>

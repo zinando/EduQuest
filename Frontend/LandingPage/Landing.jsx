@@ -138,38 +138,35 @@ export default function Landing() {
                     informs students in real-time of the opening exam sessions.
                   </p>
                 </div>
-                <h3>Launch of exam sessions</h3>
-                <p style={{ color: "black" }}>
-                  From their smartphone or PC, the establishment launches and
-                  informs students in real time of the opening exam sessions{" "}
-                </p>
               </div>
                 </div>
             <div className="col-lg-4" data-aos="fade-up" data-aos-delay={100}>
-              <div className="card">
+              <div className="card card-2">
                 <div className="card-body">
                   <div className="icon-circle">
-                    <Unicons.UilBookOpen />
+                    <Unicons.UilBookOpen size="40" color="#FFF" />
                   </div>
                   <h4 className="card-title">Management of exam subjects</h4>
-                  <p className="card-text" style={{ color: "black" }}>
+                  <p className="card-text" style={{ color: "white" }}>
                     Add or personalize subjects according to the specialties of your
-                    establishment.
+                    establishment. Effective management
                   </p>
                 </div>
               </div>
             </div>
             <div className="col-lg-4" data-aos="fade-up" data-aos-delay={200}>
-              <div className="card">
+              <div className="card card-3">
                 <div className="card-body">
                   <div className="icon-circle">
-                    <Unicons.UilBookOpen />
+                    <Unicons.UilBookOpen size="40" color="#FFF" />
                   </div>
                   <h4 className="card-title">
                     Reports analysis of results.
                   </h4>
-                  <p className="card-text" style={{ color: "black" }}>
+                  <p className="card-text" style={{ color: "white" }}>
                     Monitor the grades of each student and analyze the results online.
+                    View result in general and subject specific
+                    
                   </p>
                 </div>
               </div>

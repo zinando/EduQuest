@@ -199,6 +199,7 @@ a {
   font-size: 15px;
 }
 
+
 .card-title {
   font-weight: 500;
   font-size: 25px;
@@ -206,10 +207,24 @@ a {
 }
 
 .card-1 {
-  background-color: #066b94;
+  background-color: #5cb5d8;
   color: #ffffff;
   box-shadow: rgba(36, 144, 187, 0.448) 0px 7px 29px 0px;
 }
+
+.card-2 {
+  background-color: #ee8779;
+  color: #fff;
+  box-shadow: rgba(234, 195, 164, 0.43) 0px 7px 29px 0px;
+}
+
+.card-3 {
+  background-color: #8abbaa;
+  color: #fff;
+  box-shadow: rgba(234, 195, 164, 0.43) 0px 7px 29px 0px;
+}
+
+
 
 .icon-circle-1 {
   width: 70px;

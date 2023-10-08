@@ -75,7 +75,7 @@ export default function Landing() {
         <div className="container">
           <div className="row justify-content-between">
             <div className="col-lg-5">
-              <span className="heading mb-2" data-aos="fade-up">
+              <span className="heading fon mb-2 " data-aos="fade-up">
                 Welcome to our educational platform!
               </span>
               
@@ -83,12 +83,13 @@ export default function Landing() {
                 className="mb-3 pt-3 paragraph"
                 data-aos="fade-up"
                 data-aos-delay={200}
-                style={{ color: "black"  }}
+                style={{ color: "black", fontSize: "20px", lineHeight: "1.5" }}
               >
-                Whether you are a student, a teacher, or simply a lifelong learner,
-                you will find a variety of courses, lessons, and resources here to
-                enrich your knowledge and skills.
+                Whether you are a student, a teacher, or simply a lifelong learner, you will
+                find a variety of courses, lessons, and resources here to enrich your knowledge
+                and skills.
               </p>
+
               <div className='pt-4'>
                 <a href="#" className="btn mr-2" data-aos="fade-up" data-aos-delay={300}>
                   Get Started
@@ -116,9 +117,9 @@ export default function Landing() {
           <div className="row mb-6">
             <div className="col-lg-5 mx-auto text-center" data-aos="fade-up">
               <br />
-              <span className="subheading">Features</span>
+              <span className="subheading" style={{ fontSize: "30px", lineHeight: "1.5" }} >Features</span>
               <h2 className="heading mb-3">Our Features</h2>
-              <p style={{ color: "black" }}>
+              <p style={{ color: "black", fontSize: "20px", lineHeight: "1.5" }}>
                 {" "}
                 EduQuest offers a set of features for complete management of your
                 exams
@@ -133,7 +134,7 @@ export default function Landing() {
                     <Unicons.UilBookOpen size="40" color="#FFF" />
                   </div>
                   <h4 className="card-title">Launch of exam sessions</h4>
-                  <p className="card-text" style={{ color: "white" }}>
+                  <p className="card-text" style={{ color: "white", fontSize: "18px", lineHeight: "1.2" }}>
                     From their smartphone or PC, the establishment launches and
                     informs students in real-time of the opening exam sessions.
                   </p>
@@ -147,7 +148,7 @@ export default function Landing() {
                     <Unicons.UilBookOpen size="40" color="#FFF" />
                   </div>
                   <h4 className="card-title">Management of exam subjects</h4>
-                  <p className="card-text" style={{ color: "white" }}>
+                  <p className="card-text" style={{ color: "white", fontSize: "18px", lineHeight: "1.5" }}>
                     Add or personalize subjects according to the specialties of your
                     establishment. Effective management
                   </p>
@@ -163,7 +164,7 @@ export default function Landing() {
                   <h4 className="card-title">
                     Reports analysis of results.
                   </h4>
-                  <p className="card-text" style={{ color: "white" }}>
+                  <p className="card-text" style={{ color: "white", fontSize: "18px", lineHeight: "1.5" }}>
                     Monitor the grades of each student and analyze the results online.
                     View result in general and subject specific
                     
@@ -185,7 +186,7 @@ export default function Landing() {
             <div className="col-lg-6" data-aos="fade-up" data-aos-delay={100}>
               <h3 className="subheading mb-1">About us</h3>
               <h2 className="heading mb-3">why choose our application?</h2>
-              <p style={{ color: "black" }}>
+              <p style={{ color: "black", fontSize: "18px", lineHeight: "1.5" }}>
                 Choose our educational app for an exceptional experience. With a
                 variety of captivating teachers and exams, a user-friendly
                 interface, and periodic end-of-session exam tracking, we are your
@@ -197,15 +198,15 @@ export default function Landing() {
                 className="list-check list-unstyled mb-5"
                 style={{ color: "black" }}
               >
-                <li>
+                <li style={{ lineHeight: "1.5" }}>
                   🚀 Elevate Your Learning: Our app offers top-quality content and
                   expert guidance
                 </li>
-                <li>
+                <li style={{ lineHeight: "1.5" }}>
                   🌐 Diverse Subjects: Explore a wide range of courses tailored to
                   your school.
                 </li>
-                <li>
+                <li style={{ lineHeight: "1.5" }}>
                   🎯 Your success is our priority: Get in touch with us today to
                   achieve your educational goals
                 </li>
@@ -222,7 +223,7 @@ export default function Landing() {
               data-aos="fade-up"
               style={{ textAlign: "center" }}
             >
-              <p style={{ color: "black" }}>
+              <p className='p-5' style={{ lineHeight: "1.5", color: "black", fontSize: "18px" }}>
                 At EduQuest, we believe in the power of education to shape a better
                 future. Our dedicated team is committed to providing quality
                 learning resources, inspiring curiosity and encouraging ongoing
@@ -234,7 +235,7 @@ export default function Landing() {
           </div>
         </div>
       </div>
-      <div className="image-gallery">
+      <div className="image-gallery p-5 ">
         <div className="image-card">
             <img src="./images/celebration.jpg" alt="celebration"/>
             <div className="image-overlay">
@@ -276,7 +277,7 @@ export default function Landing() {
             </div>
 
       <footer
-        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 5,}}
+        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 8,}}
       >
         <div className="social-icons" style={{ display: "flex", alignItems:"center"}}>
           <a href="https://www.facebook.com/yourpage">

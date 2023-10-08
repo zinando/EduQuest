@@ -234,7 +234,7 @@ export default function Landing() {
           </div>
         </div>
       </div>
-      <div className="image-gallery">
+      <div className="image-gallery p-5 ">
         <div className="image-card">
             <img src="./images/celebration.jpg" alt="celebration"/>
             <div className="image-overlay">
@@ -276,7 +276,7 @@ export default function Landing() {
             </div>
 
       <footer
-        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 5,}}
+        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 8,}}
       >
         <div className="social-icons" style={{ display: "flex", alignItems:"center"}}>
           <a href="https://www.facebook.com/yourpage">

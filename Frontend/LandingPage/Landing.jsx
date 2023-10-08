@@ -237,22 +237,22 @@ export default function Landing() {
           </div>
         </div>
       </div>
-      <div class="image-gallery">
-        <div class="image-card">
+      <div className="image-gallery">
+        <div className="image-card">
             <img src="./images/celebration.jpg" alt="celebration"/>
-            <div class="image-overlay">
+            <div className="image-overlay">
                 <p>Celebration</p>
             </div>
         </div>
-        <div class="image-card">
+        <div className="image-card">
             <img src="./images/exam.jpg" alt="exam"/>
-            <div class="image-overlay">
+            <div className="image-overlay">
                 <p>Exam</p>
             </div>
         </div>
-        <div class="image-card">
+        <div className="image-card">
             <img src="./images/room.jpg" alt="room"/>
-            <div class="image-overlay">
+            <div className="image-overlay">
                 <p>The Room</p>
             </div>
         </div>

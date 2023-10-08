@@ -120,5 +120,3 @@ We welcome contributions from the community. If you'd like to contribute to EduQ
 EduQuest is licensed under the [MIT License](LICENSE).
 
 ---
-
-Feel free to customize this README to include any additional information specific to your EduQuest platform. Providing clear and comprehensive documentation will help users understand, use, and contribute to your educational dashboard effectively.

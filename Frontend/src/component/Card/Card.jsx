@@ -1,30 +1,31 @@
-
 import { Card, CardContent, CardActions, Typography, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const CardList = () => {
-  // Sample data for the cards
+  // Data for the cards
   const cards = [
     {
       title: 'Exam History',
       content: 'A history of all exams taken',
-      actions: 'View List'
+      actionText: 'View List',
+      actionLink: '/examhistory', 
     },
     {
       title: 'Results',
       content: 'View result for subjects individually.',
-      actions: 'View Result'
+      actionText: 'View Result',
+      actionLink: '/subjectlist', 
     },
     {
       title: 'Upcoming Exams',
       content: 'Check in',
-      actions: 'Check Calendar'
+      actionText: 'Check Calendar',
+      actionLink: '/calendar', 
     },
     {
       title: 'Ranking',
       content: 'Overall Position in class.',
-      
     },
-  
   ];
 
   return (
@@ -40,9 +41,14 @@ const CardList = () => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" color="primary">
-              {card.actions}
-            </Button>
+            {card.actionText && card.actionLink ? (
+              <Button size="small" color="primary" component={Link} to={card.actionLink}>
+                {card.actionText}
+              </Button>
+            ) : (
+              // Render an empty CardActions when no action is specified
+              <div />
+            )}
           </CardActions>
         </Card>
       ))}

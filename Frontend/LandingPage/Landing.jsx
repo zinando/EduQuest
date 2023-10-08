@@ -279,7 +279,7 @@ export default function Landing() {
             </div>
 
       <footer
-        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 5, alignItems: "center" }}
+        style={{ backgroundColor: "#b8dbe7", textAlign: "center", padding: 5,}}
       >
         <div className="social-icons" style={{ display: "flex", alignItems:"center"}}>
           <a href="https://www.facebook.com/yourpage">

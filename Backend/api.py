@@ -189,6 +189,10 @@ def dashboard(user: str):
 
             return json.dumps({'status': 1, 'data': worker, 'message': 'Question added successfully!', 'error': [None]})
 
+    if user == "STUDENT" or user == "student":
+        if current_user is None or "STUDENT_DASHBOARD" not in user_view:
+            message = 'User does not have access privilege'
+            return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
 
     if user == "REVIEWER":
         pass

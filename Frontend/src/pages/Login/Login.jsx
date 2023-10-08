@@ -71,6 +71,8 @@ export default function Login() {
           location.href = '/home';
         } else if (userInfo().adminType === 'teacher'){
             location.href = '/dashboard/teacher';
+        }else if (userInfo().adminType === 'student'){
+            location.href = '/dashboard/student';
         }
 
         // Show success toast notification

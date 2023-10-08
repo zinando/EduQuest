@@ -1,5 +1,6 @@
 import { Card, CardContent, CardActions, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 const CardList = () => {
   // Data for the cards
@@ -8,14 +9,14 @@ const CardList = () => {
       title: 'Exam History',
       content: 'A history of all exams taken',
       actionText: 'View List',
-      actionLink: '/examhistory', 
+      actionLink: '/examhistory',
     },
-  
+
     {
       title: 'Upcoming Exams',
       content: 'Check in',
       actionText: 'Check Calendar',
-      actionLink: '/scheduler', 
+      actionLink: '/scheduler',
     },
     {
       title: 'Ranking',
@@ -43,6 +44,9 @@ const CardList = () => {
             ) : (
               // Render an empty CardActions when no action is specified
               <div />
+            )}
+            {card.title === 'Ranking' && (
+              <EmojiEventsIcon color="secondary" style={{ marginLeft: 'auto', fontSize: 40 }}  /> // Add Trophy icon to the "Ranking" card
             )}
           </CardActions>
         </Card>

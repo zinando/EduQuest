@@ -132,3 +132,12 @@ export function addUser(userInfo) {
 
   return queryBackEnd('/admin_actions/manage_users', req_data, 'ADD-USER');
 }
+
+export function isObjectEmpty(obj) {
+  for (const prop in obj) {
+    if (Object.hasOwn(obj, prop)) {
+      return false;
+    }
+  }
+  return true;
+}

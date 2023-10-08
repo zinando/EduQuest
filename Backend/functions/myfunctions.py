@@ -34,3 +34,24 @@ def random_numbers(number_length: int = 8) -> str:
 
     numbers = myne[:10]
     return ''.join(random.choice(numbers) for i in range(number_length))
+
+
+def break_date_time_into_digits(date_time) -> dict:
+    """accepts datetime object and return a dictionary of datetime content in digits"""
+    data = {}
+    try:
+        data["yea"] = date_time.year
+        data["mon"] = date_time.month
+        data["day"] = date_time.day
+        data["hou"] = date_time.hour
+        data["min"] = date_time.minute
+        data["sec"] = date_time.second
+    except AttributeError:
+        data["yea"] = 0
+        data["mon"] = 0
+        data["day"] = 0
+        data["hou"] = 0
+        data["min"] = 0
+        data["sec"] = 0
+
+    return data

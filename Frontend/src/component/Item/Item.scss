@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.item-container{
+    .item-row{
+        .item-header{
+            margin: 0px;
+            border: 2px solid #0b88b3;
+            height: 40px;
+            text-align: center;
+        }
+
+        .item-body{
+            background-color: #87CEFF;
+            border: 1px solid #C0D9D9;
+            border-bottom: 3px solid #C0D9D9;
+            text-align: center;
+        }
+        .hidden-row{
+            /*display:none;*/
+            position: relative;
+            box-sizing: border-box;
+            align-items: center;
+            left:0;
+            list-style: none;
+        }
+        .hidden-row-item{
+            /*display:flex;*/
+            text-align: center;
+            padding:6px 10px;
+            cursor:pointer;
+
+            &:hover{
+                background-color: #eee;
+            }
+        }
+
+
+    }
+
+}
+
+.hidden-items-display{
+
+    &:hover{
+        .hidden-row{
+            display: block;
+        }
+    }
+}

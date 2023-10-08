@@ -46,10 +46,12 @@ export default function Home() {
   //update class state and subject state upon page load
   useEffect(() => {
         fetchDashboardData(userInfo().adminType);
+        if (userInfo().adminType === 'teacher')
+        {
+            location.href = '/dashboard/teacher';
+        }
         const myStat = JSON.parse(sessionStorage.getItem('userStat'));
-        //console.log(sessionStorage.getItem('examRecords'));
-        //const myItem = JSON.parse(sessionStorage.getItem('userStat'));
-        //console.log(JSON.parse(sessionStorage.getItem('userStat')));
+
         setUserStat(myStat);
 
   },[]);

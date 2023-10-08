@@ -78,6 +78,7 @@ class Questions(db.Model):
     end = db.Column(db.DateTime(), nullable=False)
     subject_id = db.Column(db.Integer, db.ForeignKey('subjects.sid'), nullable=False)
     examina_id = db.Column(db.Integer, db.ForeignKey('examina.exid'), nullable=False)
+    instruction = db.Column(db.String(625), nullable=True)
     content = db.Column(db.String(625), nullable=True)
     approval_request = db.Column(db.Integer, default=0)
     approval_status = db.Column(db.String(22), default="pending")

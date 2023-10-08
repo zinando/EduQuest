@@ -7,7 +7,7 @@ import json
 from datetime import datetime
 from extensions import app, db, jwt
 from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
-from models import User, Subjects, Cohorts, Examina
+from models import User, Subjects, Cohorts, Examina, Questions
 from functions import resources as resource
 from functions import myfunctions as myfunc
 from flask_cors import cross_origin
@@ -99,7 +99,8 @@ def dashboard(user: str):
             db.session.commit()
 
             worker = resource.fetch_examina()
-            return json.dumps({'status': 1, 'message': 'New Exam created successfully', 'data': worker, 'error': [None]})
+            return json.dumps(
+                {'status': 1, 'message': 'New Exam created successfully', 'data': worker, 'error': [None]})
 
         elif request.args.get('action') == "DELETE-EXAM-INSTANCE":
             id = request.get_json()['id']
@@ -118,12 +119,76 @@ def dashboard(user: str):
             worker = resource.fetch_examina()
             return json.dumps({'status': 1, 'message': 'Record deleted successfully', 'data': worker, 'error': [None]})
 
-
-    if user == "STUDENT":
+    if user == "STUDENT" or user == "student":
         pass
 
-    if user == "TEACHER":
-        pass
+    if user == "TEACHER" or user == "teacher":
+        if current_user is None or "SET_QUESTIONS" not in user_view:
+            message = 'User does not have access privilege'
+            return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+
+        if request.args.get("action") == "FETCH-QUESTIONS":
+            data = request.get_json()
+            worker = resource.fetch_subject_exam_question(data["exam_id"], data["subject_id"])
+            return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
+        elif request.args.get("action") == "UPDATE-QUESTION-SETTINGS":
+            data = request.get_json()
+            start = datetime.strptime(data['start_date'], "%d/%m/%Y, %H:%M:%S")
+            end = datetime.strptime(data['end_date'], "%d/%m/%Y, %H:%M:%S")
+            if Questions.query.filter_by(examina_id=data['examina_id'], subject_id=data['subject_id']).count() == 0:
+                new = Questions()
+                new.subject_id = data['subject_id']
+                new.examina_id = data['examina_id']
+                new.instruction = data['instruction']
+                new.start = start
+                new.end = end
+                db.session.add(new)
+            else:
+                Questions.query.filter_by(examina_id=data['examina_id'], subject_id=data['subject_id']) \
+                    .update({'start': start, 'end': end, 'instruction': data['instruction']})
+            db.session.commit()
+            worker = {}
+            worker['start'] = myfunc.break_date_time_into_digits(start)
+            worker['end'] = myfunc.break_date_time_into_digits(end)
+            worker['instruction'] = data['instruction']
+
+            return json.dumps({'status': 1, 'data': worker, 'message': 'Updated successfully!', 'error': [None]})
+
+        elif request.args.get("action") == "ADD-EXAM-QUESTION":
+            data = request.get_json()
+            data['options'] = [x.strip() for x in data['options']]
+            data['answer'] = [y.strip() for y in data['answer']]
+            mr = {}
+            mr['question'] = data['question']
+            mr['options'] = data['options']
+            mr['answer'] = data['answer']
+            mr['question_type'] = data['question_type']
+            mr['image_url'] = ''
+
+            if Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])).count() == 0:
+                new = Questions()
+                new.subject_id = int(data['subject_id'])
+                new.examina_id = int(data['examina_id'])
+                new.content = json.dumps([mr])
+                db.session.add(new)
+            else:
+                myquery = Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
+                    .first()
+                if myquery.content:
+                    json_content = json.loads(myquery.content)
+                    json_content.append(mr)
+                else:
+                    json_content = [mr]
+                Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
+                    .update({'content': json.dumps(json_content)})
+            db.session.commit()
+
+            # fetch question records
+            worker = resource.fetch_subject_exam_question(data['examina_id'], data['subject_id'])
+            print(worker)
+
+            return json.dumps({'status': 1, 'data': worker, 'message': 'Question added successfully!', 'error': [None]})
+
 
     if user == "REVIEWER":
         pass
@@ -168,10 +233,10 @@ def admin_actions(action: str):
             data = request.get_json()
             try:
                 db.session.query(User).filter_by(id=data['id']).update({'fname': data['first_name'],
-                                                                             'sname': data['surname'],
-                                                                             'cohort_id': data['klass'],
+                                                                        'sname': data['surname'],
+                                                                        'cohort_id': data['klass'],
                                                                         'userid': data['userid'],
-                                                                             'admin_type': data['admin_type'],
+                                                                        'admin_type': data['admin_type'],
                                                                         'oname': data['other_names'],
                                                                         'email': data['email'],
                                                                         })
@@ -192,7 +257,8 @@ def admin_actions(action: str):
             worker = resource.fetch_subjects()
             worker2 = resource.fetch_classes()
             worker3 = resource.fetch_subject_experts()
-            return json.dumps({'status': 1, 'data': worker, 'teacher': worker3, 'class': worker2, 'message': 'ok', 'error': None})
+            return json.dumps(
+                {'status': 1, 'data': worker, 'teacher': worker3, 'class': worker2, 'message': 'ok', 'error': None})
 
         elif request.args.get('action') == 'EDIT-SUBJECT':
             data = request.get_json()

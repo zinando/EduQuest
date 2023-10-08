@@ -1,9 +1,9 @@
 """ this module contains functions that provide resources to clients """
-from models import User, Subjects, Cohorts, Examina
+from models import User, Subjects, Cohorts, Examina, Questions
 from extensions import db
 from datetime import datetime
 import json
-import calendar
+from flask_jwt_extended import current_user
 
 
 def fetch_subjects(scope: str = "all", scope_id=None):
@@ -88,10 +88,32 @@ def fetch_examina() -> list:
     if exams:
         for exam in exams:
             mr = {'id': exam.exid, 'title': exam.title, 'type': exam.type, 'klasses': json.loads(exam.cohorts),
-                  'start': exam.start.strftime("%Y-%m-%d"), 'end': exam.end.strftime("%Y-%m-%d"), 'exclude': json.loads(exam.exclude_subjs)}
+                  'start': exam.start.strftime("%Y-%m-%d"), 'end': exam.end.strftime("%Y-%m-%d"),
+                  'exclude': json.loads(exam.exclude_subjs)}
+            if current_user.admin_type == 'teacher':
+                mr['teacher_subjects'] = fetch_teacher_exam_subjects(exam.exid, json.loads(exam.exclude_subjs),
+                                                                     json.loads(exam.cohorts))
             data.append(mr)
     print(data)
     return data
+
+
+def fetch_teacher_exam_subjects(examina_id: int, excluded_subjects: list, exam_classes: list) -> list:
+    """ Returns a list of subjects that will feature in the exam which have been assigned to user (teacher) """
+    teacher_subjects = []
+    for klass_id in exam_classes:
+        get_klass = Cohorts.query.filter_by(cid=klass_id).first()
+        if get_klass:
+            for subj in get_klass.subjects:
+                if subj.sid not in excluded_subjects and subj.subject_expert == current_user.id:
+                    mr = {}
+                    mr['id'] = subj.sid
+                    mr['klass'] = subj.cohort_id
+                    mr['title'] = subj.title
+                    mr['examina_id'] = examina_id
+                    teacher_subjects.append(mr)
+
+    return teacher_subjects
 
 
 def fetch_user_stat() -> dict:
@@ -130,5 +152,33 @@ def fetch_exam_skedule() -> list:
                         klas.append(x['klas'])
                 MR = {'subjects': subjs, 'skedule': i, 'klasses': klas}
                 data.append(MR)
+
+    return data
+
+
+def fetch_subject_exam_question(exam_id: int, subject_id: int) -> dict:
+    """ fetches a teachers exam question for a given subject """
+    data = {}
+    data["question_data"] = {}
+    # fetch subject details
+    subject = Subjects.query.filter_by(sid=subject_id).first()
+    if subject:
+        mrs = {}
+        mrs["id"] = subject_id
+        mrs["title"] = subject.title
+        mrs["class_name"] = subject.cohort.classname
+        mrs["class_id"] = subject.cohort.cid
+
+        data["subject_data"] = mrs
+
+    record = db.session.query(Questions).filter(Questions.examina_id == exam_id, Questions.subject_id == subject_id) \
+        .first()
+    if record and record.content:
+        # check if there is question record
+        if len(record.content) > 0:
+            mr = {}
+            mr['content'] = json.loads(record.content)
+            mr["id"] = record.qid
+            data["question_data"] = mr
 
     return data

@@ -16,7 +16,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Item from '../../component/Item/Item';
 import UserStatsPieChart from '../../component/Chart/Chart';
-import './Home.css'
+import '../Dashboard/Home.css';
 
 
 export default function Student() {

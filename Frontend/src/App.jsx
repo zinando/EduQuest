@@ -13,7 +13,10 @@ import Exam from './pages/Exam/Exam'
 import Users from './pages/Admin/Users'
 import Classes from './pages/Admin/classes';
 import Subjects from './pages/Admin/Subjects'
-
+import Teacher from './pages/Users/Teacher'
+import Student from './pages/Users/Student'
+import Reviewers from './pages/Users/Reviewer'
+import SetExamQuestions from './pages/Questions/SetQuestions'
 
 
 
@@ -37,6 +40,11 @@ export default function App() {
             <Route path="/Users" element={< Users />} />
             <Route path="/classes" element={< Classes />} />
             <Route path="/subjects" element={< Subjects />} />
+            <Route path="/dashboard/student" element={< Student />} />
+            <Route path="/dashboard/teacher" element={< Teacher />} />
+            <Route path="/dashboard/reviewer" element={< Reviewers />} />
+            <Route path="/set_question" element={<SetExamQuestions />} />
+
           </Routes>
         </Router>
       </div>

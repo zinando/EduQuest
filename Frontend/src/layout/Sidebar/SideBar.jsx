@@ -59,7 +59,7 @@ export default function SideBar({ isVisible }) {
           <li>
             <NavLink to="/Support">
               <SupportAgentOutlined className='icon' />
-              <span className="links_name">Support</span>
+              <span className="links_name">Results</span>
             </NavLink>
           </li>
           <li>

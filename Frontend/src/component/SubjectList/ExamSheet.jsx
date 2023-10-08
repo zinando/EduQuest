@@ -2,7 +2,7 @@ import Sidebar from '../../layout/Sidebar/SideBar';
 import Navbar from '../../layout/Navbar/NavBar';
 import { Card, CardContent, Typography } from '@mui/material';
 
-const SubjectList = () => {
+const ExamSheet = () => {
   // Data for the subject list
   const subjects = [
     {
@@ -41,7 +41,7 @@ const SubjectList = () => {
                     {subject.description}
                   </Typography>
                 </CardContent>
-                {/* You can add additional actions or buttons here if needed */}
+                
               </Card>
             ))}
           </div>
@@ -51,4 +51,4 @@ const SubjectList = () => {
   );
 };
 
-export default SubjectList;
+export default ExamSheet;

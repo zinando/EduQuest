@@ -13,6 +13,7 @@ import Exam from './pages/Exam/Exam'
 import Users from './pages/Admin/Users'
 import Classes from './pages/Admin/classes';
 import Subjects from './pages/Admin/Subjects'
+import Support from './pages/Support/Support';
 
 
 
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="/Users" element={< Users />} />
             <Route path="/classes" element={< Classes />} />
             <Route path="/subjects" element={< Subjects />} />
+            <Route path="/support" element={< Support />} />
           </Routes>
         </Router>
       </div>

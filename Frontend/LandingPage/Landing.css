@@ -248,6 +248,17 @@ a {
   margin: 0 auto 20px;
 }
 
+.icon-circle-3 {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #b9dfd1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+}
+
 /* Section 3 */
 .section-3 {
   background-color: #fff;

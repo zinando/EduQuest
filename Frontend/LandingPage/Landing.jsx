@@ -157,7 +157,7 @@ export default function Landing() {
             <div className="col-lg-4" data-aos="fade-up" data-aos-delay={200}>
               <div className="card card-3">
                 <div className="card-body">
-                  <div className="icon-circle">
+                  <div className="icon-circle-3">
                     <Unicons.UilBookOpen size="40" color="#FFF" />
                   </div>
                   <h4 className="card-title">

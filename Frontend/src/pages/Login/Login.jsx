@@ -67,7 +67,6 @@ export default function Login() {
         getData();
         if (userInfo().adminType === 'super') {
           // redirect to super admin dashboard
-         //console.log(JSON.parse(sessionStorage.getItem('userStat')));
           location.href = '/home';
         } else if (userInfo().adminType === 'teacher'){
             location.href = '/dashboard/teacher';

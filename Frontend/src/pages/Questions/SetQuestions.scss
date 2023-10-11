@@ -1,25 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-.teacher-subject-row{
-    margin: 20px 10px;
-
-
-    .exam-subject-span{
+    .set-question-span{
         padding: 5px;
         border-radius: 14px;
         color: #fff;
         text-align: center;
+        margin: 5px;
+        font-size: 12px;
         cursor: pointer;
     }
-    .exam-subject-notification-span{
-        padding: 8px;
-        color: #000000;
-        text-align: center;
-        font-size: 12px;
-        font-style: italic;
-        margin: 0px 5px;
-        border-radius: 3px;
-    }
+
     .sp-1{
         background-color: #0b88b3;
      }
@@ -29,4 +19,3 @@
      .sp-3{
         background-color: #FFCD6E;
      }
-}

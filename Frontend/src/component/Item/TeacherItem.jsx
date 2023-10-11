@@ -4,7 +4,6 @@ import ExamSubjects from '../Exam/ExamSubjects';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import { Row, Col, Modal } from 'react-bootstrap';
-import fetchDashboardData from '../../pages/fetchResources';
 import queryBackEnd, { userInfo } from '../../pages/queryBackEnd';
 import './Item.scss';
 import Swal from 'sweetalert2';
@@ -20,19 +19,33 @@ const ItemTable = () => {
   const [showViewExcludeModal, setShowViewExcludeModal] = useState(false);
   const [excludedItemClass, setExcludedItemClass] = useState({});
   const [selectedRecord, setSelectedRecord] = useState({});
+  const [notification, setNotification] = useState({review_request: '', review_status: '', question_count: ''});
 
 
   useEffect(() => {
         //update state variables
-        var myRecords = JSON.parse(sessionStorage.getItem('examRecords'));
-        var myClasses = JSON.parse(sessionStorage.getItem('klass'));
-        var mySubjects = JSON.parse(sessionStorage.getItem('subjects'));
-        if (myRecords === null){
-        myRecords = examRecords;
-        };
-        setClasses(myClasses);
-        setSubjects(mySubjects);
-        setExamRecords(myRecords);
+        const url = '/dashboard/'+ userInfo().adminType;
+        const action = 'FETCH-EXAM-INSTANCES';
+        const data = {};
+        const method = 'POST';
+        let examinaRecords = examRecords;
+        let myClasses = []; let mySubjects = [];
+
+        // Fetch data from the backend
+        queryBackEnd(url, data, action, method)
+          .then((response) => {
+
+                if (response.status === 1){
+                examinaRecords= response.exams;
+                myClasses = response.klass;
+                mySubjects = response.subjects;
+
+            }
+            setClasses(myClasses);
+            setSubjects(mySubjects);
+            setExamRecords(examinaRecords);
+          })
+          .catch((error) => console.error(error));
 
   },[]);
 

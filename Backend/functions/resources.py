@@ -4,6 +4,7 @@ from extensions import db
 from datetime import datetime
 import json
 from flask_jwt_extended import current_user
+from functions import myfunctions as myfunc
 
 
 def fetch_subjects(scope: str = "all", scope_id=None):
@@ -111,9 +112,32 @@ def fetch_teacher_exam_subjects(examina_id: int, excluded_subjects: list, exam_c
                     mr['klass'] = subj.cohort_id
                     mr['title'] = subj.title
                     mr['examina_id'] = examina_id
+                    # check if teacher has set exam for this subject, then fetch exam stats
+                    mr['notification'] = fetch_subject_exam_stat(subj.sid, examina_id)
                     teacher_subjects.append(mr)
 
     return teacher_subjects
+
+
+def fetch_subject_exam_stat(subject_id: int, examina_id: int) -> dict:
+    """ returns information about the exam question for the subject """
+    question = Questions.query.filter_by(examina_id=examina_id, subject_id=subject_id).first()
+
+    mr = {}
+    if question:
+        mr['review_request'] = "Review Not Requested" if question.approval_request == 0 else "Review Requested"
+        mr['review_status'] = "Pending Approval" if question.approval_status == "pending" else "Approved"
+        if question.content:
+            mr['question_count'] = "{} questions set".format(len(json.loads(question.content)))
+        else:
+            mr['question_count'] = "{} questions set".format(0)
+
+    else:
+        mr['review_request'] = "No question records found"
+        mr['review_status'] = " "
+        mr['question_count'] = " "
+
+    return mr
 
 
 def fetch_user_stat() -> dict:
@@ -179,6 +203,9 @@ def fetch_subject_exam_question(exam_id: int, subject_id: int) -> dict:
             mr = {}
             mr['content'] = json.loads(record.content)
             mr["id"] = record.qid
+            mr["start"] = myfunc.break_date_time_into_digits(record.start)
+            mr["end"] = myfunc.break_date_time_into_digits(record.end)
+            mr["instruction"] = record.instruction
             data["question_data"] = mr
 
     return data

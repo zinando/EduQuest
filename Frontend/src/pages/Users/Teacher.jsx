@@ -46,9 +46,9 @@ export default function Teacher() {
   //update class state and subject state upon page load
   useEffect(() => {
         checkUserPermission('SET_QUESTIONS');
-        fetchDashboardData(userInfo().adminType);
-        const myStat = JSON.parse(sessionStorage.getItem('userStat'));
-        setUserStat(myStat);
+        //fetchDashboardData(userInfo().adminType);
+        //const myStat = JSON.parse(sessionStorage.getItem('userStat'));
+        //setUserStat(myStat);
 
   },[]);
 

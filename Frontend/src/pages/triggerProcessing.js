@@ -8,9 +8,9 @@ const triggerProcessing = () => {
         backdrop: true,
         allowOutsideClick: false,
         allowEscapeKey: false,
-        onBeforeOpen: () => {
-          Swal.showLoading();
-        },
+        //onBeforeOpen: () => {
+          //Swal.showLoading();
+        //},
       });
     }
 

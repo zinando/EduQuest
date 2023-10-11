@@ -32,3 +32,18 @@ export default function fetchDashboardData (user) {
       })
       .catch((error) => console.error(error));
   };
+
+
+  export function fetchDashboardData2 (user) {
+    const url = '/dashboard/'+ user;
+    const action = 'FETCH-EXAM-INSTANCES';
+    const data = {};
+    const method = 'POST';
+
+    // Fetch data from the backend
+    queryBackEnd(url, data, action, method)
+      .then(function (response){
+            return response;
+      })
+      .catch((error) => console.error(error));
+  };

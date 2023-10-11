@@ -17,6 +17,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Form from 'react-bootstrap/Form';
 import triggerProcessing from '../triggerProcessing';
 import '../../component/Item/Item.scss';
+import './SetQuestions.scss'
 
 const SetExamQuestions = () => {
     const [questionData, setQuestionData] = useState({id: 2, content: [{question: '',
@@ -38,7 +39,12 @@ const SetExamQuestions = () => {
     const [selectedAnswer, setSelectedAnswer] = useState([]);
     const [questionType, setQuestionType] = useState(null);
     const [question] = useSearchParams();
-    const count = 0;
+    const [editQuestion, setEditQuestion] = useState("");
+    const [editOptions, setEditOptions] = useState(' ');
+    const [editSelectedAnswer, setEditSelectedAnswer] = useState([]);
+    const [editQuestionType, setEditQuestionType] = useState('');
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [questionToEdit, setQuestionToEdit] = useState(null);
 
 
 useEffect(() => {
@@ -63,6 +69,22 @@ useEffect(() => {
         })
    };
 
+   //set selected options from the multiselectdropdowns
+   const toggleAnswerOption2 = ({ id }) => {
+
+        setEditSelectedAnswer(prevEditSelectedAnswer => {
+            // if it's in, remove
+            const newArray = [...prevEditSelectedAnswer]
+            if (newArray.includes(id)) {
+                return newArray.filter(item => item != id)
+                // else, add
+            } else {
+                newArray.push(id)
+                return newArray;
+            }
+        })
+   };
+
 const processOptions = (value) => {
     setQuestionType(value);
     //process options as array of objects
@@ -77,8 +99,30 @@ const processOptions = (value) => {
         OptionsArr = options.split(';'); arr = [];
         for (var i=0; i<OptionsArr.length;i++){
             let obj={};
-            obj.id = OptionsArr[i];
-            obj.name = OptionsArr[i];
+            obj.id = OptionsArr[i].trim();
+            obj.name = OptionsArr[i].trim();
+            arr.push(obj);
+        }
+    }
+    setOptionsList(arr);
+};
+
+const processEditOptions = (options) => {
+    setEditOptions(options);
+    //process options as array of objects
+    let OptionsArr; let arr = [];
+    if (options == null || options==' '){
+        Swal.fire({
+            icon: 'warning',
+            title: 'Alert!',
+            text: 'Please fill the options field.'
+        });
+    } else{
+        OptionsArr = options.split(';');
+        for (var i=0; i<OptionsArr.length;i++){
+            let obj={};
+            obj.id = OptionsArr[i].trim();
+            obj.name = OptionsArr[i].trim();
             arr.push(obj);
         }
     }
@@ -93,16 +137,22 @@ const handleSetQuestion = (subjectId, examId) => {
     var questionDATA = questionData;
     var subjectDATA = subjectData;
     queryBackEnd(url, req_data, action).then((response) => {
-
+        let start = startDate;
+        let end = endDate;
+        let instruct = instruction;
         if (response.status === 1){
-            // console.log('response came');
 
             if (!isObjectEmpty(response.data)){
                 subjectDATA = response.data.subject_data;
 
                 if (!isObjectEmpty(response.data.question_data)){
+                    let st = response.data.question_data.start; //start time info
+                    let et = response.data.question_data.end; //end time info
+                    start = new Date(st.yea, st.mon, st.day, st.hou, st.min, st.sec);
+                    end = new Date(et.yea, et.mon, et.day, et.hou, et.min, et.sec);
+
+                    instruct = response.data.question_data.instruction
                     questionDATA = response.data.question_data;
-                    console.log(response.data.question_data);
                 }
             } else {
                 console.log('response data is empty');
@@ -112,6 +162,9 @@ const handleSetQuestion = (subjectId, examId) => {
         }
         setQuestionData(questionDATA);
         setSubjectData(subjectDATA);
+        setInstruction(instruct);
+        setStartDate(start);
+        setEndDate(end);
     });
 
 
@@ -128,16 +181,11 @@ const handleSetQuestion = (subjectId, examId) => {
   };
 
 const handleShowSettingsModal = () => {
-    setEndDate(startDate);
+    //setEndDate(startDate);
     setShowSettingsModal(true);
   };
 
 const handleCloseSettingsModal = () => {
-    let prevEndDate = startDate;
-    if (updatedEndDate != null){
-        prevEndDate = updatedEndDate;
-    }
-    setEndDate(prevEndDate);
     setShowSettingsModal(false);
   };
 
@@ -176,9 +224,10 @@ const addSettingsHandler = () => {
                 });
                 console.log(response.error);
             }
-            console.log(start);
+            //console.log(start);
             setStartDate(start);
             setEndDate(end);
+            handleCloseSettingsModal();
         });
 
     } else {
@@ -191,6 +240,7 @@ const addSettingsHandler = () => {
 };
 
 const handleCloseAddModal = () => {
+    setSelectedAnswer([]);
     setShowAddModal(false);
 };
 
@@ -236,7 +286,141 @@ const addQuestionsHandler = () => {
                 console.log(response.error);
             }
             setQuestionData(res_data);
-            location.reload();
+            handleCloseAddModal();
+        });
+
+
+    } else {
+        Swal.fire({
+            title: 'Empty Fields',
+            icon: "error",
+            text: "Some important fields are empty",
+        })
+    }
+};
+
+const serializeOptions = (item) => {
+    let option = '';
+
+    for (var i=0; i<item.options.length;i++)
+    {
+        if (i+1 == item.options.length){
+            option += item.options[i];
+        } else {
+            option += item.options[i] + '; ';
+        }
+    }
+    return option;
+};
+
+const handleEditQuestion = async (item) => {
+    setQuestionToEdit(item);
+    setEditQuestion(item.question);
+    let stringOptions = await serializeOptions(item);
+    setEditSelectedAnswer(item.answer);
+    setEditQuestionType(item.question_type);
+    processEditOptions(stringOptions);
+    setShowEditModal(true);
+};
+
+const handleDeleteQuestion = (item) => {
+    Swal.fire({
+        icon: "warning",
+        title: "Are you sure?",
+        text: "This action cannot be reversed if successful.",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete.",
+        confirmButtonColor: "#ffcd6e"
+    }).then((value) => {
+        if (value.isConfirmed) {
+            triggerProcessing();
+            const data = {}; //question data
+            data.examina_id = question.get('examId');
+            data.subject_id = question.get('subjectId');
+            data.question_to_edit = item;
+
+            if (data.question_to_edit){
+                 // query backEnd
+                const url = '/dashboard/'+userInfo().adminType;
+                const action = 'DELETE-EXAM-QUESTION';
+
+                let res_data = questionData;
+                queryBackEnd(url, data, action)
+                .then((response) => {
+                    if (response.status === 1){
+                        //fetch resources, refresh page
+                        res_data = response.data['question_data'];
+                        Swal.fire({
+                            title: 'Success',
+                            icon: 'success',
+                            text: response.message,
+                        });
+
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            icon: 'error',
+                            text: response.message,
+                        });
+                        console.log(response.error);
+                    }
+                    setQuestionData(res_data);
+                });
+
+            } else {
+                Swal.fire({
+                    title: 'Empty Fields',
+                    icon: "error",
+                    text: "Cannot find question to delete",
+                })
+            }
+        }
+    });
+};
+
+const handleCloseEditModal = () => {
+    setShowEditModal(false);
+};
+
+const editQuestionsHandler = () => {
+    triggerProcessing();
+    const data = {}; //question data
+    data.question = editQuestion;
+    data.question_type = editQuestionType;
+    data.options = editOptions.split(';');
+    data.answer = editSelectedAnswer;
+    data.examina_id = question.get('examId');
+    data.subject_id = question.get('subjectId');
+    data.question_to_edit = questionToEdit;
+    //console.log(data);
+
+    if (data.question && data.question_type && data.options && data.answer && data.question_to_edit){
+         // query backEnd
+        const url = '/dashboard/'+userInfo().adminType;
+        const action = 'EDIT-EXAM-QUESTION';
+
+        let res_data = questionData;
+        queryBackEnd(url, data, action)
+        .then((response) => {
+            if (response.status === 1){
+                //fetch resources, refresh page
+                res_data = response.data['question_data'];
+                Swal.fire({
+                    title: 'Success',
+                    icon: 'success',
+                    text: response.message,
+                });
+                //location.reload();
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    icon: 'error',
+                    text: response.message,
+                });
+                console.log(response.error);
+            }
+            setQuestionData(res_data);
+            handleCloseEditModal();
         });
 
 
@@ -293,16 +477,38 @@ return (
                                 <th>Options</th>
                                 <th>Question Type</th>
                                 <th>Answer</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                        { questionData.content.map(item => (
+                        { questionData.content.map((item, index) => (
                             <tr>
-                                <td>{count +1 }</td>
+                                <td>{index+1}</td>
                                 <td>{item.question}</td>
-                                <td>{item.options}</td>
+                                <td>
+                                {item.options.map(opt =>
+                                    <div>{opt}</div>
+                                )}
+                                </td>
                                 <td>{item.question_type}</td>
-                                <td>{item.answer}</td>
+                                <td>
+                                {item.answer.map(ans =>
+                                    <div>{ans}</div>
+                                )}
+                                </td>
+                                <td>
+                                <span className='set-question-span sp-1' onClick={() => {
+                                    handleEditQuestion(item)
+                                }}>
+                                    Edit
+                                </span>
+                                <span className='set-question-span sp-2' onClick={(e) => {
+                                    handleDeleteQuestion(item)
+                                }}>
+                                    Delete
+                                </span>
+
+                                </td>
                             </tr>
                         ))}
                         </tbody>
@@ -417,6 +623,72 @@ return (
                 </Button>
                 <Button variant="warning" onClick={addQuestionsHandler}>
                   Add Question
+                </Button>
+              </Modal.Footer>
+            </Modal>
+
+            {/* Edit Exam Question Modal */}
+            <Modal show={showEditModal} onHide={handleCloseEditModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Editing Exam Question</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group  as={Row}>
+                    <Col sm={12}>
+                      <Form.Label >Question</Form.Label>
+                      <textarea
+                        rows={3}
+                        cols={55}
+                        value={editQuestion}
+                        required={true}
+                        placeholder="type your question here..."
+                        onChange={e => setEditQuestion(e.target.value)}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group  as={Row} style={{marginTop: "20px"}}>
+                    <Col sm={12}>
+                      <Form.Label >Options <small style={{color: "red"}}>separate each option by a semi-colon (;)</small></Form.Label>
+                      <textarea
+                        id="options"
+                        rows={5}
+                        cols={55}
+                        value={editOptions}
+                        onChange={e => processEditOptions(e.target.value)}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group  as={Row} style={{marginTop: "20px"}}>
+                    <Col sm={12}>
+                      <Form.Label >Number of Correct Options</Form.Label>
+                      <select
+                        className="form-control"
+                        required={true}
+                        value={editQuestionType}
+                        onChange={e => setEditQuestionType(e.target.value)}
+                      >
+                        <option>Select Menu</option>
+                        <option value="radio">Single Option</option>
+                        <option value="checkbox">Multiple Options</option>
+                      </select>
+                    </Col>
+                  </Form.Group>
+                  <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword" style={{marginTop: "30px"}}>
+                      <Form.Label >
+                        Select the correct answer(s) to this question
+                        <MultiSelectDropdown options={optionsList} selected={editSelectedAnswer} toggleOption={toggleAnswerOption2} title="name" />
+                      </Form.Label>
+                  </Form.Group>
+
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseEditModal}>
+                  Close
+                </Button>
+                <Button variant="warning" onClick={editQuestionsHandler}>
+                  Update Question
                 </Button>
               </Modal.Footer>
             </Modal>

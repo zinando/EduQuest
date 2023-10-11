@@ -131,6 +131,7 @@ def dashboard(user: str):
             data = request.get_json()
             worker = resource.fetch_subject_exam_question(data["exam_id"], data["subject_id"])
             return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
+
         elif request.args.get("action") == "UPDATE-QUESTION-SETTINGS":
             data = request.get_json()
             start = datetime.strptime(data['start_date'], "%d/%m/%Y, %H:%M:%S")
@@ -165,14 +166,16 @@ def dashboard(user: str):
             mr['question_type'] = data['question_type']
             mr['image_url'] = ''
 
-            if Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])).count() == 0:
+            if Questions.query.filter_by(examina_id=int(data['examina_id']),
+                                         subject_id=int(data['subject_id'])).count() == 0:
                 new = Questions()
                 new.subject_id = int(data['subject_id'])
                 new.examina_id = int(data['examina_id'])
                 new.content = json.dumps([mr])
                 db.session.add(new)
             else:
-                myquery = Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
+                myquery = Questions.query.filter_by(examina_id=int(data['examina_id']),
+                                                    subject_id=int(data['subject_id'])) \
                     .first()
                 if myquery.content:
                     json_content = json.loads(myquery.content)
@@ -188,6 +191,97 @@ def dashboard(user: str):
             print(worker)
 
             return json.dumps({'status': 1, 'data': worker, 'message': 'Question added successfully!', 'error': [None]})
+
+        elif request.args.get("action") == "EDIT-EXAM-QUESTION":
+            data = request.get_json()
+            data['options'] = [x.strip() for x in data['options']]
+            data['answer'] = [y.strip() for y in data['answer']]
+            mr = {}
+            mr['question'] = data['question']
+            mr['options'] = data['options']
+            mr['answer'] = data['answer']
+            mr['question_type'] = data['question_type']
+            mr['image_url'] = ''
+
+            myquery = Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
+                .first()
+            json_content = json.loads(myquery.content)
+            try:
+                question_index = json_content.index(data["question_to_edit"])
+                new_content = [x for x in json_content if x != data["question_to_edit"]]
+                new_content.insert(question_index, mr)
+            except ValueError:
+                return json.dumps({'status': 2, 'data': None, 'message': 'Operation was not successful',
+                                   'error': ["Question was not found"]})
+
+            Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
+                .update({'content': json.dumps(new_content)})
+            db.session.commit()
+
+            # fetch question records
+            worker = resource.fetch_subject_exam_question(data['examina_id'], data['subject_id'])
+
+            return json.dumps(
+                {'status': 1, 'data': worker, 'message': 'Question edited successfully!', 'error': [None]})
+
+        elif request.args.get("action") == "DELETE-EXAM-QUESTION":
+            data = request.get_json()
+            myquery = Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
+                .first()
+            json_content = json.loads(myquery.content)
+            try:
+                question_index = json_content.index(data["question_to_edit"])
+                new_content = [x for x in json_content if x != data["question_to_edit"]]
+                print(question_index)
+            except ValueError:
+                return json.dumps({'status': 2, 'data': None, 'message': 'Operation was not successful',
+                                   'error': ["Question was not found"]})
+
+            Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
+                .update({'content': json.dumps(new_content)})
+            db.session.commit()
+
+            # fetch question records
+            worker = resource.fetch_subject_exam_question(data['examina_id'], data['subject_id'])
+
+            return json.dumps(
+                {'status': 1, 'data': worker, 'message': 'Question edited successfully!', 'error': [None]})
+
+        elif request.args.get("action") == "REQUEST-QUESTION-REVIEW":
+            data = request.get_json()
+
+            if Questions.query.filter_by(examina_id=data['examina_id'], subject_id=data['subject_id']).count() == 0:
+                message = 'Question record not found'
+                return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+            else:
+                my_query = Questions.query.filter_by(examina_id=data['examina_id'], subject_id=data['subject_id']) \
+                    .first()
+                if my_query.content:
+                    if len(json.loads(my_query.content)) > 0:
+                        # if request has already been made, cancel it
+                        if my_query.approval_request == 0:
+                            Questions.query.filter_by(examina_id=data['examina_id'], subject_id=data['subject_id']) \
+                                .update({'approval_request': 1})
+                            message = "You have successfully requested for review of this question."
+                            request_status = 1
+                        else:
+                            if my_query.approval_status == "approved":
+                                return json.dumps({'status': 2, 'data': None, 'message': 'Invalid request.',
+                                                   'error': ['Question has been approved already']})
+
+                            Questions.query.filter_by(examina_id=data['examina_id'], subject_id=data['subject_id']) \
+                                .update({'approval_request': 0})
+                            message = "You have successfully cancelled the request for the review of this question."
+                            request_status = 0
+                        db.session.commit()
+
+                        # fetch subject exam record statistics
+                        worker = resource.fetch_subject_exam_stat(data['subject_id'], data['examina_id'])
+
+                        return json.dumps({'status': 1, 'data': {'request_status': request_status}, 'exam_stat': worker, 'message': message, 'error': [None]})
+
+                message = 'No questions to review'
+                return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
 
     if user == "STUDENT" or user == "student":
         if current_user is None or "STUDENT_DASHBOARD" not in user_view:

@@ -1,1 +1,17 @@
 
+.custom-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.custom-list-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.custom-icon {
+  color: #ff0000;
+  font-size: 24px;
+  margin-right: 10px;
+}

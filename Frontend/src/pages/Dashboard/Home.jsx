@@ -41,17 +41,38 @@ export default function Home() {
   const [excludedSubjects, setExcludedSubjects] = useState([]);
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [examRecords, setExamRecords] = useState([{id: 0, title: '', type: '', klasses: [], exclude: []}]);
 
   //update class state and subject state upon page load
   useEffect(() => {
-        fetchDashboardData(userInfo().adminType);
-        if (userInfo().adminType === 'teacher')
+        if (userInfo().adminType != 'super')
         {
-            location.href = '/dashboard/teacher';
+            location.href = '/dashboard/'+userInfo().adminType;
         }
-        const myStat = JSON.parse(sessionStorage.getItem('userStat'));
+        //fetch dashboard data from database
+        const url = '/dashboard/'+ userInfo().adminType;
+        const action = 'FETCH-EXAM-INSTANCES';
+        const data = {};
+        const method = 'POST';
+        let my_stat = userStat;
+        let my_class = classes;
+        let my_subject = subjects;
+        let my_record = examRecords;
 
-        setUserStat(myStat);
+        queryBackEnd(url, data, action, method)
+          .then((response) => {
+                if (response.status ===1){
+                    my_stat = response.user_stat;
+                    my_class = response.klass;
+                    my_subject = response.subjects;
+                    my_record = response.exams;
+                }
+                setUserStat(my_stat);
+                setClasses(my_class);
+                setSubjects(my_subject);
+                setExamRecords(my_record);
+          })
+          .catch((error) => console.error(error));
 
   },[]);
 
@@ -97,13 +118,7 @@ export default function Home() {
         })
    };
 
-
-
   const handleShowAddModal = () => {
-    const myClasses = JSON.parse(sessionStorage.getItem('klass'));
-    const mySubjects = JSON.parse(sessionStorage.getItem('subjects'));
-    setSubjects(mySubjects);
-    setClasses(myClasses);
     setShowAddModal(true);
   };
 
@@ -218,7 +233,7 @@ export default function Home() {
             <Row>
               <Col sm={12}>
                 <div className='pt-4' style={{ height: '500px', overflowY: 'scroll' }}>
-                 <Item/>
+                 <Item />
                 </div>
               </Col>
             </Row>

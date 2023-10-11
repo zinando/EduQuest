@@ -12,23 +12,35 @@ const ItemTable = () => {
   //define state variables
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [excludedItems, setExcludedItems] = useState([]);
   const [examRecords, setExamRecords] = useState([{id: 0, title: '', type: '', klasses: [], exclude: []}]);
+  const [excludedItems, setExcludedItems] = useState([]);
   const [showViewExcludeModal, setShowViewExcludeModal] = useState(false);
   const [excludedItemClass, setExcludedItemClass] = useState({});
   const [selectedRecord, setSelectedRecord] = useState({});
 
 
   useEffect(() => {
-        //update state variables
-        fetchDashboardData(userInfo().adminType);
-        const myRecords = JSON.parse(sessionStorage.getItem('examRecords'));
-        const myClasses = JSON.parse(sessionStorage.getItem('klass'));
-        const mySubjects = JSON.parse(sessionStorage.getItem('subjects'));
-        setClasses(myClasses);
-        setSubjects(mySubjects);
-        setExamRecords(myRecords);
+        const url = '/dashboard/'+ userInfo().adminType;
+        const action = 'FETCH-EXAM-INSTANCES';
+        const data = {};
+        const method = 'POST';
 
+        let my_class = classes;
+        let my_subject = subjects;
+        let my_record = examRecords;
+
+        queryBackEnd(url, data, action, method)
+          .then((response) => {
+                if (response.status ===1){
+                    my_class = response.klass;
+                    my_subject = response.subjects;
+                    my_record = response.exams;
+                }
+                setClasses(my_class);
+                setSubjects(my_subject);
+                setExamRecords(my_record);
+          })
+          .catch((error) => console.error(error));
   },[]);
 
   const updateRecords = (data) => {
@@ -114,7 +126,6 @@ const ItemTable = () => {
                 text: response.message,
                 });
                 updateRecords(response.data);
-                fetchDashboardData(userInfo().adminType);
             } else {
                 Swal.fire({
                 icon: 'error',

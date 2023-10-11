@@ -13,11 +13,6 @@ export default function Login() {
   const [resp, setResp] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  // Function to fetch dashboard data in sync
-  const  getData =  async () => {
-        await fetchDashboardData(userInfo().adminType);
-  };
-
   // Function to show SweetAlert2 toast notification
   const showToast = () => {
     const Toast = Swal.mixin({
@@ -64,7 +59,6 @@ export default function Login() {
       if (response.status === 1) {
         // Login successful, create session and store user data
         setSession(response);
-        getData();
         if (userInfo().adminType === 'super') {
           // redirect to super admin dashboard
           location.href = '/home';
@@ -73,7 +67,6 @@ export default function Login() {
         }else if (userInfo().adminType === 'student'){
             location.href = '/dashboard/student';
         }
-
         // Show success toast notification
         showToast();
       } else {

@@ -5,7 +5,7 @@ import * as Unicons from '@iconscout/react-unicons';
 import '../Signup/SignUp.css';
 import queryBackEnd, { setSession, userInfo } from '../queryBackEnd';
 import Swal from 'sweetalert2';
-import fetchDashboardData from '../fetchResources';
+import { showToast } from '../triggerProcessing';
 
 
 export default function Login() {
@@ -13,25 +13,7 @@ export default function Login() {
   const [resp, setResp] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  // Function to show SweetAlert2 toast notification
-  const showToast = () => {
-    const Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer);
-        toast.addEventListener('mouseleave', Swal.resumeTimer);
-      },
-    });
 
-    Toast.fire({
-      icon: 'success',
-      title: 'Signed in successfully',
-    });
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -66,9 +48,11 @@ export default function Login() {
             location.href = '/dashboard/teacher';
         }else if (userInfo().adminType === 'student'){
             location.href = '/dashboard/student';
+        }else if (userInfo().adminType === 'reviewer'){
+            location.href = '/dashboard/reviewer';
         }
         // Show success toast notification
-        showToast();
+        showToast('success', 'Signed in successfully');
       } else {
         // Login failed, display error to user and log on console
         var msg = '';

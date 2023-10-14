@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import queryBackEnd, { userInfo, isObjectEmpty, checkUserPermission, logOutUser } from '../queryBackEnd';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -86,23 +86,15 @@ useEffect(() => {
    };
 
 const processOptions = (value) => {
-    setQuestionType(value);
+    setOptions(value);
     //process options as array of objects
     let OptionsList; let OptionsArr; let arr = optionsList;
-    if (options == null || options==' '){
-        Swal.fire({
-            icon: 'warning',
-            title: 'Alert!',
-            text: 'Please fill the options field.'
-        });
-    } else{
-        OptionsArr = options.split(';'); arr = [];
-        for (var i=0; i<OptionsArr.length;i++){
-            let obj={};
-            obj.id = OptionsArr[i].trim();
-            obj.name = OptionsArr[i].trim();
-            arr.push(obj);
-        }
+    OptionsArr = value.split(';'); arr = [];
+    for (var i=0; i<OptionsArr.length;i++){
+        let obj={};
+        obj.id = OptionsArr[i].trim();
+        obj.name = OptionsArr[i].trim();
+        arr.push(obj);
     }
     setOptionsList(arr);
 };
@@ -241,6 +233,10 @@ const addSettingsHandler = () => {
 
 const handleCloseAddModal = () => {
     setSelectedAnswer([]);
+    setExamQuestion(' ');
+    setOptions(' ');
+    setOptionsList([]);
+    setQuestionType('');
     setShowAddModal(false);
 };
 
@@ -456,11 +452,14 @@ return (
                   </Col>
                   <Col sm={12} className="justify-content-center">
                      <Row>
-                        <Col sm={6}>
+                        <Col sm={4}>
                             <Button variant="info" type="button" onClick={handleShowAddModal}>Add Question</Button>
                         </Col>
-                        <Col sm={6}>
+                        <Col sm={4}>
                             <Button variant="success" type="button" onClick={handleShowSettingsModal}>Exam Settings</Button>
+                        </Col>
+                        <Col sm={4}>
+                            <Link to="/dashboard/teacher"><Button variant="success" type="button">Back To Dashboard</Button></Link>
                         </Col>
                      </Row>
                   </Col>
@@ -588,7 +587,8 @@ return (
                         rows={5}
                         cols={55}
                         value={options}
-                        onChange={e => setOptions(e.target.value)}
+                        onChange={e => {processOptions(e.target.value);
+                        }}
                       />
                     </Col>
                   </Form.Group>
@@ -599,8 +599,7 @@ return (
                         className="form-control"
                         required={true}
                         value={questionType}
-                        onChange={e => {processOptions(e.target.value);
-                        }}
+                        onChange={e => setQuestionType(e.target.value)}
                       >
                         <option>Select Menu</option>
                         <option value="radio">Single Option</option>

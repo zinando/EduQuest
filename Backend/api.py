@@ -119,9 +119,6 @@ def dashboard(user: str):
             worker = resource.fetch_examina()
             return json.dumps({'status': 1, 'message': 'Record deleted successfully', 'data': worker, 'error': [None]})
 
-    if user == "STUDENT" or user == "student":
-        pass
-
     if user == "TEACHER" or user == "teacher":
         if current_user is None or "SET_QUESTIONS" not in user_view:
             message = 'User does not have access privilege'
@@ -278,7 +275,8 @@ def dashboard(user: str):
                         # fetch subject exam record statistics
                         worker = resource.fetch_subject_exam_stat(data['subject_id'], data['examina_id'])
 
-                        return json.dumps({'status': 1, 'data': {'request_status': request_status}, 'exam_stat': worker, 'message': message, 'error': [None]})
+                        return json.dumps({'status': 1, 'data': {'request_status': request_status}, 'exam_stat': worker,
+                                           'message': message, 'error': [None]})
 
                 message = 'No questions to review'
                 return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
@@ -288,8 +286,29 @@ def dashboard(user: str):
             message = 'User does not have access privilege'
             return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
 
-    if user == "REVIEWER":
-        pass
+    if user == "REVIEWER" or user == "reviewer":
+        if request.args.get("action") == "FETCH-REVIEW-ITEMS":
+            worker = resource.fetch_review_items()
+            print(worker)
+            return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
+
+        elif request.args.get("action") == "REVIEW-QUESTION":
+            data = request.get_json()
+            review_action = "approved" if data["action"] == "approve" else "rejected"
+            query = Questions.query.filter_by(qid=data['question_id']).first()
+            if query.approval_status == "approved" and data["action"] == "approve":
+                message = "Question already approved"
+                return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+            if query.approval_status == "rejected" and data["action"] == "reject":
+                message = "Question already rejected"
+                return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+            Questions.query.filter_by(qid=data['question_id']) \
+                .update({'review_comment': data['comment'], 'approval_status': review_action,
+                         'last_review_date': datetime.now()})
+            # db.session.commit()
+
+            return json.dumps({'status': 1, 'data': None, 'message': "Successfully {}.".format(review_action),
+                               'error': [None]})
 
 
 @app.route("/admin_actions/<action>", methods=["GET", "POST"])

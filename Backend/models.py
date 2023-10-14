@@ -82,6 +82,8 @@ class Questions(db.Model):
     content = db.Column(db.String(625), nullable=True)
     approval_request = db.Column(db.Integer, default=0)
     approval_status = db.Column(db.String(22), default="pending")
+    review_comment = db.Column(db.String(625), nullable=True)
+    last_review_date = db.Column(db.DateTime())
 
 
 class Examina(db.Model):
@@ -111,6 +113,8 @@ class ClassResult(db.Model):
     admin_action = db.Column(db.String(20), ENUM('canceled', 'released'), default='released')
     publish_date = db.Column(db.DateTime())
     results = db.relationship("Result", backref="class_result")
+    review_comment = db.Column(db.String(625), nullable=True)
+    last_review_date = db.Column(db.DateTime())
 
 
 class Result(db.Model):

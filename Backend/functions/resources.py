@@ -209,3 +209,28 @@ def fetch_subject_exam_question(exam_id: int, subject_id: int) -> dict:
             data["question_data"] = mr
 
     return data
+
+
+def fetch_review_items() -> list:
+    """fetches items (questions and exam results) that have been requested for review"""
+    data = []
+    today = datetime.now()
+    # fetch questions record for examina whose end date has not expired
+    question = db.session.query(Questions.qid, Examina.title, Questions.subject,
+                                Questions.content, Subjects.general_title, Cohorts.classname) \
+        .filter(Examina.end > today, Questions.examina_id == Examina.exid,
+                Questions.approval_request == 1,
+                Questions.approval_status == 'pending', Subjects.sid == Questions.subject_id,
+                Cohorts.cid == Subjects.cohort_id).all()
+    if question:
+        for quest in question:
+            mr = {}
+            mr['id'] = quest.qid
+            mr['title'] = quest.title
+            mr['subject'] = quest.general_title
+            mr['klass'] = quest.classname
+            mr['type'] = 'exam question'
+            mr['content'] = json.loads(quest.content)
+            data.append(mr)
+
+    return data

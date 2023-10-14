@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button, Row, Col, Modal } from 'react-bootstrap';
@@ -11,14 +12,20 @@ import triggerProcessing from '../../pages/triggerProcessing';
 
 const ExamSubjects = ({subjectList, classes}) => {
     const navigate = useNavigate();
+    const [reviewButtonText, setReviewButtonText] = useState("request review");
 
-
-  const toggleRequestButton = (status) => {
-        if (status === 1){
-            document.getElementById('requestButt').innerHTML = 'cancel request';
+  useEffect(() => {
+  },[])
+  const toggleRequestButton = (status, id) => {
+        let text = reviewButtonText;
+        if (status === 1 || status === "Review Requested"){
+            document.getElementById('requestButt'+id).innerHTML = 'cancel request';
+            text = "cancel request";
         } else {
-            document.getElementById('requestButt').innerHTML = 'request review';
+            document.getElementById('requestButt'+id).innerHTML = 'request review';
+            text = "request review";
         }
+        setReviewButtonText(text);
   };
 
   const updateNotice = (statInfo, id) => {
@@ -44,7 +51,7 @@ const ExamSubjects = ({subjectList, classes}) => {
         queryBackEnd(url, data, action, method)
           .then((response) => {
                 if (response.status === 1){
-                    toggleRequestButton(response.data.request_status);
+                    toggleRequestButton(response.data.request_status, makeUnique(subject_id, examina_id));
                     updateNotice(response.exam_stat, makeUnique(subject_id, examina_id));
                     Swal.fire({
                         icon: 'success',
@@ -71,7 +78,7 @@ const ExamSubjects = ({subjectList, classes}) => {
                         <Col sm={2}>{classes.find((klass) => klass.id === item.klass)?.name}</Col>
                         <Col sm={4}>
                             <span className='exam-subject-notification-span sp-3' id={'notice-count-'+makeUnique(item.id, item.examina_id)}>{item.notification.question_count}</span><br/>
-                            <span className='exam-subject-notification-span sp-3' id={'notice-request-'+makeUnique(item.id, item.examina_id)}>{item.notification.review_request}</span><br/>
+                            <span className='exam-subject-notification-span sp-3' id={'notice-request-'+makeUnique(item.id, item.examina_id)}> {item.notification.review_request} </span><br/>
                             <span className='exam-subject-notification-span sp-3' id={'notice-status-'+makeUnique(item.id, item.examina_id)}>{item.notification.review_status}</span>
                         </Col>
                         <Col sm={4}>
@@ -83,7 +90,7 @@ const ExamSubjects = ({subjectList, classes}) => {
                                      <span className='exam-subject-span sp-1'>set question</span>
                                 </Col>
                                 <Col sm={6}>
-                                    <span className='exam-subject-span sp-2' id='requestButt' onClick={() => handleRequestReview(item.id, item.examina_id)}>
+                                    <span className='exam-subject-span sp-2' id={'requestButt'+makeUnique(item.id, item.examina_id)} onClick={() => handleRequestReview(item.id, item.examina_id)}>
                                         request review
                                     </span>
                                 </Col>

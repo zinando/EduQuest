@@ -121,8 +121,8 @@ class UserAuth:
                       "SET_QUESTIONS", "MANAGE_USERS",
                       "MANAGE_CLASSES", "MANAGE_SUBJECTS", "REVIEW_RESULTS", "VIEW_RESULTS"],
             "student": ["STUDENT_DASHBOARD", "TAKE_EXAMS", "VIEW_RESULTS"],
-            "teacher": ["SET_QUESTIONS", "REVIEW_QUESTIONS", "REVIEW_RESULTS", "VIEW_RESULTS"],
-            "reviewer": ["REVIEW_QUESTIONS", "REVIEW_RESULTS", "PUBLISH_RESULTS", "VIEW_RESULTS"]
+            "teacher": ["SET_QUESTIONS", "REVIEW_RESULTS", "VIEW_RESULTS", "TEACHER_DASHBOARD"],
+            "reviewer": ["REVIEW_QUESTIONS", "REVIEW_RESULTS", "PUBLISH_RESULTS", "VIEW_RESULTS", "REVIEWER_DASHBOARD"]
         }
 
         return resource

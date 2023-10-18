@@ -55,3 +55,15 @@ def break_date_time_into_digits(date_time) -> dict:
         data["sec"] = 0
 
     return data
+
+
+def get_time_duration_in_minutes(start, end) -> int:
+    """ returns the difference between two datetimes in minutes """
+
+    try:
+        diff = end - start
+        difference = divmod(diff.total_seconds(), 60)[0]
+    except:
+        difference = 0
+
+    return int(difference)

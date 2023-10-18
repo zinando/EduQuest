@@ -51,7 +51,7 @@ export default function SideBar({ isVisible }) {
           </li>
 
           <li>
-            <NavLink to="/Exam">
+            <NavLink to="/exam_landing">
               <LocalLibraryOutlined className='icon' />
               <span className="links_name">Exam</span>
             </NavLink>

@@ -21,8 +21,9 @@ import './SetQuestions.scss'
 
 const SetExamQuestions = () => {
     const [questionData, setQuestionData] = useState({id: 2, content: [{question: '',
-    question_type: '', answer: [], options: [], image_url: ''}]
+            question_type: '', answer: [], options: [], image_url: ''}]
     });
+    //const [questionData, setQuestionData] = useState([]);
     const [subjectData, setSubjectData] = useState({title:'',class_name:''});
     const [showAddModal, setShowAddModal] = useState(false);
     const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -45,6 +46,7 @@ const SetExamQuestions = () => {
     const [editQuestionType, setEditQuestionType] = useState('');
     const [showEditModal, setShowEditModal] = useState(false);
     const [questionToEdit, setQuestionToEdit] = useState(null);
+    const [settingsLogged, setSettingsLogged] = useState(false);
 
 
 useEffect(() => {
@@ -132,6 +134,7 @@ const handleSetQuestion = (subjectId, examId) => {
         let start = startDate;
         let end = endDate;
         let instruct = instruction;
+        let settingsStatus = false;
         if (response.status === 1){
 
             if (!isObjectEmpty(response.data)){
@@ -142,6 +145,7 @@ const handleSetQuestion = (subjectId, examId) => {
                     let et = response.data.question_data.end; //end time info
                     start = new Date(st.yea, st.mon, st.day, st.hou, st.min, st.sec);
                     end = new Date(et.yea, et.mon, et.day, et.hou, et.min, et.sec);
+                    settingsStatus = true;
 
                     instruct = response.data.question_data.instruction
                     questionDATA = response.data.question_data;
@@ -157,6 +161,7 @@ const handleSetQuestion = (subjectId, examId) => {
         setInstruction(instruct);
         setStartDate(start);
         setEndDate(end);
+        setSettingsLogged(settingsStatus);
     });
 
 
@@ -198,11 +203,13 @@ const addSettingsHandler = () => {
         .then((response) => {
             let start = startDate;
             let end = endDate;
+            let settingsStatus = settingsLogged;
             if (response.status === 1){
                 let st = response.data.start; //start time info
                 let et = response.data.end; //end time info
                 start = new Date(st.yea, st.mon, st.day, st.hou, st.min, st.sec);
                 end = new Date(et.yea, et.mon, et.day, et.hou, et.min, et.sec);
+                settingsStatus = true;
                 Swal.fire({
                     title: 'Success',
                     icon: 'success',
@@ -219,6 +226,7 @@ const addSettingsHandler = () => {
             //console.log(start);
             setStartDate(start);
             setEndDate(end);
+            setSettingsLogged(settingsStatus);
             handleCloseSettingsModal();
         });
 
@@ -241,7 +249,11 @@ const handleCloseAddModal = () => {
 };
 
 const handleShowAddModal = () => {
-    setShowAddModal(true);
+    let modalStatus = showAddModal;
+    if (settingsLogged){
+        modalStatus = true;
+    }
+    setShowAddModal(modalStatus);
 };
 
 const addQuestionsHandler = () => {
@@ -429,6 +441,7 @@ const editQuestionsHandler = () => {
     }
 };
 
+
 return (
     <>
          <Sidebar />
@@ -453,10 +466,10 @@ return (
                   <Col sm={12} className="justify-content-center">
                      <Row>
                         <Col sm={4}>
-                            <Button variant="info" type="button" onClick={handleShowAddModal}>Add Question</Button>
+                            <Button variant="success" type="button" onClick={handleShowSettingsModal}>Exam Settings</Button>
                         </Col>
                         <Col sm={4}>
-                            <Button variant="success" type="button" onClick={handleShowSettingsModal}>Exam Settings</Button>
+                            <Button variant="info" type="button" onClick={handleShowAddModal}>Add Question</Button>
                         </Col>
                         <Col sm={4}>
                             <Link to="/dashboard/teacher"><Button variant="success" type="button">Back To Dashboard</Button></Link>
@@ -486,7 +499,7 @@ return (
                                 <td>{item.question}</td>
                                 <td>
                                 {item.options.map(opt =>
-                                    <div>{opt}</div>
+                                    <div>{"- "+opt.toString()}</div>
                                 )}
                                 </td>
                                 <td>{item.question_type}</td>

@@ -197,16 +197,18 @@ def fetch_subject_exam_question(exam_id: int, subject_id: int) -> dict:
 
     record = db.session.query(Questions).filter(Questions.examina_id == exam_id, Questions.subject_id == subject_id) \
         .first()
-    if record and record.content:
+    if record:
+        mr = {}
+        mr["id"] = record.qid
+        mr["start"] = myfunc.break_date_time_into_digits(record.start)
+        mr["end"] = myfunc.break_date_time_into_digits(record.end)
+        mr["instruction"] = record.instruction
+        mr['content'] = []
         # check if there is question record
-        if len(record.content) > 0:
-            mr = {}
-            mr['content'] = json.loads(record.content)
-            mr["id"] = record.qid
-            mr["start"] = myfunc.break_date_time_into_digits(record.start)
-            mr["end"] = myfunc.break_date_time_into_digits(record.end)
-            mr["instruction"] = record.instruction
-            data["question_data"] = mr
+        if record.content:
+            if len(json.loads(record.content)) > 0:
+                mr['content'] = json.loads(record.content)
+        data["question_data"] = mr
 
     return data
 
@@ -233,4 +235,55 @@ def fetch_review_items() -> list:
             mr['content'] = json.loads(quest.content)
             data.append(mr)
 
+    return data
+
+
+def fetch_today_exams() -> list:
+    """fetches list of exams scheduled today for user"""
+    data = []
+    today = datetime.now()
+
+    items = current_user.cohort
+    if items and items.subjects and current_user.admin_type == 'student':
+        for subj in items.subjects:
+            subject_questions = subj.questions
+            if subject_questions:
+                for quest in subject_questions:
+                    if quest.start.date() == today.date() and quest.approval_status == "approved" \
+                            and quest.approval_request == 1:
+                        mr = {}
+                        mr['id'] = quest.qid
+                        mr['title'] = quest.examina.title
+                        mr['subject'] = quest.subject.general_title
+                        mr['start_time'] = quest.start.strftime("%H:%M:%S")
+                        data.append(mr)
+
+    return data
+
+
+def fetch_exam_question(question_id: int) -> dict:
+    """ fetches the question that the student is answering for the current exam """
+    data = {}
+    question = Questions.query.filter_by(qid=question_id).first()
+    if question:
+        data['instruction'] = question.instruction
+        data['title'] = question.examina.title
+        data['subject'] = question.subject.general_title
+        data['klass'] = question.subject.cohort.classname
+        data['start_time'] = question.start.strftime("%H:%M:%S")
+        data['duration'] = myfunc.get_time_duration_in_minutes(question.start, question.end)
+        data['content'] = []
+        if question.content:
+            content = json.loads(question.content)
+            if len(content) > 0:
+                count = 0
+                for quest in content:
+                    count += 1
+                    mr = {}
+                    mr['id'] = count
+                    mr['question'] = quest['question']
+                    mr['diagram'] = None
+                    mr['answers'] = quest['options']
+                    mr['correctAnswer'] = quest['answer']
+                    data['content'].append(mr)
     return data

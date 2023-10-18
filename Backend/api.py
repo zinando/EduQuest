@@ -258,7 +258,7 @@ def dashboard(user: str):
                         # if request has already been made, cancel it
                         if my_query.approval_request == 0:
                             Questions.query.filter_by(examina_id=data['examina_id'], subject_id=data['subject_id']) \
-                                .update({'approval_request': 1})
+                                .update({'approval_request': 1, 'approval_status': 'pending'})
                             message = "You have successfully requested for review of this question."
                             request_status = 1
                         else:
@@ -286,7 +286,22 @@ def dashboard(user: str):
             message = 'User does not have access privilege'
             return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
 
+        if request.args.get("action") == "FETCH-TODAY-EXAMS":
+            worker = resource.fetch_today_exams()
+            print(worker)
+            return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
+
+        elif request.args.get("action") == "FETCH-STUDENT-EXAM-QUESTION":
+            data = request.get_json()
+            worker = resource.fetch_exam_question(data['question_id'])
+            print(worker)
+            return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
+
     if user == "REVIEWER" or user == "reviewer":
+        if current_user is None or "REVIEWER_DASHBOARD" not in user_view:
+            message = 'User does not have access privilege'
+            return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+
         if request.args.get("action") == "FETCH-REVIEW-ITEMS":
             worker = resource.fetch_review_items()
             print(worker)
@@ -305,7 +320,7 @@ def dashboard(user: str):
             Questions.query.filter_by(qid=data['question_id']) \
                 .update({'review_comment': data['comment'], 'approval_status': review_action,
                          'last_review_date': datetime.now()})
-            # db.session.commit()
+            db.session.commit()
 
             return json.dumps({'status': 1, 'data': None, 'message': "Successfully {}.".format(review_action),
                                'error': [None]})

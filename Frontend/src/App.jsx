@@ -10,6 +10,7 @@ import Home from './pages/Dashboard/Home'
 import Schedule from './pages/Schedule/Schedule'
 import Landing from '../LandingPage/Landing'
 import Exam from './pages/Exam/Exam'
+import ExamLandingPage from './pages/Exam/ExamLanding'
 import Users from './pages/Admin/Users'
 import Classes from './pages/Admin/classes';
 import Subjects from './pages/Admin/Subjects'
@@ -40,7 +41,8 @@ export default function App() {
             <Route path="/sidebar" element={< SideBar />} />
             <Route path="/home" element={< Home />} />
             <Route path="/schedule" element={< Schedule />} />
-            <Route path="/exam" element={< Exam />} />
+            <Route path="/exam_landing/exam" element={< Exam />} />
+            <Route path="/exam_landing" element={< ExamLandingPage />} />
             <Route path="/Users" element={< Users />} />
             <Route path="/classes" element={< Classes />} />
             <Route path="/subjects" element={< Subjects />} />

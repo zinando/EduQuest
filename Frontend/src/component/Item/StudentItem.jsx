@@ -24,34 +24,33 @@ const ItemTable = () => {
 
   useEffect(() => {
         //update state variables
-        var myRecords = JSON.parse(sessionStorage.getItem('examRecords'));
-        var myClasses = JSON.parse(sessionStorage.getItem('klass'));
-        var mySubjects = JSON.parse(sessionStorage.getItem('subjects'));
-        if (myRecords === null){
-        myRecords = examRecords;
-        };
-        setClasses(myClasses);
-        setSubjects(mySubjects);
-        setExamRecords(myRecords);
+        const url = '/dashboard/'+ userInfo().adminType;
+        const action = 'FETCH-EXAM-INSTANCES';
+        const data = {};
+        const method = 'POST';
+        let examinaRecords = examRecords;
+        let myClasses = []; let mySubjects = [];
+
+        // Fetch data from the backend
+        queryBackEnd(url, data, action, method)
+          .then((response) => {
+
+                if (response.status === 1){
+                examinaRecords= response.exams;
+                myClasses = response.klass;
+                mySubjects = response.subjects;
+
+            }
+            setClasses(myClasses);
+            setSubjects(mySubjects);
+            setExamRecords(examinaRecords);
+          })
+          .catch((error) => console.error(error));
 
   },[]);
 
   const updateRecords = (data) => {
         setExamRecords(data);
-  };
-
-  const handleToggleHiddenRow = (id, subjects) => {
-    //display subjects that teacher should set exams on
-
-    var status = document.getElementById("hidden-row"+id.toString()).hidden;
-    if (status) {
-            document.getElementById("hidden-row"+id.toString()).hidden = false;
-            document.getElementById("display-button"+id.toString()).innerHTML = "Hide Subjects ("+subjects.length+")";
-    } else {
-            document.getElementById("hidden-row"+id.toString()).hidden= true;
-            document.getElementById("display-button"+id.toString()).innerHTML = "Show Subjects ("+subjects.length+")";
-        }
-
   };
 
   return (
@@ -89,32 +88,8 @@ const ItemTable = () => {
             </Col>
         </Row>
 
-
         ))}
     </Container>
-
-    {/* View Excluded Subjects Modal */}
-    <Modal>
-      <Modal.Header closeButton>
-        <Modal.Title>Excluded Subjects</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Subject Title</th>
-              <th>Subject Class</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-
-          </tbody>
-        </Table>
-      </Modal.Body>
-      <Modal.Footer>
-      </Modal.Footer>
-    </Modal>
     </>
   );
 };

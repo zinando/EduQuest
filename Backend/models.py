@@ -99,6 +99,9 @@ class Examina(db.Model):
     exclude_subjs = db.Column(db.String(225), nullable=False)
     questions = db.relationship("Questions", backref="examina")
     results = db.relationship("Result", backref="examina")
+    publish_result_status = db.Column(db.String(20), ENUM('published', 'pending'),
+                             default='pending')
+    publish_date = db.Column(db.DateTime())
 
 
 
@@ -106,11 +109,13 @@ class ClassResult(db.Model):
     """This model organizes results by class"""
     __tablename__ = "class_result"
     crid = db.Column(db.Integer, primary_key=True)
-    session_code = db.Column(db.String(25), nullable=False)
-    cohort = db.Column(db.Integer, nullable=True)
-    expert_approval = db.Column(db.String(20), ENUM('pending', 'approved'), default='pending')
-    admin_approval = db.Column(db.String(20), ENUM('pending', 'approved'), default='pending')
-    admin_action = db.Column(db.String(20), ENUM('canceled', 'released'), default='released')
+    examina_id = db.Column(db.Integer, nullable=False)
+    cohort_id = db.Column(db.Integer)
+    expert_approval = db.Column(db.String(20), ENUM('pending', 'approved', 'rejected'), default='pending')
+    admin_approval = db.Column(db.String(20), ENUM('pending', 'approved', 'rejected'), default='pending')
+    admin_action = db.Column(db.String(20), ENUM('canceled', 'released'),
+                             default='released')  # can cancel a certain class result
+    subject_id = db.Column(db.Integer)
     publish_date = db.Column(db.DateTime())
     results = db.relationship("Result", backref="class_result")
     review_comment = db.Column(db.String(625), nullable=True)
@@ -125,7 +130,9 @@ class Result(db.Model):
     examina_id = db.Column(db.Integer, db.ForeignKey("examina.exid"))
     cohort_id = db.Column(db.Integer, db.ForeignKey("student_class.cid"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    exam_script = db.Column(db.String(625))
     subject_id = db.Column(db.Integer, db.ForeignKey("subjects.sid"))
     admin_action = db.Column(db.String(20), ENUM('seized', 'released'), default='released')
+    approval_comment = db.Column(db.String(225))
     reg_date = db.Column(db.DateTime(), default=func.now())
 

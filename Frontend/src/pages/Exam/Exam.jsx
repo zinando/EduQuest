@@ -17,7 +17,7 @@ import { Row, Col, Modal, Container } from 'react-bootstrap';
 import './exam.css';
 import { createSearchParams, Link, useNavigate, useSearchParams } from 'react-router-dom';
 import queryBackEnd, { userInfo, checkUserPermission } from '../../pages/queryBackEnd';
-import triggerProcessing from '../../pages/triggerProcessing';
+import triggerProcessing, { showToast } from '../../pages/triggerProcessing';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 
@@ -29,6 +29,9 @@ const Exam = () => {
   const [examClass, setExamClass] = useState('');
   const [examSubject, setExamSubject] = useState('');
   const [examDuration, setExamDuration] = useState(0);
+  const [examinaId, setExaminaId] = useState(0);
+  const [questionId, setQuestionId] = useState(0);
+  const [startTime, setStartTime] = useState(null);
   const alpha = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n'];
   const [questions, setQuestions] = useState([
     {
@@ -94,6 +97,7 @@ useEffect(() => {
             let myClass = examClass;
             let myTitle = examTitle;
             let myDuration = examDuration;
+            let myStartTime = startTime; let myExaminaId = examinaId; let myQuestionId = questionId;
             if (response.status === 1){
                 myList = response.data.content;
                 myInstruction = response.data.instruction;
@@ -101,11 +105,16 @@ useEffect(() => {
                 myTitle = response.data.title;
                 mySubject = response.data.subject;
                 myDuration = response.data.duration;
+                myStartTime = response.data.start_time;
+                myExaminaId = response.data.examina_id;
+                myQuestionId = response.data.question_id;
             } else {
                 console.log(response.error);
             }
+            setExaminaId(myExaminaId);
+            setQuestionId(myQuestionId);
+            setStartTime(myStartTime);
             setQuestions(myList);
-            //console.log(myList);
             setInstructions(myInstruction);
             setExamTitle(myTitle);
             setExamClass(myClass);
@@ -147,18 +156,31 @@ useEffect(() => {
     let newScore = 0;
     questions.forEach((question) => {
       const selected = selectedAnswers[question.id];
-      if (selected && selected.every((answer) => question.correctAnswer.includes(answer))) {
-        newScore += 1;
+      //console.log(selected); console.log(question.correctAnswer);
+      if (selected) {
+        if (selected.length == question.correctAnswer.length && selected.every((answer) => question.correctAnswer.includes(answer))) {
+            newScore += 1;
+        }
       }
     });
-    setScore(newScore);
+    let scorePercent = 0;
+    if (newScore > 0){
+        scorePercent = ((newScore/questions.length)*100).toFixed(2);
+    }
+    setScore(scorePercent);
+   return scorePercent;
   };
 
   const showQuestions = () => {
     setShowInstruction(false);
   };
 
-  const triggerWarning = () => {
+  const toggleShowQuestions = () => {
+    document.getElementById("exam-instruction-div").hidden = true;
+    document.getElementById("exam-question-div").hidden = false;
+  };
+
+  const triggerWarning = async () => {
     Swal.fire({
         icon: 'warning',
         title: 'Warning!',
@@ -169,7 +191,16 @@ useEffect(() => {
     }).then((response) => {
         let mySubmitButtonClick = true;
         if (response.isConfirmed) {
-            alert('weldone');
+            triggerProcessing();
+
+            const examScore = calculateScore();
+            const data = {};
+            data.script = computeExamScript(examScore);
+            data.examina_id = examinaId;
+            data.question_id = questionId;
+
+            //record exam score at database
+            recordExamScore(data, "manual");
         }else{
             mySubmitButtonClick = false;
         }
@@ -177,48 +208,58 @@ useEffect(() => {
     })
   };
 
-  if (showInstructions){
-        return (
-            <>
-                <Sidebar />
-                <section className="home-section">
-                    <Navbar />
-                    <div className="home-content">
-                        <Container>
-                            <Row className="justify-content-center">
-                                <Col sm={12}>
-                                    <div className='exam'>
-                                        <ul>
-                                          <li><h5>{"TITLE: " +examTitle}</h5></li>
-                                          <li> <CountdownTimer /></li>
-                                          <li>{"SUBJECT: "+examSubject}</li>
-                                          <li>{"CLASS: "+examClass}</li>
-                                        </ul>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="justify-content-center">
-                                <Col sm={8}>
-                                    <div className="alert alert-info text-center">
-                                        <div><h3>General Instructions</h3></div>
-                                        <div>{instructions}</div>
-                                        <div>{'You have less than '+ examDuration+ ' minutes from now.'}</div>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="justify-content-center">
-                                <Col sm={4}>
-                                    <Button variant="contained" color="primary" onClick={showQuestions}>
-                                        Continue...
-                                    </Button>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </div>
-                </section>
-            </>
-        );
-  }
+  const computeExamScript = (examScore) => {
+    const myScript = {};
+            myScript.instruction = instructions;
+            myScript.class = examClass;
+            myScript.subject = examSubject;
+            myScript.title = examTitle;
+            myScript.score = examScore;
+            myScript.start_time = startTime;
+            myScript.duration = examDuration.toString() + " mins.";
+            myScript.questions = questions;
+            myScript.questions.forEach((question) => {
+                question.remarks = "wrong";
+                question.selectedAnswer = selectedAnswers[question.id];
+
+                if (question.selectedAnswer) {
+                    if (question.selectedAnswer.length == question.correctAnswer.length && question.selectedAnswer.every((answer) => question.correctAnswer.includes(answer))) {
+                        question.remarks = "correct";
+                    }
+                }
+            });
+    return myScript;
+  };
+
+  const recordExamScore = (data, method = "autoRecord") => {
+    const url = '/dashboard/'+userInfo().adminType;
+    const action = 'RECORD-EXAM-SCORE';
+    queryBackEnd(url, data, action)
+        .then((response) => {
+            if (response.status === 1){
+                if (method == "autoRecord"){
+                    showToast('success', 'Automatic Submission', 'Your scores have been submitted automatically.')
+                        .then((res) =>{
+                        location.href = "/dashboard/"+userInfo().adminType;
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Success',
+                        icon: 'success',
+                        text: response.message,
+                    }).then((res) =>{
+                        location.href = "/dashboard/"+userInfo().adminType;
+                    });
+                }
+            } else {
+                showToast('error', 'Error!', 'An error occurred while attempting to record your scores')
+                        .then((res) =>{
+                        console.log(response.error);
+                        location.href = "/dashboard/"+userInfo().adminType;
+                    });
+            }
+        });
+  };
 
   return (
     <>
@@ -229,14 +270,34 @@ useEffect(() => {
           <div className='exam'>
             <ul>
               <li><h5>{"TITLE: " +examTitle}</h5></li>
-              <li> <CountdownTimer /></li>
+              <li> <CountdownTimer duration={params.get('duration')} /></li>
               <li>{"SUBJECT: "+examSubject}</li>
               <li>{"CLASS: "+examClass}</li>
               {/*{submitClicked && <li>Score: {score}</li>}*/}
             </ul>
           </div>
 
-          <div>
+          <Container id="exam-instruction-div">
+            <Row className="justify-content-center">
+                <Col sm={8}>
+                    <div className="alert alert-info text-center">
+                        <div><h3>General Instructions</h3></div>
+                        <div>{instructions}</div>
+                        <div> You have <CountdownTimer duration={params.get('duration')} hideTitle={true} /> </div>
+                    </div>
+                </Col>
+            </Row>
+            <Row className="justify-content-center">
+                <Col sm={4}>
+                    <Button variant="contained" color="primary" onClick={toggleShowQuestions}>
+                        Continue...
+                    </Button>
+                </Col>
+            </Row>
+
+          </Container>
+
+          <div id="exam-question-div" hidden={true}>
             <TableContainer component={Paper} style={{ boxShadow: '0 8px 24px rgba(149, 157, 165, 0.2)', borderRadius: '20px' }}>
               <Table aria-label="Math Questions Table">
                 <TableHead>

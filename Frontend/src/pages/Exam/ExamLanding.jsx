@@ -3,11 +3,11 @@ import '../../layout/Sidebar/SideBar.css';
 import Sidebar from '../../layout/Sidebar/SideBar';
 import Navbar from '../../layout/Navbar/NavBar';
 import CountdownTimer from '../../component/Timer/Timer';
+import TimedButton from '../../component/Timer/TimedButton';
 import {Button, Table, Row, Col, Modal, Container } from 'react-bootstrap';
 import { createSearchParams, Link, useNavigate } from 'react-router-dom';
 import queryBackEnd, { userInfo, checkUserPermission } from '../../pages/queryBackEnd';
-
-
+import { calculateTimeDifference } from '../../pages/triggerProcessing';
 
 const ExamLandingPage = () => {
     const navigate = useNavigate();
@@ -68,24 +68,34 @@ const fetchTodayPapers = () => {
                                         <th>S/N</th>
                                         <th>Title</th>
                                         <th>Subject</th>
-                                        <th>Start time</th>
+                                        <th>Exam Schedule</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {examList.map((item, indx) => (
+
                                     <tr key={item.id}>
                                         <td>{indx + 1}</td>
                                         <td>{item.title}</td>
                                         <td>{item.subject}</td>
-                                        <td>{item.start_time}</td>
                                         <td>
-                                            <Button variant="success" className="custom-button" onClick={()=>navigate({
-                                                        pathname:"/exam_landing/exam",
-                                                        search: createSearchParams({itemId:item.id}).toString()
-                                                    })}>
+                                            <div>{item.start_time} - {item.end_time}</div>
+                                            <CountdownTimer duration={item.time_remaining} hideTitle={false} />
+                                        </td>
+
+                                        <td>
+                                            {/*<TimedButton data={{itemId:item.id, duration: item.duration}} wait={item.time_remaining!=0}
+                                                timeRemaining={item.time_remaining} />*/}
+                                            <Button variant="success" className="custom-button" onClick={()=> navigate({
+                                                    pathname:"/exam_landing/exam",
+                                                search: createSearchParams({itemId:item.id, duration: item.duration}).toString()
+                                                })} disabled={item.time_remaining !=0 || item.written_exam == 'yes'}>
                                                 Start
                                             </Button>
+                                            { item.written_exam == 'yes' && (
+                                                <div style={{color: 'red', fontStyle: 'italic', fontSize: '9px'}}> you have written this paper</div>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}

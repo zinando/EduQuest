@@ -140,6 +140,44 @@ const ItemTable = () => {
     });
   };
 
+  const handlePublishResult = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Publish!',
+      cancelButtonText: 'No, cancel',
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        triggerProcessing();
+        const req_data = {exam_id: id};
+        const url = '/dashboard/'+userInfo().adminType;
+        const action = 'PUBLISH-RESULT';
+        queryBackEnd(url, req_data, action)
+        .then((response) => {
+            if (response.status ===1){
+                Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message,
+                }).then(()=>{
+                    location.reload();
+                });
+            } else {
+                Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: response.message,
+                })
+            }
+        }).catch((error) => {
+              console.error(error);
+            });
+      }
+    });
+  };
+
   return (
     <>
     <Table striped bordered hover>
@@ -177,7 +215,21 @@ const ItemTable = () => {
             </td>
 
             <td>
-              <div className="d-inline">
+                <div className="d-inline">
+                <Button
+                  variant="warning"
+                  style={{backgroundColor: "#e97463"}}
+                  onClick={() => handlePublishResult(rec.id)}
+                >
+                {rec.publish_status === 0 && (
+                    <span>Publish Result</span>
+                )}
+                {rec.publish_status === 1 && (
+                    <span>Withdraw Result</span>
+                )}
+                </Button>
+              </div>
+              <div className="d-inline" style={{margin: "8px", backgroundColor: "#e97463"}}>
                 <Button
                   variant="warning"
                   onClick={() => handleDelete(rec.id)}

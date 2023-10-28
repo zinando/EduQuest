@@ -102,12 +102,22 @@ const fetchReviewItems = () => {
                             <td>{item.klass}</td>
                             <td>{item.type}</td>
                             <td>
-                              <Button variant="primary" className="custom-button edit" onClick={()=>navigate({
+                            {item.type == "exam question" && (
+                                <Button variant="primary" className="custom-button edit" onClick={()=>navigate({
                                         pathname:"/review_question",
                                         search: createSearchParams({item:JSON.stringify({id: item.id, subject:item.subject, klass:item.klass, content: item.content})}).toString()
                                     })}>
-                                review item
+                                review question
                               </Button>
+                            )}
+                            {item.type == "exam result" && (
+                                <Button className='exam-subject-span sp-1' onClick={()=>navigate({
+                                        pathname:"/review_result",
+                                        search: createSearchParams({examId:item.examina_id, subjectId:item.subject_id}).toString()
+                                    })}>
+                                        review result
+                                </Button>
+                            )}
                             </td>
                           </tr>
                       ))}

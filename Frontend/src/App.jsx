@@ -19,6 +19,7 @@ import Student from './pages/Users/Student'
 import Reviewers from './pages/Users/Reviewer'
 import SetExamQuestions from './pages/Questions/SetQuestions'
 import ReviewExamQuestions from './pages/Questions/ReviewQuestions'
+import ReviewExamResults from './pages/Questions/ReviewResults'
 import Support from './pages/Support/Support';
 
 
@@ -52,6 +53,7 @@ export default function App() {
             <Route path="/set_question" element={<SetExamQuestions />} />
             <Route path="/support" element={< Support />} />
             <Route path="/review_question" element={< ReviewExamQuestions />} />
+            <Route path="/review_result" element={< ReviewExamResults />} />
 
           </Routes>
         </Router>

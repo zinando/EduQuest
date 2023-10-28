@@ -83,16 +83,24 @@ const ExamSubjects = ({subjectList, classes}) => {
                         </Col>
                         <Col sm={4}>
                             <Row>
-                                <Col sm={6} onClick={()=>navigate({
+                                <Col sm={4} onClick={()=>navigate({
                                         pathname:"/set_question",
                                         search: createSearchParams({examId:item.examina_id, subjectId:item.id}).toString()
                                     })}>
-                                     <span className='exam-subject-span sp-1'>set question</span>
+                                     <Button className='exam-subject-span sp-1'>set question</Button>
                                 </Col>
-                                <Col sm={6}>
-                                    <span className='exam-subject-span sp-2' id={'requestButt'+makeUnique(item.id, item.examina_id)} onClick={() => handleRequestReview(item.id, item.examina_id)}>
+                                <Col sm={4}>
+                                    <Button className='exam-subject-span sp-2' id={'requestButt'+makeUnique(item.id, item.examina_id)} onClick={() => handleRequestReview(item.id, item.examina_id)}>
                                         request review
-                                    </span>
+                                    </Button>
+                                </Col>
+                                <Col sm={4} >
+                                     <Button className='exam-subject-span sp-1' onClick={()=>navigate({
+                                        pathname:"/review_result",
+                                        search: createSearchParams({examId:item.examina_id, subjectId:item.id}).toString()
+                                    })} disabled={!item.result_exists}>
+                                        review result
+                                    </Button>
                                 </Col>
 
                             </Row>

@@ -7,7 +7,7 @@ import json
 from datetime import datetime
 from extensions import app, db, jwt
 from flask_jwt_extended import jwt_required, get_jwt_identity, current_user
-from models import User, Subjects, Cohorts, Examina, Questions
+from models import User, Subjects, Cohorts, Examina, Questions, Result, ClassResult
 from functions import resources as resource
 from functions import myfunctions as myfunc
 from flask_cors import cross_origin
@@ -103,11 +103,28 @@ def dashboard(user: str):
                 {'status': 1, 'message': 'New Exam created successfully', 'data': worker, 'error': [None]})
 
         elif request.args.get('action') == "DELETE-EXAM-INSTANCE":
-            id = request.get_json()['id']
-            Examina.query.filter_by(exid=id).delete()
+            exam_id = request.get_json()['id']
+            Examina.query.filter_by(exid=exam_id).delete()
             db.session.commit()
             worker = resource.fetch_examina()
             return json.dumps({'status': 1, 'message': 'Record deleted successfully', 'data': worker, 'error': [None]})
+
+        elif request.args.get('action') == "PUBLISH-RESULT":
+            exam_id = request.get_json()['exam_id']
+            exam_instance = Examina.query.filter_by(exid=exam_id).first()
+            #   if exam_instance.end >= datetime.now():
+            #       return json.dumps(
+            #                   {'status': 2, 'message': 'The exam is still ongoing.', 'data': None, 'error': [None]})
+
+            if exam_instance.publish_result_status == 'pending':
+                Examina.query.filter_by(exid=exam_id).update({"publish_result_status": "published", "publish_date": datetime.now()})
+                message = 'Successfully published.'
+            else:
+                Examina.query.filter_by(exid=exam_id).update({"publish_result_status": "pending", "publish_date": datetime.now()})
+                message = 'Successfully Withdrawn result from public view.'
+            db.session.commit()
+
+            return json.dumps({'status': 1, 'message': message, 'data': None, 'error': [None]})
 
         elif request.args.get('action') == "DELETE-EXCLUDED-ITEM":
             data = request.get_json()
@@ -143,7 +160,8 @@ def dashboard(user: str):
                 db.session.add(new)
             else:
                 Questions.query.filter_by(examina_id=data['examina_id'], subject_id=data['subject_id']) \
-                    .update({'start': start, 'end': end, 'instruction': data['instruction']})
+                    .update({'start': start, 'end': end, 'instruction': data['instruction'],
+                             'approval_status': 'pending', 'approval_request': 0})
             db.session.commit()
             worker = {}
             worker['start'] = myfunc.break_date_time_into_digits(start)
@@ -180,7 +198,8 @@ def dashboard(user: str):
                 else:
                     json_content = [mr]
                 Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
-                    .update({'content': json.dumps(json_content)})
+                    .update({'content': json.dumps(json_content), 'approval_request': 0,
+                             'approval_status': 'pending'})
             db.session.commit()
 
             # fetch question records
@@ -212,7 +231,7 @@ def dashboard(user: str):
                                    'error': ["Question was not found"]})
 
             Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
-                .update({'content': json.dumps(new_content)})
+                .update({'content': json.dumps(new_content), 'approval_request': 0, 'approval_status': 'pending'})
             db.session.commit()
 
             # fetch question records
@@ -235,7 +254,7 @@ def dashboard(user: str):
                                    'error': ["Question was not found"]})
 
             Questions.query.filter_by(examina_id=int(data['examina_id']), subject_id=int(data['subject_id'])) \
-                .update({'content': json.dumps(new_content)})
+                .update({'content': json.dumps(new_content), 'approval_request': 0, 'approval_status': 'pending'})
             db.session.commit()
 
             # fetch question records
@@ -281,6 +300,29 @@ def dashboard(user: str):
                 message = 'No questions to review'
                 return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
 
+        elif request.args.get("action") == "FETCH-RESULT-FOR-REVIEW":
+            data = request.get_json()
+            worker = resource.fetch_results_for_review(data['examina_id'], data['subject_id'])
+            print(worker)
+            return json.dumps({'status': 1, 'data': worker, 'message': 'success', 'error': None})
+
+        elif request.args.get("action") == "REVIEW-RESULT":
+            data = request.get_json()
+            review_action = "approved" if data["action"] == "approve" else "rejected"
+            query = ClassResult.query.filter_by(crid=data['classResultId']).first()
+            #  check if result has already been reviewed by expert
+            if (query.expert_approval == "approved" and data["action"] == "approve") or \
+                    (query.expert_approval == "rejected" and data["action"] == "reject"):
+                message = "Result already reviewed"
+                return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+            #  record review action
+            ClassResult.query.filter_by(crid=data['classResultId']) \
+                .update({'review_comment': data['comment'], 'expert_approval': review_action,
+                         'last_review_date': datetime.now()})
+            db.session.commit()
+
+            return json.dumps({'status': 1, 'data': None, 'message': 'Successfully reviewed!', 'error': None})
+
     if user == "STUDENT" or user == "student":
         if current_user is None or "STUDENT_DASHBOARD" not in user_view:
             message = 'User does not have access privilege'
@@ -296,6 +338,38 @@ def dashboard(user: str):
             worker = resource.fetch_exam_question(data['question_id'])
             print(worker)
             return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
+
+        elif request.args.get("action") == "RECORD-EXAM-SCORE":
+            data = request.get_json()
+            subject_id = Questions.query.filter_by(qid=data['question_id']).first().subject_id
+            # check for class result record and get its id
+            check = ClassResult.query.filter_by(examina_id=data['examina_id'], cohort_id=current_user.cohort_id,
+                                                subject_id=subject_id).first()
+            if check:
+                class_result_id = check.crid
+            else:
+                # log classresult first
+                kresult = ClassResult()
+                kresult.examina_id = data['examina_id']
+                kresult.cohort_id = current_user.cohort_id
+                kresult.subject_id = subject_id
+                db.session.add(kresult)
+                db.session.commit()
+
+                class_result_id = kresult.crid
+
+            # log individual result
+            log = Result()
+            log.classresult_id = class_result_id
+            log.examina_id = data['examina_id']
+            log.cohort_id = current_user.cohort_id
+            log.user_id = current_user.id
+            log.exam_script = json.dumps(data['script'])
+            log.subject_id = subject_id
+            db.session.add(log)
+            db.session.commit()
+
+            return json.dumps({'status': 1, 'data': None, 'message': 'Successfully submitted!', 'error': [None]})
 
     if user == "REVIEWER" or user == "reviewer":
         if current_user is None or "REVIEWER_DASHBOARD" not in user_view:
@@ -324,6 +398,30 @@ def dashboard(user: str):
 
             return json.dumps({'status': 1, 'data': None, 'message': "Successfully {}.".format(review_action),
                                'error': [None]})
+
+        elif request.args.get("action") == "FETCH-RESULT-FOR-REVIEW":
+            data = request.get_json()
+            worker = resource.fetch_results_for_review(data['examina_id'], data['subject_id'])
+            print(worker)
+            return json.dumps({'status': 1, 'data': worker, 'message': 'success', 'error': None})
+
+        elif request.args.get("action") == "REVIEW-RESULT":
+            data = request.get_json()
+            review_action = "approved" if data["action"] == "approve" else "rejected"
+            query = ClassResult.query.filter_by(crid=data['classResultId']).first()
+            #  check if result has already been reviewed by reviewer
+            if (query.admin_approval == "approved" and data["action"] == "approve") or \
+                    (query.admin_approval == "rejected" and data["action"] == "reject"):
+                message = "Result already reviewed"
+                return json.dumps({'status': 2, 'data': None, 'message': message, 'error': [message]})
+            #  record review action
+            ClassResult.query.filter_by(crid=data['classResultId']) \
+                .update({'review_comment': data['comment'], 'admin_approval': review_action,
+                         'last_review_date': datetime.now()})
+            db.session.commit()
+
+            return json.dumps({'status': 1, 'data': None, 'message': 'Successfully reviewed!', 'error': None})
+
 
 
 @app.route("/admin_actions/<action>", methods=["GET", "POST"])

@@ -20,7 +20,7 @@ const triggerProcessing = () => {
       toast: true,
       position: 'top-end',
       showConfirmButton: false,
-      timer: 3000,
+      timer: 4000,
       timerProgressBar: true,
       didOpen: (toast) => {
         toast.addEventListener('mouseenter', Swal.stopTimer);
@@ -33,7 +33,17 @@ const triggerProcessing = () => {
       title: title,
       text: text,
     });
+    return true;
   };
+
+//function to calculate time difference between two datetimes
+export function calculateTimeDifference (startTime, endTime) {
+
+    var differenceValue =(endTime.getTime() - startTime.getTime()) / 1000;
+    differenceValue /= 60;
+    let result = Math.abs(Math.round(differenceValue));
+    return result;
+}
 
 export default triggerProcessing;
 

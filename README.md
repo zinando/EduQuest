@@ -28,48 +28,49 @@ To get started with EduQuest, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/eduquest.git
+   git clone https://github.com/zinando/eduquest.git
    ```
 
-2. Install the required dependencies:
+   2. Install the required dependencies:
+   
+      For the Frontend:
+      ```bash
+      cd EduQuest/Frontend
+      npm install
+      ```
+      For the Backend, install python 3.10 or newer version. You get access to pip commands afterward. Then run the commands below:
+      ```bash
+      cd EduQuest/Backend #to enter backend directory
+      pip install virtualenv #install a module to help you create virtual environment
+      python -m venv virtual #create a virtual environment called 'virtual'
+      virtual\Scripts\activate #activate virtual environment on windows machine
+      source virtual/bin/activate #activate virtual environment on linux machine
+      pip install -r requirements.txt #install backend dependencies from a file called 'requirements.txt'
+      ```
+3. Start the application:
+
+   Frontend:
    ```bash
-   npm install
+   cd EduQuest/Frontend
+   npm run dev
    ```
-
-3. Configure the environment variables as described in [Setting Up](#setting-up).
-
-4. Start the application:
+   Backend:
    ```bash
-   npm start
+   cd EduQuest/Backend
+   virtual\Scripts\activate #activate virtual environment on windows machine
+   source virtual/bin/activate #activate virtual environment on linux machine
+   flask run #run the backend application
    ```
-
-### Setting Up
-
-EduQuest relies on several environment variables for configuration. Create a `.env` file in the project root and configure the following variables:
-
-```dotenv
-PORT=3000
-DATABASE_URL=your_database_url
-SECRET_KEY=your_secret_key
-```
 
 ## Features
 
 ### User Roles
 
-EduQuest supports three user roles:
-
-1. **Teacher**: Teachers can create and manage exams, as well as access exam results.
-2. **Reviewer**: Reviewers are responsible for grading student responses and providing feedback.
-3. **Student**: Students can take exams and view their results.
-
-### Question Bank
-
-EduQuest provides a user-friendly question bank where teachers can:
-
-- Create and store questions categorized by subject and topic.
-- Organize questions into folders for easy access.
-- Search for questions based on keywords and filters.
+EduQuest supports four user roles:
+1. **Super Admin**: The super admin is the only one that can signup using the signup button. Super admin creates every other user. He/she creates exam instance, and publishes results of every exam taken.
+2. **Teacher**: Teachers can create and manage exams, as well as access exam results.
+3. **Reviewer**: Reviewers are responsible for grading student responses and providing feedback.
+4. **Student**: Students can take exams and view their results.
 
 ### Exam Creation
 

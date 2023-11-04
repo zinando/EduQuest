@@ -6,8 +6,8 @@ export default function queryBackEnd(url, req_data = {}, action = '', method = "
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(req_data),
   };
-  if (sessionStorage.getItem('auth_token')) {
-    options.headers.Authorization = 'Bearer '+ sessionStorage.getItem('auth_token');
+  if (localStorage.getItem('auth_token')) {
+    options.headers.Authorization = 'Bearer '+ localStorage.getItem('auth_token');
   }
 
   return fetch(`http://localhost:5000${url}?action=${action}`, options)
@@ -49,35 +49,37 @@ export function setSession(info) {
   // myStore = sessionStorage();
   if (info.auth_token) {
 
-    sessionStorage.setItem('auth_token', info.auth_token);
-    sessionStorage.setItem('userPerm', JSON.stringify(info.user_perm));
+    localStorage.setItem('auth_token', info.auth_token);
+    localStorage.setItem('userPerm', JSON.stringify(info.user_perm));
     const userData = {
+      id: info.data.user_id,
       userId: info.data.userid,
       firstName: info.data.first_name,
       lastName: info.data.surname,
       email: info.data.email,
       otherNames: info.data.other_names,
       fullName: info.data.full_name,
-      adminType: info.data.admin_type
+      adminType: info.data.admin_type,
+      userClass: info.data.user_class,
     }
 
-    sessionStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('userData', JSON.stringify(userData));
 
   }
     
 }
 
 export function userInfo () {
-  if (sessionStorage.getItem('userData')) {
-    return JSON.parse(sessionStorage.getItem('userData'));
+  if (localStorage.getItem('userData')) {
+    return JSON.parse(localStorage.getItem('userData'));
   }
   return {};
 }
 
 export function checkUserPermission (privilege) {  
   
-   const token = sessionStorage.getItem('auth_token');
-   const perm = JSON.parse(sessionStorage.getItem('userPerm'));
+   const token = localStorage.getItem('auth_token');
+   const perm = JSON.parse(localStorage.getItem('userPerm'));
    
     if(!token){
         location.href = '/login';
@@ -89,7 +91,7 @@ export function checkUserPermission (privilege) {
 
 
 export function logOutUser () {
-  sessionStorage.clear();
+  localStorage.clear();
   location.href= '/login';
 }
 

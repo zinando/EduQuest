@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import './Landing.css'
@@ -9,19 +9,39 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import logo from '../../Frontend/src/assets/Group 1.png'
 import * as Unicons from '@iconscout/react-unicons';
+import queryBackEnd from '../src/pages/queryBackEnd';
 
 
 
 export default function Landing() {
+    const [superAdminCount, setSuperAdminCount] = useState(0);
+
   useEffect(() => {
     AOS.init({
       duration: 2000, // Animation duration in milliseconds
       easing: 'ease-out-back', // Easing type
       once: true, // Only trigger animations once
     });
+    countSuperAdmin();
   }, []);
 
+    const countSuperAdmin = () => {
+        const url = '';
+        const action = '';
+        const data = {};
 
+        //query backend
+        queryBackEnd(url, data, action)
+        .then((response) => {
+            let myCount= countSuperAdmin;
+            if (response.status === 1) {
+                myCount = response.data;
+            }
+            setSuperAdminCount(myCount);
+        }).catch((error) => {
+            console.log(error);
+        })
+    };
 
   return (
     <>
@@ -54,11 +74,13 @@ export default function Landing() {
               >
                 <Nav.Link href="#">Contact Us</Nav.Link>
               </Nav.Item>
+              {superAdminCount === 0 && (
               <Nav.Item className="btn">
                 <Link to="/signup">
                   Sign Up
                 </Link>
-              </Nav.Item> 
+              </Nav.Item>
+              )}
               <Nav.Item className="cta-button2" 
               style={{ marginTop: '10px' }}
               >

@@ -21,6 +21,9 @@ import SetExamQuestions from './pages/Questions/SetQuestions'
 import ReviewExamQuestions from './pages/Questions/ReviewQuestions'
 import ReviewExamResults from './pages/Questions/ReviewResults'
 import Support from './pages/Support/Support';
+import StudentReportCard from './pages/Result/StudentReportCard';
+import ClassResultCard from './pages/Result/ClassResultCard';
+import ResultLanding from './pages/Result/ResultLanding';
 
 
 
@@ -54,6 +57,9 @@ export default function App() {
             <Route path="/support" element={< Support />} />
             <Route path="/review_question" element={< ReviewExamQuestions />} />
             <Route path="/review_result" element={< ReviewExamResults />} />
+            <Route path="/report_card" element={< StudentReportCard />} />
+            <Route path="/class_result" element={< ClassResultCard />} />
+            <Route path="/class_result_landing" element={< ResultLanding />} />
 
           </Routes>
         </Router>

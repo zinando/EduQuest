@@ -34,8 +34,10 @@ def my_expired_token_callback(jwt_header, jwt_payload):
 @app.route("/", methods=["GET", "POST"])
 @cross_origin()
 def index():
-    # db.create_all()
-    return json.dumps({"status": 1, "message": "Hello World"})
+    #  db.create_all()
+    #  get the number of super admins present
+    admin = User.query.filter_by(admin_type='super').count()
+    return json.dumps({"status": 1, 'data': admin, "message": "Hello World"})
 
 
 @app.route("/signup", methods=["POST"])
@@ -78,6 +80,27 @@ def dashboard(user: str):
 
         return json.dumps({'status': 1, 'exams': worker1, 'subjects': worker5, 'klass': worker4, 'user_stat': worker2,
                            'skedule': worker3, 'message': 'success!', 'error': [None]})
+
+    elif request.args.get("action") == "FETCH-CLASS-RESULT":
+        data = request.get_json()
+        worker1 = resource.fetch_class_result(data['examina_id'], data['class_id'])
+        worker2 = resource.fetch_class_result_stat(data['examina_id'], data['class_id'], worker1) if len(worker1) > 0 else {}
+
+        return json.dumps({'status': 1, 'data': worker1, 'stat': worker2, 'message': 'success!', 'error': [None]})
+
+    elif request.args.get("action") == "FETCH-EXAM-CLASS-LIST":
+        if current_user.admin_type == "student":
+            return json.dumps({'status': 2, 'data': None, 'message': 'Permission denied', 'error': ['Permission denied']})
+        worker = resource.fetch_exam_class_list()
+
+        return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
+
+    elif request.args.get("action") == "FETCH-RESULT":
+        """ fetches result of a given user_id for a given exam instance """
+        data = request.get_json()
+        worker = resource.fetch_user_result_data(int(data['examina_id']), int(data['user_id']))
+
+        return json.dumps({'status': 1, 'data': worker, 'message': 'Success', 'error': [None]})
 
     if user == "SUPER" or user == 'super':
         if current_user is None or "SUPER_DASHBOARD" not in user_view:
@@ -330,13 +353,11 @@ def dashboard(user: str):
 
         if request.args.get("action") == "FETCH-TODAY-EXAMS":
             worker = resource.fetch_today_exams()
-            print(worker)
             return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
 
         elif request.args.get("action") == "FETCH-STUDENT-EXAM-QUESTION":
             data = request.get_json()
             worker = resource.fetch_exam_question(data['question_id'])
-            print(worker)
             return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
 
         elif request.args.get("action") == "RECORD-EXAM-SCORE":
@@ -371,6 +392,7 @@ def dashboard(user: str):
 
             return json.dumps({'status': 1, 'data': None, 'message': 'Successfully submitted!', 'error': [None]})
 
+
     if user == "REVIEWER" or user == "reviewer":
         if current_user is None or "REVIEWER_DASHBOARD" not in user_view:
             message = 'User does not have access privilege'
@@ -378,7 +400,6 @@ def dashboard(user: str):
 
         if request.args.get("action") == "FETCH-REVIEW-ITEMS":
             worker = resource.fetch_review_items()
-            print(worker)
             return json.dumps({'status': 1, 'data': worker, 'message': 'success!', 'error': [None]})
 
         elif request.args.get("action") == "REVIEW-QUESTION":
@@ -402,7 +423,6 @@ def dashboard(user: str):
         elif request.args.get("action") == "FETCH-RESULT-FOR-REVIEW":
             data = request.get_json()
             worker = resource.fetch_results_for_review(data['examina_id'], data['subject_id'])
-            print(worker)
             return json.dumps({'status': 1, 'data': worker, 'message': 'success', 'error': None})
 
         elif request.args.get("action") == "REVIEW-RESULT":
@@ -577,7 +597,7 @@ def admin_actions(action: str):
                 message = 'Operation was not successful'
                 error = [str(e)]
                 classList = None
-            print(status)
+
             response = {'status': status, 'data': classList, 'message': message, 'error': error}
             return json.dumps(response)
 

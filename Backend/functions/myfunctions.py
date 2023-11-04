@@ -3,6 +3,7 @@ import re
 import random
 import time
 from datetime import datetime
+import operator
 
 
 def check_password_strength(password: str) -> dict:
@@ -67,3 +68,28 @@ def get_time_duration_in_minutes(start, end) -> int:
         difference = 0
 
     return int(difference)
+
+
+def rank_the_objects(object_list: list, sort_by) -> list:
+    """ sorts a list of dictionaries by a given key """
+    data = []
+    if len(object_list) > 0:
+        new_list = sorted(object_list, key=operator.itemgetter(sort_by), reverse=True)
+        count = 0
+        for item in new_list:
+            count += 1
+            mr = {}
+            mr['id'] = item['id']
+            mr[sort_by] = item[sort_by]
+            mr['rank'] = count
+            data.append(mr)
+
+    return data
+
+
+def get_remarks(score) -> str:
+    """determines if a given score meets the passing requirements or not"""
+    if float(score) >= 40:
+        return "Passed"
+
+    return "Failed"

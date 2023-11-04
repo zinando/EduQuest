@@ -81,8 +81,8 @@ const ItemTable = () => {
             </Col>
             <Col sm={3} className="item item-body">
                 <div className="d-inline hidden-items-display">
-                    <a href="/Support" className="hidden-items-display btn"  variant="warning">
-                      Show Result
+                    <a href={`/report_card?examinaId=${rec.id}&userId=${userInfo().id}`} className="hidden-items-display btn"  variant="warning">
+                      View Result
                     </a>
               </div>
             </Col>

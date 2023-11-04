@@ -84,7 +84,7 @@ class UserAuth:
         user_class = USERCLASS(user.id)
         user_info = user_class.get_user()
         
-        return {'status': 1, 'data': user_info, 'message': 'login was successful', 'user_perm':self.user_access_view()[user.admin_type],  'error': None, 'auth_token': user_token['token']}
+        return {'status': 1, 'data': user_info, 'message': 'login was successful', 'user_perm': self.user_access_view()[user.admin_type],  'error': None, 'auth_token': user_token['token']}
 
 
     def validate_new_user_credentials(self) -> dict:

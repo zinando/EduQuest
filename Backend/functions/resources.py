@@ -406,3 +406,215 @@ def fetch_results_for_review(examina_id: int, subject_id: int) -> dict:
     data["result_summary"] = result_summary
     data["result_list"] = result_list
     return data
+
+
+def compute_student_average_score(examina_id, user_id):
+    """ computes average score from all subjects expected to be taken by student"""
+    average_score = 0
+
+    # get list of class subjects expected to be taken by user
+    user_class_id = User.query.filter_by(id=user_id).first().cohort_id
+    subject_list = get_class_exam_subject_list(examina_id, user_class_id)
+
+    if len(subject_list) > 0:
+        total_exam_score = 0
+        # compute total exam score by iterating over all the list
+        for item in subject_list:
+            result = Result.query.filter_by(examina_id=examina_id, user_id=user_id, subject_id=item).first()
+            if result:
+                if result.exam_script:
+                    script = json.loads(result.exam_script)
+                    total_exam_score += float(script['score'])
+        average_score = total_exam_score / len(subject_list)
+
+    return average_score
+
+
+def get_class_exam_subject_list(examina_id, cohort_id):
+    """ returns a list of subjects expected to be taken by members of a given class"""
+    # get a list of excluded subjects for the exam
+    excluded = Examina.query.filter_by(exid=examina_id).first().exclude_subjs
+    if excluded:
+        excluded_list = json.loads(excluded)
+    else:
+        excluded_list = []
+
+    # get list of class subjects expected to be taken by user
+    query = Cohorts.query.filter_by(cid=cohort_id).first()
+    subject_list = [x.sid for x in query.subjects if x.sid not in excluded_list]
+
+    return subject_list
+
+
+def get_class_rank(examina_id, cohort_id, user_id):
+    """ranks students based on their average score in all the subjects taken"""
+    rank = 0
+    # make a list of all the students in the class with their average score
+    class_list = []
+    source = Cohorts.query.filter_by(cid=cohort_id).first()
+    source_list = source.students
+    for user in source_list:
+        if user.admin_type == 'student':
+            mr = {}
+            mr['id'] = user.id
+            mr['name'] = "{} {} {}".format(user.sname, user.fname, user.oname)
+            mr['average_score'] = compute_student_average_score(examina_id, user.id)
+            class_list.append(mr)
+
+    # get student rank in the list
+    if len(class_list) > 0:
+        new_list = myfunc.rank_the_objects(class_list, 'average_score')
+        rank = [x['rank'] for x in new_list if x['id'] == user_id][0]
+
+    return rank
+
+
+def fetch_user_result_data(examina_id: int, userid=0) -> dict:
+    """returns a dictionary containing user result and associated information"""
+    data = {}
+    data['stat'] = {}
+    data['result_data'] = []
+    user_id = userid if userid > 0 else current_user.id
+    user_data = User.query.filter_by(id=user_id).first()
+
+    #  get a list of id of subjects that student is expected to take
+    subject_list = get_class_exam_subject_list(examina_id, user_data.cohort_id)
+    #  get the result for each subject if exists
+    for subject in subject_list:
+        result = db.session.query(Result) \
+            .filter(Examina.exid == examina_id, Examina.publish_result_status == "published",
+                    ClassResult.examina_id == Examina.exid, ClassResult.cohort_id == user_data.cohort_id,
+                    ClassResult.expert_approval == "approved", ClassResult.admin_approval == "approved",
+                    Result.classresult_id == ClassResult.crid, Result.user_id == user_id,
+                    Result.subject_id == subject).first()
+
+        #  compute user result data
+        user_result = {}
+        if result:
+            user_result['id'] = result.rid
+            user_result['subject'] = result.subject.general_title
+            script = json.loads(result.exam_script)
+            user_result['script'] = script
+            user_result['score'] = float(script['score'])
+            user_result['remarks'] = myfunc.get_remarks(user_result['score'])
+
+            user_result['subject_rank'] = get_subject_rank(examina_id, result.subject_id, user_id)
+            data['result_data'].append(user_result)
+        else:
+            user_result['id'] = 0
+            user_result['subject'] = Subjects.query.filter_by(sid=subject).first().general_title
+            user_result['remarks'] = 'Failed'
+            user_result['script'] = []
+            user_result['score'] = 0
+            user_result['subject_rank'] = get_subject_rank(examina_id, subject, user_id)
+            data['result_data'].append(user_result)
+
+        # generate some statistics for the class result
+        mr = {}
+        mr['student_id'] = user_data.id
+        mr['student_name'] = "{} {} {}".format(user_data.sname, user_data.fname, user_data.oname)
+        mr['student_class'] = Cohorts.query.filter_by(cid=user_data.cohort_id).first().classname
+        mr['class_count'] = User.query.filter_by(admin_type='student', cohort_id=user_data.cohort_id).count()
+        mr['average_score'] = compute_student_average_score(examina_id, user_id)
+        mr['class_rank'] = get_class_rank(examina_id, user_data.cohort_id, user_id)
+        mr['subject_count'] = len(get_class_exam_subject_list(examina_id, user_data.cohort_id))
+        mr['remarks'] = myfunc.get_remarks(mr['average_score'])
+        mr['title'] = Examina.query.filter_by(exid=examina_id).first().title
+        mr['examina_id'] = examina_id
+        data['stat'].update(mr)
+
+    return data
+
+
+def get_subject_rank(examina_id, subject_id, user_id):
+    """ranks students based on their score in the subject"""
+    source = []
+    rank = 0
+    results = Result.query.filter_by(examina_id=examina_id, subject_id=subject_id).all()
+    # compile a list of student results that took the exam
+    for result in results:
+        mr = {}
+        mr['id'] = result.user_id
+        script = json.loads(result.exam_script)
+        mr['score'] = float(script['score'])
+        source.append(mr)
+    # rank the list items based on score
+    if len(source) > 0:
+        new_list = myfunc.rank_the_objects(source, 'score')
+        rank = [x['rank'] for x in new_list if x['id'] == user_id][0]
+
+    return rank
+
+
+def fetch_class_result(exam_id, klass_id):
+    """ fetches results summary for all members of a given class_id for a given examina instance
+        if no parameters are given, then the current user's class_id and the latest published result are used
+    """
+    #  get the id of the latest exam with published result
+    latest_exam_id = Examina.query.filter_by(publish_result_status='published').order_by(
+        Examina.exid.desc()).first().exid
+
+    class_id = klass_id if klass_id > 0 else current_user.cohort_id
+    examina_id = exam_id if exam_id > 0 else latest_exam_id
+
+    #  query all the members of the class and fetch their result data
+    class_members = db.session.query(User.id).filter(User.cohort_id == class_id, User.admin_type == 'student').all()
+    data = []
+    for member in class_members:
+        member_result = fetch_user_result_data(examina_id, member.id)
+        data.append(member_result)
+
+    return data
+
+
+def fetch_class_result_stat(exam_id, klass_id, class_results=None):
+    """fetches statistics of a given class result"""
+    #  get the id of the latest exam with published result
+    latest_exam = Examina.query.filter_by(publish_result_status='published').order_by(
+        Examina.exid.desc()).first()
+    latest_exam_id = latest_exam.exid
+
+    class_id = klass_id if klass_id > 0 else current_user.cohort_id
+    examina_id = exam_id if exam_id > 0 else latest_exam_id
+
+    data = {}
+    data['title'] = latest_exam.title
+    data['class_name'] = Cohorts.query.filter_by(cid=class_id).first().classname
+    data['class_count'] = User.query.filter_by(admin_type='student', cohort_id=class_id).count()
+    data['passed'] = 0
+    data['failed'] = 0
+    if class_results is not None:
+        result_list = class_results
+    else:
+        result_list = fetch_class_result(examina_id, class_id)
+
+    for result in result_list:
+        if result['stat']['remarks'] == 'failed':
+            data['failed'] += 1
+        else:
+            data['passed'] += 1
+
+    return data
+
+
+def fetch_exam_class_list(examina_id=None):
+    """fetches a list of classes that participated in a given exam instance or the one with the latest result"""
+    if examina_id:
+        exam = Examina.query.filter_by(exid=examina_id).first()
+    else:
+        # fetch the most recent exam instance with published result
+        exam = Examina.query.filter_by(publish_result_status="published").order_by(Examina.exid.desc()).first()
+    mr = {}
+    if exam:
+        mr['id'] = exam.exid
+        mr['title'] = exam.title
+        mr['start'] = exam.start.strftime("%A %d %B %Y")
+        mr['end'] = exam.end.strftime("%A %d %B %Y")
+        mr['list_items'] = []
+        for klass in json.loads(exam.cohorts):
+            mrs = {}
+            mrs['id'] = klass
+            mrs['class_name'] = Cohorts.query.filter_by(cid=klass).first().classname
+            mr['list_items'].append(mrs)
+
+    return mr

@@ -10,7 +10,7 @@ lerna-debug.log*
 node_modules
 package-lock.json
 README.md
-dist
+#dist
 dist-ssr
 *.local
 

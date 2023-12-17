@@ -73,8 +73,7 @@ EduQuest supports four user roles:
 4. **Student**: Students can take exams and view their results.
 
 ### Exam Creation
-
-Teachers can create exams effortlessly:
+Super admin creates exam instances:
 
 - Select questions from the question bank.
 - Set exam parameters such as time limits and question types.

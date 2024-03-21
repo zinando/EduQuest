@@ -10,7 +10,7 @@ export default function queryBackEnd(url, req_data = {}, action = '', method = "
     options.headers.Authorization = 'Bearer '+ localStorage.getItem('auth_token');
   }
 
-  return fetch(`http://localhost:5000${url}?action=${action}`, options)
+  return fetch(`https://eduquest-backend.onrender.com/${url}?action=${action}`, options)
     .then((res) => {
       //check if user token has expired, then log user out
       if (res.status == 401){

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../../layout/Sidebar/SideBar.css';
 import Sidebar from '../../layout/Sidebar/SideBar';
-import Navbar from '../../layout/Navbar/NavBar';
+import Navbar from '../../layout/Navbar/NavBar.jsx';
 import Paper from '@mui/material/Paper';
 import CountdownTimer from '../../component/Timer/Timer';
 import triangle from '../../assets/triangle.gif';

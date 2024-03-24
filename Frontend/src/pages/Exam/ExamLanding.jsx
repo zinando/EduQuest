@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../../layout/Sidebar/SideBar.css';
 import Sidebar from '../../layout/Sidebar/SideBar';
-import Navbar from '../../layout/Navbar/NavBar';
+import Navbar from '../../layout/NavBar/NavBar';
 import CountdownTimer from '../../component/Timer/Timer';
 import TimedButton from '../../component/Timer/TimedButton';
 import {Button, Table, Row, Col, Modal, Container } from 'react-bootstrap';
